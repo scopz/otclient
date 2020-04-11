@@ -80,19 +80,51 @@ PurseButton < Button
   icon-size: 24 24
   icon-offset: 1 1
 
-MiniWindow
+
+CombatBox < UICheckBox
+  size: 20 20
+  image-clip: 0 0 20 20
+  margin: 2 4
+
+  $checked:
+    image-clip: 0 20 20 20
+
+FightOffensiveBox < CombatBox
+  image-source: /images/game/combatmodes/fightoffensive
+FightBalancedBox < CombatBox
+  image-source: /images/game/combatmodes/fightbalanced
+FightDefensiveBox < CombatBox
+  image-source: /images/game/combatmodes/fightdefensive
+ChaseModeBox < CombatBox
+  image-source: /images/game/combatmodes/chasemode
+SafeFightBox < CombatBox
+  image-source: /images/game/combatmodes/safefight
+
+MountButton < CombatBox
+  image-source: /images/game/combatmodes/mount
+
+WhiteDoveBox < CombatBox
+  image-source: /images/game/combatmodes/whitedovemode
+WhiteHandBox < CombatBox
+  image-source: /images/game/combatmodes/whitehandmode
+YellowHandBox < CombatBox
+  image-source: /images/game/combatmodes/yellowhandmode
+RedFistBox < CombatBox
+  image-source: /images/game/combatmodes/redfistmode
+
+
+MiniWindowHeadLess
   id: inventoryWindow
-  !text: tr('Inventory')
-  icon: /images/topbuttons/inventory
   height: 175
   @onClose: modules.game_inventory.onMiniWindowClose()
   &save: true
 
-  MiniWindowContents
+  MiniWindowContentsHL
     HeadSlot
       anchors.top: parent.top
-      anchors.horizontalCenter: parent.horizontalCenter
+      anchors.left: parent.left
       margin-top: 3
+      margin-left: 50
 
     BodySlot
       anchors.top: prev.bottom
@@ -145,3 +177,73 @@ MiniWindow
       margin-top: 3
       anchors.top: prev.bottom
       anchors.horizontalCenter: prev.horizontalCenter
+
+
+
+
+    ChaseModeBox
+      id: chaseModeBox
+      anchors.top: parent.top
+      anchors.right: parent.right
+
+    FightOffensiveBox
+      id: fightOffensiveBox
+      anchors.top: parent.top
+      anchors.right: chaseModeBox.left
+
+    FightBalancedBox
+      id: fightBalancedBox
+      anchors.top: prev.bottom
+      anchors.horizontalCenter: prev.horizontalCenter
+
+    FightDefensiveBox
+      id: fightDefensiveBox
+      anchors.top: prev.bottom
+      anchors.horizontalCenter: prev.horizontalCenter
+
+
+
+    MountButton
+      id: mountButton
+      anchors.top: chaseModeBox.bottom
+      anchors.horizontalCenter: chaseModeBox.horizontalCenter
+
+    SafeFightBox
+      id: safeFightBox
+      anchors.top: prev.bottom
+      anchors.horizontalCenter: prev.horizontalCenter
+
+
+    Panel
+      id: pvpModesPanel
+      anchors.right: parent.right
+      anchors.top: prev.bottom
+      width: 50
+      height: 50
+      margin-top: 5
+
+      WhiteHandBox
+        id: whiteHandBox
+        anchors.right: parent.right
+        anchors.top: parent.top
+
+      RedFistBox
+        id: redFistBox
+        anchors.horizontalCenter: prev.horizontalCenter
+        anchors.top: prev.bottom
+
+
+      WhiteDoveBox
+        id: whiteDoveBox
+        anchors.right: whiteHandBox.left
+        anchors.verticalCenter: whiteHandBox.verticalCenter
+
+
+      YellowHandBox
+        id: yellowHandBox
+        anchors.horizontalCenter: prev.horizontalCenter
+        anchors.top: prev.bottom
+
+
+
+

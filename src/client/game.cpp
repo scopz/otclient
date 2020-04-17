@@ -84,6 +84,7 @@ void Game::resetGameStates()
     m_localPlayer = nullptr;
     m_pingSent = 0;
     m_pingReceived = 0;
+    m_nextStepSet = false;
     m_unjustifiedPoints = UnjustifiedPoints();
 
     for(auto& it : m_containers) {
@@ -598,7 +599,7 @@ bool Game::walk(Otc::Direction direction, bool dash)
     else {
         // check we can walk and add new walk event if false
         if(!m_localPlayer->canWalk(direction)) {
-            if(m_lastWalkDir != direction) {
+            if(!m_nextStepSet || m_lastWalkDir != direction) {
                 // must add a new walk event
                 float ticks = m_localPlayer->getStepTicksLeft();
                 if(ticks <= 0) { ticks = 1; }
@@ -607,7 +608,10 @@ bool Game::walk(Otc::Direction direction, bool dash)
                     m_walkEvent->cancel();
                     m_walkEvent = nullptr;
                 }
-                m_walkEvent = g_dispatcher.scheduleEvent([=] { walk(direction, false); }, ticks);
+                if (ticks < 150 || m_lastWalkDir != direction) {
+                    m_nextStepSet=true;
+                    m_walkEvent = g_dispatcher.scheduleEvent([=] { m_nextStepSet=false; walk(direction, false); }, ticks);
+                }
             }
             return false;
         }

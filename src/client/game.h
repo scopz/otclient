@@ -398,6 +398,7 @@ private:
     int m_clientVersion;
     std::string m_clientSignature;
     int m_clientCustomOs;
+    bool m_nextStepSet;
 };
 
 extern Game g_game;

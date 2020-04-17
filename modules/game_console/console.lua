@@ -145,7 +145,14 @@ function init()
   g_keyboard.bindKeyDown('Ctrl+E', removeCurrentTab)
   g_keyboard.bindKeyDown('Ctrl+H', openHelp)
 
+  -- toggle ASDW
   consoleToggleChat = consolePanel:getChildById('toggleChat')
+
+  g_keyboard.bindKeyPress('Shift+Enter', function()
+    consoleToggleChat:setChecked(not consoleToggleChat:isChecked())
+    toggleChat()
+  end, consolePanel)
+  
   load()
 
   if g_game.isOnline() then
@@ -217,8 +224,8 @@ function disableChat()
     end
     enableChat()
   end
-  g_keyboard.bindKeyUp("Space", quickFunc)
-  g_keyboard.bindKeyUp("Enter", quickFunc)
+  --g_keyboard.bindKeyUp("Space", quickFunc)
+  --g_keyboard.bindKeyUp("Enter", quickFunc)
   g_keyboard.bindKeyUp("Escape", quickFunc)
 
   gameInterface.bindWalkKey("W", North)
@@ -257,6 +264,7 @@ function terminate()
   g_keyboard.unbindKeyDown('Ctrl+O')
   g_keyboard.unbindKeyDown('Ctrl+E')
   g_keyboard.unbindKeyDown('Ctrl+H')
+  g_keyboard.unbindKeyDown('Shift+Enter')
 
   saveCommunicationSettings()
 

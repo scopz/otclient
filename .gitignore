@@ -3,7 +3,6 @@ CMakeCache.txt
 CMakeFiles
 cmake_install.cmake
 Makefile
-/otclient
 /*.h
 /*.cxx
 *.o
@@ -41,6 +40,15 @@ src/framework/graphics/dx/
 modules/.project/modules.sublime-workspace
 vc14/.vs/
 *.dll
+
+###########
+## Eclipse
+###########
+
+.project
+.cproject
+.settings
+
 
 #################
 ## Visual Studio

@@ -113,9 +113,40 @@ RedFistBox < CombatBox
   image-source: /images/game/combatmodes/redfistmode
 
 
+SoulLabel < GameLabel
+  text: Soul
+  color: white
+  font: verdana-11px-rounded
+
+
+SoulValueLabel < GameLabel
+  id: soulLabel
+  color: white
+  font: verdana-11px-rounded
+
+
+CapLabel < GameLabel
+  color: white
+  font: verdana-11px-rounded
+  text: Cap
+
+
+CapValueLabel < GameLabel
+  id: capLabel
+  color: white
+  font: verdana-11px-rounded
+
+
+ConditionWidget < UIWidget
+  size: 18 18
+
+  $!first:
+    margin-left: 2
+
+
 MiniWindowHeadLess
   id: inventoryWindow
-  height: 175
+  height: 182
   @onClose: modules.game_inventory.onMiniWindowClose()
   &save: true
 
@@ -214,6 +245,31 @@ MiniWindowHeadLess
       anchors.horizontalCenter: prev.horizontalCenter
 
 
+    SoulLabel
+      margin-top: 2
+      anchors.top: slot9.bottom
+      anchors.horizontalCenter: slot9.horizontalCenter
+
+    SoulValueLabel
+      anchors.top: prev.bottom
+      anchors.horizontalCenter: prev.horizontalCenter
+      width: 100
+      text-align: center
+
+
+    CapLabel
+      margin-top: 2
+      anchors.top: slot10.bottom
+      anchors.horizontalCenter: slot10.horizontalCenter
+
+    CapValueLabel
+      anchors.top: prev.bottom
+      anchors.horizontalCenter: prev.horizontalCenter
+      width: 100
+      text-align: center
+
+
+
     Panel
       id: pvpModesPanel
       anchors.right: parent.right
@@ -245,5 +301,16 @@ MiniWindowHeadLess
         anchors.top: prev.bottom
 
 
-
-
+    Panel
+      id: conditionPanel
+      layout:
+        type: horizontalBox
+      height: 22
+      margin: 0 3 3 5
+      padding: 2
+      anchors.bottom: parent.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      border-width: 1
+      border-color: #00000077
+      background-color: #00000011

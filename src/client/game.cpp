@@ -1539,6 +1539,9 @@ void Game::setClientVersion(int version)
         enableFeature(Otc::GameLooktypeU16);
         enableFeature(Otc::GameMessageStatements);
         enableFeature(Otc::GameLoginPacketEncryption);
+        if (version == 772) {
+            enableFeature(Otc::GameDoubleFreeCapacity);
+        }
     }
 
     if(version >= 780) {

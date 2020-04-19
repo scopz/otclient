@@ -323,7 +323,7 @@ function onSoulChange(localPlayer, soul)
 end
 
 function onFreeCapacityChange(localPlayer, freeCapacity)
-  setSkillValue('capacity', freeCapacity)
+  setSkillValue('capacity', string.format('%.1f', freeCapacity))
   checkAlert('capacity', freeCapacity, localPlayer:getTotalCapacity(), 20)
 end
 

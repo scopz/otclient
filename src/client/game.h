@@ -399,6 +399,7 @@ private:
     std::string m_clientSignature;
     int m_clientCustomOs;
     bool m_nextStepSet;
+    bool m_triedStop;
 };
 
 extern Game g_game;

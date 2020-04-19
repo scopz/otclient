@@ -586,10 +586,16 @@ bool Game::walk(Otc::Direction direction, bool dash)
 
     // must cancel auto walking, and wait next try
     if(m_localPlayer->isAutoWalking() || m_localPlayer->isServerWalking()) {
-        m_protocolGame->sendStop();
-        if(m_localPlayer->isAutoWalking())
-            m_localPlayer->stopAutoWalk();
+    	if (!m_triedStop) {
+			m_triedStop = true;
+			m_protocolGame->sendStop();
+			if(m_localPlayer->isAutoWalking()){
+				m_localPlayer->stopAutoWalk();
+			}
+    	}
         return false;
+    } else {
+    	m_triedStop = false;
     }
 
     if(dash) {

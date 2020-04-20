@@ -1,21 +1,7 @@
 Panel
   OptionCheckBox
-    id: classicControl
-    !text: tr('Classic control')
-
-  OptionCheckBox
-    id: autoChaseOverride
-    !text: tr('Allow auto chase override')
-
-  OptionCheckBox
-    id: smartWalk
-    !text: tr('Enable smart walking')
-    !tooltip: tr('Will detect when to use diagonal step based on the\nkeys you are pressing')
-
-  OptionCheckBox
-    id: dashWalk
-    !text: tr('Enable dash walking')
-    !tooltip: tr('Will boost your walk on high speed characters')
+    id: openMaximized
+    !text: tr('Open containers maximized')
 
   OptionCheckBox
     id: showPing

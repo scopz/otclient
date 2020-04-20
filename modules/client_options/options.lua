@@ -4,6 +4,7 @@ local defaultOptions = {
   showPing = false,
   fullscreen = false,
   classicControl = false,
+  openMaximized = false,
   moveStack = false,
   smartWalk = false,
   dashWalk = false,

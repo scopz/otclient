@@ -4,6 +4,7 @@ local defaultOptions = {
   showPing = false,
   fullscreen = false,
   classicControl = false,
+  moveStack = false,
   smartWalk = false,
   dashWalk = false,
   autoChaseOverride = true,
@@ -37,6 +38,7 @@ local optionsButton
 local optionsTabBar
 local options = {}
 local generalPanel
+local controlPanel
 local consolePanel
 local graphicsPanel
 local soundPanel
@@ -102,6 +104,9 @@ function init()
 
   generalPanel = g_ui.loadUI('game')
   optionsTabBar:addTab(tr('Game'), generalPanel, '/images/optionstab/game')
+
+  controlPanel = g_ui.loadUI('control')
+  optionsTabBar:addTab(tr('Control'), controlPanel, '/images/optionstab/game')
 
   consolePanel = g_ui.loadUI('console')
   optionsTabBar:addTab(tr('Console'), consolePanel, '/images/optionstab/console')

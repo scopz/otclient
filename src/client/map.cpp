@@ -35,6 +35,7 @@
 
 Map g_map;
 TilePtr Map::m_nulltile;
+uint32 Map::m_diagonalCost = 200;
 
 void Map::init()
 {
@@ -836,7 +837,7 @@ std::tuple<std::vector<Otc::Direction>, Otc::PathFindResult> Map::findPath(const
 
                 Otc::Direction walkDir = currentNode->pos.getDirectionFromPosition(neighborPos);
                 if(walkDir >= Otc::NorthEast)
-                    walkFactor += 3.0f;
+                    walkFactor += std::max(m_diagonalCost/100.f,1.5f);
                 else
                     walkFactor += 1.0f;
 

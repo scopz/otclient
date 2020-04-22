@@ -70,6 +70,9 @@ void ProtocolGame::parseMessage(const InputMessagePtr& msg)
             case Proto::GameServerUpdateNeeded:
                 parseUpdateNeeded(msg);
                 break;
+            case Proto::GameServerParameters:
+            	parseServerParameters(msg);
+            	break;
             case Proto::GameServerLoginError:
                 parseLoginError(msg);
                 break;
@@ -675,6 +678,12 @@ void ProtocolGame::parseUpdateNeeded(const InputMessagePtr& msg)
 {
     std::string signature = msg->getString();
     g_game.processUpdateNeeded(signature);
+}
+
+void ProtocolGame::parseServerParameters(const InputMessagePtr& msg)
+{
+	int diagonalCost = msg->getU16();
+	Map::setDiagonalCost(diagonalCost);
 }
 
 void ProtocolGame::parseLoginError(const InputMessagePtr& msg)

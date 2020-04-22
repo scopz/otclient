@@ -243,6 +243,9 @@ public:
 
     std::tuple<std::vector<Otc::Direction>, Otc::PathFindResult> findPath(const Position& start, const Position& goal, int maxComplexity, int flags = 0);
 
+    static uint32 getDiagonalCost() { return m_diagonalCost; }
+    static void setDiagonalCost(uint32 diagonalCost) { m_diagonalCost = diagonalCost; }
+
 private:
     void removeUnawareThings();
     uint getBlockIndex(const Position& pos) { return ((pos.y / BLOCK_SIZE) * (65536 / BLOCK_SIZE)) + (pos.x / BLOCK_SIZE); }
@@ -267,6 +270,7 @@ private:
     stdext::packed_storage<uint8> m_attribs;
     AwareRange m_awareRange;
     static TilePtr m_nulltile;
+    static uint32 m_diagonalCost;
 };
 
 extern Map g_map;

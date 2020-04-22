@@ -904,7 +904,7 @@ int Creature::getStepDuration(bool ignoreDiagonal, Otc::Direction dir)
 
     if(!ignoreDiagonal && (m_lastStepDirection == Otc::NorthWest || m_lastStepDirection == Otc::NorthEast ||
        m_lastStepDirection == Otc::SouthWest || m_lastStepDirection == Otc::SouthEast))
-        interval *= factor;
+        interval *= g_map.getDiagonalCost()/100.;
 
     return interval;
 }

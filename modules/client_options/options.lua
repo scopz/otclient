@@ -7,7 +7,6 @@ local defaultOptions = {
   openMaximized = false,
   moveStack = false,
   smartWalk = false,
-  dashWalk = false,
   autoChaseOverride = true,
   showStatusMessagesInConsole = true,
   showEventMessagesInConsole = true,

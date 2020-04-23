@@ -11,11 +11,6 @@ Panel
     id: smartWalk
     !text: tr('Enable smart walking')
     !tooltip: tr('Will detect when to use diagonal step based on the\nkeys you are pressing')
-
-  OptionCheckBox
-    id: dashWalk
-    !text: tr('Enable dash walking')
-    !tooltip: tr('Will boost your walk on high speed characters')
     
   OptionCheckBox
     id: moveStack

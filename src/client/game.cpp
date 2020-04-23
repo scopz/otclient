@@ -575,114 +575,94 @@ void Game::safeLogout()
     m_protocolGame->sendLogout();
 }
 
-bool Game::walk(Otc::Direction direction, bool dash)
+bool Game::walk(Otc::Direction direction, bool direct)
 {
-    if(!canPerformGameAction())
-        return false;
+    if(isFollowing()) cancelFollow();
+    int ticks = m_localPlayer->getStepDuration() - walkTimer.ticksElapsed();
+    if (direct || m_lastWalkDir != direction || (ticks < 50  && !m_nextStepSet)) {
+		if (direct) m_nextStepSet = false;
+		if(!canPerformGameAction()) return false;
 
-    // must cancel follow before any new walk
-    if(isFollowing())
-        cancelFollow();
+	    Position toPos = m_localPlayer->getPosition().translatedToDirection(direction);
+	    TilePtr toTile = g_map.getTile(toPos);
+	    bool isWalkable = false;
+	    // only do prewalks to walkable tiles (like grounds and not walls)
+	    if(toTile && toTile->isWalkable()) {
+	    	isWalkable = true;
 
-    // must cancel auto walking, and wait next try
-    if(m_localPlayer->isAutoWalking() || m_localPlayer->isServerWalking()) {
-    	if (!m_triedStop) {
-			m_triedStop = true;
-			m_protocolGame->sendStop();
-			if(m_localPlayer->isAutoWalking()){
-				m_localPlayer->stopAutoWalk();
-			}
-    	}
-        return false;
-    } else {
-    	m_triedStop = false;
-    }
+	    } else {
+	        // check if can walk to a lower floor
+	        auto canChangeFloorDown = [&]() -> bool {
+	            Position pos = toPos;
+	            if(!pos.down())
+	                return false;
+	            TilePtr toTile = g_map.getTile(pos);
+	            if(toTile && toTile->hasElevation(3))
+	                return true;
+	            return false;
+	        };
 
-    if(dash) {
-        if(m_localPlayer->isWalking() && m_dashTimer.ticksElapsed() < std::max<int>(m_localPlayer->getStepDuration(false, direction) - m_ping, 30))
-            return false;
-    }
-    else {
-        // check we can walk and add new walk event if false
-        if(!m_localPlayer->canWalk(direction)) {
-            if(!m_nextStepSet || m_lastWalkDir != direction) {
-                // must add a new walk event
-                float ticks = m_localPlayer->getStepTicksLeft();
-                if(ticks <= 0) { ticks = 1; }
+	        // check if can walk to a higher floor
+	        auto canChangeFloorUp = [&]() -> bool {
+	            TilePtr fromTile = m_localPlayer->getTile();
+	            if(!fromTile || !fromTile->hasElevation(3))
+	                return false;
+	            Position pos = toPos;
+	            if(!pos.up())
+	                return false;
+	            TilePtr toTile = g_map.getTile(pos);
+	            if(!toTile || !toTile->isWalkable())
+	                return false;
+	            return true;
+	        };
 
-                if(m_walkEvent) {
-                    m_walkEvent->cancel();
-                    m_walkEvent = nullptr;
-                }
-                if (ticks < 150 || m_lastWalkDir != direction) {
-                    m_nextStepSet=true;
-                    m_walkEvent = g_dispatcher.scheduleEvent([=] { m_nextStepSet=false; walk(direction, false); }, ticks);
-                }
-            }
-            return false;
+	        if(canChangeFloorDown() || canChangeFloorUp() ||
+	            (!toTile || toTile->isEmpty())) {
+	            m_localPlayer->lockWalk();
+	        } else
+	            return false;
+	    }
+
+
+	    if(m_localPlayer->isAutoWalking() || m_localPlayer->isServerWalking()) {
+	    	if (!m_triedStop) {
+				m_triedStop = true;
+				m_nextStepSet = false;
+				m_protocolGame->sendStop();
+				if(m_localPlayer->isAutoWalking()){
+					m_localPlayer->stopAutoWalk();
+				}
+	    	}
+			ticks = m_localPlayer->getStepTicksLeft();
+	    } else {
+	    	m_triedStop = false;
+	    }
+
+        if(m_walkEvent) {
+        	if (!direct){
+        		m_walkEvent->cancel();
+        	}
+
+            m_walkEvent = nullptr;
         }
-    }
 
-    Position toPos = m_localPlayer->getPosition().translatedToDirection(direction);
-    TilePtr toTile = g_map.getTile(toPos);
-    // only do prewalks to walkable tiles (like grounds and not walls)
-    if(toTile && toTile->isWalkable()) {
-        m_localPlayer->preWalk(direction);
-    // check walk to another floor (e.g: when above 3 parcels)
-    } else {
-        // check if can walk to a lower floor
-        auto canChangeFloorDown = [&]() -> bool {
-            Position pos = toPos;
-            if(!pos.down())
-                return false;
-            TilePtr toTile = g_map.getTile(pos);
-            if(toTile && toTile->hasElevation(3))
-                return true;
-            return false;
-        };
+	    if (ticks < 1 && (direct || m_localPlayer->canWalk(direction))) {
+	    	m_localPlayer->stopAutoWalk();
 
-        // check if can walk to a higher floor
-        auto canChangeFloorUp = [&]() -> bool {
-            TilePtr fromTile = m_localPlayer->getTile();
-            if(!fromTile || !fromTile->hasElevation(3))
-                return false;
-            Position pos = toPos;
-            if(!pos.up())
-                return false;
-            TilePtr toTile = g_map.getTile(pos);
-            if(!toTile || !toTile->isWalkable())
-                return false;
-            return true;
-        };
+	    	if (isWalkable) {
+	    		m_localPlayer->preWalk(direction);
+				walkTimer.restart();
+	    	}
+			forceWalk(direction);
+			g_lua.callGlobalField("g_game", "onWalk", direction, direct);
 
-        if(canChangeFloorDown() || canChangeFloorUp() ||
-            (!toTile || toTile->isEmpty())) {
-            m_localPlayer->lockWalk();
-        } else
-            return false;
-    }
-
-    m_localPlayer->stopAutoWalk();
-
-    if(getClientVersion() <= 740) {
-        const TilePtr& fromTile = g_map.getTile(m_localPlayer->getPosition());
-        if (fromTile && toTile && (toTile->getElevation() - 1 > fromTile->getElevation()))
-            return false;
-    }
-
-    g_lua.callGlobalField("g_game", "onWalk", direction, dash);
-
-    forceWalk(direction);
-    if(dash)
-      m_dashTimer.restart();
-
-    m_lastWalkDir = direction;
-    return true;
-}
-
-bool Game::dashWalk(Otc::Direction direction)
-{
-    return walk(direction, true);
+	    } else {
+	    	m_nextStepSet = true;
+	    	m_walkEvent = g_dispatcher.scheduleEvent([=] { walk(direction, true); }, ticks<1? 1 : ticks);
+	    }
+		m_lastWalkDir = direction;
+	}
+	return true;
 }
 
 void Game::autoWalk(std::vector<Otc::Direction> dirs)
@@ -703,6 +683,12 @@ void Game::autoWalk(std::vector<Otc::Direction> dirs)
     if(isFollowing())
         cancelFollow();
 
+    if(m_walkEvent) {
+        m_walkEvent->cancel();
+        m_walkEvent = nullptr;
+        m_nextStepSet = false;
+    }
+
     auto it = dirs.begin();
     Otc::Direction direction = *it;
     if(!m_localPlayer->canWalk(direction))
@@ -715,12 +701,14 @@ void Game::autoWalk(std::vector<Otc::Direction> dirs)
         if(getFeature(Otc::GameForceFirstAutoWalkStep)) {
             forceWalk(direction);
             dirs.erase(it);
+            walkTimer.restart();
         }
     }
 
     g_lua.callGlobalField("g_game", "onAutoWalk", dirs);
 
-    m_protocolGame->sendAutoWalk(dirs);
+    int ticks = m_localPlayer->getStepDuration()-walkTimer.ticksElapsed();
+    m_walkEvent = g_dispatcher.scheduleEvent([=] { m_protocolGame->sendAutoWalk(dirs); }, std::max(0,ticks));
 }
 
 void Game::forceWalk(Otc::Direction direction)

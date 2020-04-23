@@ -165,8 +165,7 @@ public:
     void safeLogout();
 
     // walk related
-    bool walk(Otc::Direction direction, bool dash = false);
-    bool dashWalk(Otc::Direction direction);
+    bool walk(Otc::Direction direction, bool direct = false);
     void autoWalk(std::vector<Otc::Direction> dirs);
     void forceWalk(Otc::Direction direction);
     void turn(Otc::Direction direction);
@@ -400,6 +399,7 @@ private:
     int m_clientCustomOs;
     bool m_nextStepSet;
     bool m_triedStop;
+    Timer walkTimer;
 };
 
 extern Game g_game;

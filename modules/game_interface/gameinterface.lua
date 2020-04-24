@@ -12,7 +12,7 @@ countWindow = nil
 logoutWindow = nil
 exitWindow = nil
 bottomSplitter = nil
-limitedZoom = false
+limitedZoom = true
 currentViewMode = 0
 smartWalkDirs = {}
 smartWalkDir = nil
@@ -97,7 +97,7 @@ function bindKeys()
   bindTurnKey('Ctrl+Numpad4', West)
 
   g_keyboard.bindKeyPress('Escape', function() g_game.cancelAttackAndFollow() end, gameRootPanel)
-  g_keyboard.bindKeyPress('Ctrl+=', function() gameMapPanel:zoomIn() end, gameRootPanel)
+  g_keyboard.bindKeyPress('Ctrl+,', function() gameMapPanel:zoomIn() end, gameRootPanel)
   g_keyboard.bindKeyPress('Ctrl+-', function() gameMapPanel:zoomOut() end, gameRootPanel)
   g_keyboard.bindKeyDown('Ctrl+Q', function() tryLogout(false) end, gameRootPanel)
   g_keyboard.bindKeyDown('Ctrl+L', function() tryLogout(false) end, gameRootPanel)
@@ -175,12 +175,15 @@ function show()
   updateStretchShrink()
   logoutButton:setTooltip(tr('Logout'))
 
+  local awareRangeExtra = g_map.getAwareRange().e*2;
+  gameMapPanel:setZoom(11+awareRangeExtra)
+  gameMapPanel:setVisibleDimension({ width = 15+awareRangeExtra, height = 11+awareRangeExtra })
   addEvent(function()
     if not limitedZoom or g_game.isGM() then
       gameMapPanel:setMaxZoomOut(513)
       gameMapPanel:setLimitVisibleRange(false)
     else
-      gameMapPanel:setMaxZoomOut(11)
+      gameMapPanel:setMaxZoomOut(11+awareRangeExtra)
       gameMapPanel:setLimitVisibleRange(true)
     end
   end)
@@ -351,10 +354,12 @@ end
 
 function updateStretchShrink()
   if modules.client_options.getOption('dontStretchShrink') and not alternativeView then
-    gameMapPanel:setVisibleDimension({ width = 15, height = 11 })
 
-    -- Set gameMapPanel size to height = 11 * 32 + 2
-    bottomSplitter:setMarginBottom(bottomSplitter:getMarginBottom() + (gameMapPanel:getHeight() - 32 * 11) - 10)
+  	local awareRangeExtra = g_map.getAwareRange().e*2;
+    gameMapPanel:setVisibleDimension({ width = 15+awareRangeExtra, height = 11+awareRangeExtra })
+
+    -- Set gameMapPanel size to height = 11+e * 32 + 2
+    bottomSplitter:setMarginBottom(bottomSplitter:getMarginBottom() + (gameMapPanel:getHeight() - 32 * (11+awareRangeExtra)) - 10)
   end
 end
 
@@ -849,24 +854,26 @@ function setupViewMode(mode)
     gameRightPanel:setMarginTop(0)
     gameBottomPanel:setImageColor('white')
     modules.client_topmenu.getTopMenu():setImageColor('white')
-    g_game.changeMapAwareRange(18, 14)
+    --g_game.changeMapAwareRange(22, 18)
   end
+
+	local awareRangeExtra = g_map.getAwareRange().e*2;
 
   if mode == 0 then
     gameMapPanel:setKeepAspectRatio(true)
     gameMapPanel:setLimitVisibleRange(false)
-    gameMapPanel:setZoom(11)
-    gameMapPanel:setVisibleDimension({ width = 15, height = 11 })
+    gameMapPanel:setZoom(11+awareRangeExtra)
+    gameMapPanel:setVisibleDimension({ width = 15+awareRangeExtra, height = 11+awareRangeExtra })
   elseif mode == 1 then
     gameMapPanel:setKeepAspectRatio(false)
     gameMapPanel:setLimitVisibleRange(true)
-    gameMapPanel:setZoom(11)
-    gameMapPanel:setVisibleDimension({ width = 15, height = 11 })
+    gameMapPanel:setZoom(11+awareRangeExtra)
+    gameMapPanel:setVisibleDimension({ width = 15+awareRangeExtra, height = 11+awareRangeExtra })
   elseif mode == 2 then
     local limit = limitedZoom and not g_game.isGM()
     gameMapPanel:setLimitVisibleRange(limit)
-    gameMapPanel:setZoom(11)
-    gameMapPanel:setVisibleDimension({ width = 15, height = 11 })
+    gameMapPanel:setZoom(11+awareRangeExtra)
+    gameMapPanel:setVisibleDimension({ width = 15+awareRangeExtra, height = 11+awareRangeExtra })
     gameMapPanel:fill('parent')
     gameRootPanel:fill('parent')
     gameLeftPanel:setImageColor('alpha')
@@ -882,13 +889,13 @@ function setupViewMode(mode)
     gameBottomPanel:setImageColor('#ffffff88')
     modules.client_topmenu.getTopMenu():setImageColor('#ffffff66')
     if not limit then
-      g_game.changeMapAwareRange(24, 20)
+      --g_game.changeMapAwareRange(28, 24)
     end
   end
 
   currentViewMode = mode
 end
 
-function limitZoom()
-  limitedZoom = true
+function unlimitZoom()
+  limitedZoom = false
 end

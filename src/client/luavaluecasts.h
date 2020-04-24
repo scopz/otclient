@@ -26,6 +26,7 @@
 #include "global.h"
 #include <framework/luaengine/declarations.h>
 #include "game.h"
+#include "map.h"
 #include "outfit.h"
 
 // outfit
@@ -35,6 +36,10 @@ bool luavalue_cast(int index, Outfit& outfit);
 // position
 int push_luavalue(const Position& pos);
 bool luavalue_cast(int index, Position& pos);
+
+// awarerange
+int push_luavalue(const AwareRange& aw);
+//bool luavalue_cast(int index, AwareRange& aw);
 
 // market
 int push_luavalue(const MarketData& data);

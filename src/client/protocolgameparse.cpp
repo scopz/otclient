@@ -684,6 +684,7 @@ void ProtocolGame::parseServerParameters(const InputMessagePtr& msg)
 {
 	int diagonalCost = msg->getU16();
 	Map::setDiagonalCost(diagonalCost);
+	g_map.setAwareRangeExtra(msg->getU8());
 }
 
 void ProtocolGame::parseLoginError(const InputMessagePtr& msg)

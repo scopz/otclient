@@ -36,8 +36,8 @@ UIMap::UIMap()
     m_keepAspectRatio = true;
     m_limitVisibleRange = false;
     m_aspectRatio = m_mapView->getVisibleDimension().ratio();
-    m_maxZoomIn = 3;
-    m_maxZoomOut = 513;
+    m_maxZoomIn = 5;
+    m_maxZoomOut = 15;
     m_mapRect.resize(1,1);
     g_map.addMapView(m_mapView);
 }

@@ -130,6 +130,7 @@ struct AwareRange
     int right;
     int bottom;
     int left;
+    int extra;
 
     int horizontal() { return left + right + 1; }
     int vertical() { return top + bottom + 1; }
@@ -229,6 +230,7 @@ public:
     bool isAwareOfPosition(const Position& pos);
 
     void setAwareRange(const AwareRange& range);
+    void setAwareRangeExtra(uint8 e);
     void resetAwareRange();
     AwareRange getAwareRange() { return m_awareRange; }
 

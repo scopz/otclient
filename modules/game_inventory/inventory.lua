@@ -34,7 +34,6 @@ InventorySlotStyles = {
 inventoryWindow = nil
 inventoryPanel = nil
 inventoryButton = nil
-purseButton = nil
 
 fightOffensiveBox = nil
 fightBalancedBox = nil
@@ -49,6 +48,8 @@ mountButton = nil
 pvpModesPanel = nil
 fightModeRadioGroup = nil
 pvpModeRadioGroup = nil
+
+optionsButton = nil
 
 soulLabel = nil
 capLabel = nil
@@ -78,6 +79,11 @@ function init()
   yellowHandBox = inventoryWindow:recursiveGetChildById('yellowHandBox')
   redFistBox = inventoryWindow:recursiveGetChildById('redFistBox')
 
+  optionsButton = inventoryWindow:recursiveGetChildById('optionsButton')
+  optionsButton.onClick = function()
+    modules.client_options:toggle()
+  end
+
   soulLabel = inventoryWindow:recursiveGetChildById('soulLabel')
   capLabel = inventoryWindow:recursiveGetChildById('capLabel')
 
@@ -91,15 +97,6 @@ function init()
   pvpModeRadioGroup:addWidget(whiteHandBox)
   pvpModeRadioGroup:addWidget(yellowHandBox)
   pvpModeRadioGroup:addWidget(redFistBox)
-
-  purseButton = inventoryPanel:getChildById('purseButton')
-  local function purseFunction()
-    local purse = g_game.getLocalPlayer():getInventoryItem(InventorySlotPurse)
-    if purse then
-      g_game.use(purse)
-    end
-  end
-  purseButton.onClick = purseFunction
 
   -- load condition icons
   for k,v in pairs(ConditionIcons) do
@@ -241,7 +238,6 @@ function online()
     end
 
     pvpModesPanel:setVisible(g_game.getFeature(GamePVPMode))
-    purseButton:setVisible(g_game.getFeature(GamePurseSlot))
 
     onSoulChange(player, player:getSoul())
     onFreeCapacityChange(player, player:getFreeCapacity())
@@ -322,14 +318,7 @@ end
 
 -- hooked events
 function onInventoryChange(player, slot, item, oldItem)
-  if slot > InventorySlotPurse then return end
-
-  if slot == InventorySlotPurse then
-    if g_game.getFeature(GamePurseSlot) then
-      purseButton:setEnabled(item and true or false)
-    end
-    return
-  end
+  if slot >= InventorySlotPurse then return end
 
   local itemWidget = inventoryPanel:getChildById('slot' .. slot)
   if item then

@@ -13,7 +13,6 @@ setfenv(0, oldenv)
 
 -- private variables
 local terminalWindow
-local terminalButton
 local logLocked = false
 local commandTextEdit
 local terminalBuffer
@@ -140,7 +139,6 @@ function init()
 
   terminalWindow.onDoubleClick = popWindow
 
-  terminalButton = modules.client_topmenu.addLeftButton('terminalButton', tr('Terminal') .. ' (Ctrl + T)', '/images/topbuttons/terminal', toggle)
   g_keyboard.bindKeyDown('Ctrl+T', toggle)
 
   commandHistory = g_settings.getList('terminal-history')
@@ -197,13 +195,11 @@ function terminate()
   g_keyboard.unbindKeyDown('Ctrl+T')
   g_logger.setOnLog(nil)
   terminalWindow:destroy()
-  terminalButton:destroy()
   commandEnv = nil
   _G.terminalLines = allLines
 end
 
 function hideButton()
-  terminalButton:hide()
 end
 
 function popWindow()
@@ -265,7 +261,6 @@ function hide()
 end
 
 function disable()
-  terminalButton:hide()
   g_keyboard.unbindKeyDown('Ctrl+T')
   disabled = true
 end

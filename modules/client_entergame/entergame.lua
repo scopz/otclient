@@ -5,7 +5,6 @@ local loadBox
 local enterGame
 local motdWindow
 local motdButton
-local enterGameButton
 local clientBox
 local protocolLogin
 local motdEnabled = true
@@ -103,7 +102,6 @@ end
 -- public functions
 function EnterGame.init()
   enterGame = g_ui.displayUI('entergame')
-  enterGameButton = modules.client_topmenu.addLeftButton('enterGameButton', tr('Login') .. ' (Ctrl + G)', '/images/topbuttons/login', EnterGame.openWindow)
   motdButton = modules.client_topmenu.addLeftButton('motdButton', tr('Message of the day'), '/images/topbuttons/motd', EnterGame.displayMotd)
   motdButton:hide()
   g_keyboard.bindKeyDown('Ctrl+G', EnterGame.openWindow)
@@ -168,8 +166,6 @@ function EnterGame.terminate()
   disconnect(clientBox, { onOptionChange = EnterGame.onClientVersionChange })
   enterGame:destroy()
   enterGame = nil
-  enterGameButton:destroy()
-  enterGameButton = nil
   clientBox = nil
   if motdWindow then
     motdWindow:destroy()

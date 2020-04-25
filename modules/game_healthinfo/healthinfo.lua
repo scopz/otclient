@@ -2,15 +2,14 @@
 healthInfoWindow = nil
 healthBar = nil
 manaBar = nil
-experienceBar = nil
-healthTooltip = 'Your character health is %d out of %d.'
-manaTooltip = 'Your character mana is %d out of %d.'
-experienceTooltip = 'You have %d%% to advance to level %d.'
+healthValue = nil
+manaValue = nil
+healthTooltip = 'Health %d out of %d'
+manaTooltip = 'Mana %d out of %d'
 
 function init()
   connect(LocalPlayer, { onHealthChange = onHealthChange,
-                         onManaChange = onManaChange,
-                         onLevelChange = onLevelChange })
+                         onManaChange = onManaChange })
 
   connect(g_game, { onGameEnd = offline })
 
@@ -21,14 +20,14 @@ function init()
   healthInfoWindow:disableResize()
   healthBar = healthInfoWindow:recursiveGetChildById('healthBar')
   manaBar = healthInfoWindow:recursiveGetChildById('manaBar')
-  experienceBar = healthInfoWindow:recursiveGetChildById('experienceBar')
+  healthValue = healthInfoWindow:recursiveGetChildById('healthValue')
+  manaValue = healthInfoWindow:recursiveGetChildById('manaValue')
 
 
   if g_game.isOnline() then
     local localPlayer = g_game.getLocalPlayer()
     onHealthChange(localPlayer, localPlayer:getHealth(), localPlayer:getMaxHealth())
     onManaChange(localPlayer, localPlayer:getMana(), localPlayer:getMaxMana())
-    onLevelChange(localPlayer, localPlayer:getLevel(), localPlayer:getLevelPercent())
   end
 
   healthInfoWindow:setup()
@@ -36,8 +35,7 @@ end
 
 function terminate()
   disconnect(LocalPlayer, { onHealthChange = onHealthChange,
-                            onManaChange = onManaChange,
-                            onLevelChange = onLevelChange })
+                            onManaChange = onManaChange })
 
   disconnect(g_game, { onGameEnd = offline })
 
@@ -58,37 +56,20 @@ end
 function offline()
 end
 
--- hooked events
-function onMiniWindowClose()
-  healthInfoButton:setOn(false)
-end
-
 function onHealthChange(localPlayer, health, maxHealth)
-  healthBar:setText(health .. ' / ' .. maxHealth)
-  healthBar:setTooltip(tr(healthTooltip, health, maxHealth))
+  healthValue:setText(health)
+  healthValue:setTooltip(tr(healthTooltip, health, maxHealth))
   healthBar:setValue(health, 0, maxHealth)
 end
 
 function onManaChange(localPlayer, mana, maxMana)
-  manaBar:setText(mana .. ' / ' .. maxMana)
-  manaBar:setTooltip(tr(manaTooltip, mana, maxMana))
+  manaValue:setText(mana)
+  manaValue:setTooltip(tr(manaTooltip, mana, maxMana))
   manaBar:setValue(mana, 0, maxMana)
-end
-
-function onLevelChange(localPlayer, value, percent)
-  experienceBar:setText(percent .. '%')
-  experienceBar:setTooltip(tr(experienceTooltip, percent, value+1))
-  experienceBar:setPercent(percent)
 end
 
 
 -- personalization functions
-function hideExperience()
-  local removeHeight = experienceBar:getMarginRect().height
-  experienceBar:setOn(false)
-  healthInfoWindow:setHeight(math.max(healthInfoWindow.minimizedHeight, healthInfoWindow:getHeight() - removeHeight))
-end
-
 function setHealthTooltip(tooltip)
   healthTooltip = tooltip
 
@@ -104,14 +85,5 @@ function setManaTooltip(tooltip)
   local localPlayer = g_game.getLocalPlayer()
   if localPlayer then
     manaBar:setTooltip(tr(manaTooltip, localPlayer:getMana(), localPlayer:getMaxMana()))
-  end
-end
-
-function setExperienceTooltip(tooltip)
-  experienceTooltip = tooltip
-
-  local localPlayer = g_game.getLocalPlayer()
-  if localPlayer then
-    experienceBar:setTooltip(tr(experienceTooltip, localPlayer:getLevelPercent(), localPlayer:getLevel()+1))
   end
 end

@@ -17,6 +17,9 @@ function UIMiniWindowHeadLess:open(dontSave)
   signalcall(self.onOpen, self)
 end
 
+function UIMiniWindowHeadLess:close()
+  -- CAN'T CLOSE
+end
 
 function UIMiniWindowHeadLess:setup()
   local oldParent = self:getParent()

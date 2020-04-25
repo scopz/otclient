@@ -1,38 +1,74 @@
-HealthBar < ProgressBar
-  id: healthBar
-  background-color: #ff4444
+HPIcon < GameLabel
+  size: 12 12
+  image-source: /images/game/hpbar/heart
   anchors.top: parent.top
   anchors.left: parent.left
+  margin: 3 0 0 10
+
+
+HealthBar < ProgressBar
+  id: healthBar
+  background-color: #ff6f6f
+  anchors.top: parent.top
+  anchors.left: prev.right
   anchors.right: parent.right
-  margin: 1
+  height: 14
+  margin: 1 36 1 5
+  phantom: true
+
+
+HealthValue < UIWidget
+  id: healthValue
+  text: Health
+  anchors.verticalCenter: prev.verticalCenter
+  anchors.left: prev.right
+  anchors.right: parent.right
+  color: #dddddd
+  margin-left: 4
+  text-align:left
+  font: verdana-11px-monochrome
+
 
 ManaBar < ProgressBar
   id: manaBar
-  background-color: #4444ff
-  anchors.top: prev.bottom
-  anchors.left: parent.left
-  anchors.right: parent.right
-  margin: 1
+  background-color: #2c86d2
+  anchors.top: healthBar.bottom
+  anchors.left: healthBar.left
+  anchors.right: healthBar.right
   margin-top: 3
+  height: 14
+  phantom: true
 
-ExperienceBar < ProgressBar
-  id: experienceBar
-  background-color: #B6E866
-  anchors.top: prev.bottom
+
+ManaIcon < GameLabel
+  size: 12 12
+  image-source: /images/game/hpbar/mana
+  anchors.top: prev.top
   anchors.left: parent.left
-  anchors.right: parent.right
-  margin: 1
-  margin-top: 3
+  margin: 2 0 0 10
 
-MiniWindow
-  icon: /images/topbuttons/healthinfo
+
+ManaValue < UIWidget
+  id: manaValue
+  text: Mana
+  anchors.verticalCenter: manaBar.verticalCenter
+  anchors.left: manaBar.right
+  anchors.right: parent.right
+  color: #dddddd
+  margin-left: 4
+  text-align:left
+  font: verdana-11px-monochrome
+
+
+MiniWindowHeadLess
   id: healthInfoWindow
-  !text: tr('Health Info')
-  height: 79
-  @onClose: modules.game_healthinfo.onMiniWindowClose()
+  height: 40
   &save: true
 
-  MiniWindowContents
+  MiniWindowContentsHL
+    HPIcon
     HealthBar
+    HealthValue
     ManaBar
-    ExperienceBar
+    ManaIcon
+    ManaValue

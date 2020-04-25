@@ -7,7 +7,7 @@ MiniWindow < UIMiniWindow
   text-align: topLeft
   image-source: /images/ui/miniwindow
   image-border: 4
-  image-border-top: 23
+  image-border-top: 25
   image-border-bottom: 4
   focusable: false
   &minimizedHeight: 24

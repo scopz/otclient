@@ -54,10 +54,11 @@ MinimapZoomOutButton < Button
 
 MinimapResetButton < Button
   !text: tr('Center')
-  size: 44 20
+  size: 45 22
   anchors.left: parent.left
   anchors.top: parent.top
-  margin: 4
+  margin: 2 0 0 1
+  font: verdana-9px
 
 Minimap < UIMinimap
   draggable: true

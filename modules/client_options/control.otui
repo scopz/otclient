@@ -15,3 +15,12 @@ Panel
   OptionCheckBox
     id: moveStack
     !text: tr('Move stacks directly')
+
+  Button
+    id: hotkeysButton
+    !text: tr('Set hotkeys')
+    @onClick: modules.game_hotkeys.show()
+    anchors.top: prev.bottom
+    anchors.left: prev.left
+    margin-top: 12
+    width: 120

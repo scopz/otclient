@@ -72,13 +72,13 @@ AmmoSlot < InventoryItem
   $on:
     image-source: /images/game/slots/ammo-blessed
 
-PurseButton < Button
-  id: purseButton
-  size: 26 26
-  !tooltip: tr('Open purse')
-  icon-source: /images/game/slots/purse
-  icon-size: 24 24
-  icon-offset: 1 1
+
+
+OptionsButton < Button
+  id: optionsButton
+  !text: tr('Options')
+  font: verdana-9px
+
 
 
 CombatBox < UICheckBox
@@ -115,26 +115,26 @@ RedFistBox < CombatBox
 
 SoulLabel < GameLabel
   text: Soul
-  color: white
-  font: verdana-11px-rounded
+  color: #dddddd
+  font: verdana-11px-monochrome
 
 
 SoulValueLabel < GameLabel
   id: soulLabel
-  color: white
-  font: verdana-11px-rounded
+  color: #dddddd
+  font: verdana-11px-monochrome
 
 
 CapLabel < GameLabel
-  color: white
-  font: verdana-11px-rounded
+  color: #dddddd
+  font: verdana-11px-monochrome
   text: Cap
 
 
 CapValueLabel < GameLabel
   id: capLabel
-  color: white
-  font: verdana-11px-rounded
+  color: #dddddd
+  font: verdana-11px-monochrome
 
 
 ConditionWidget < UIWidget
@@ -155,7 +155,7 @@ MiniWindowHeadLess
       anchors.top: parent.top
       anchors.left: parent.left
       margin-top: 3
-      margin-left: 50
+      margin-left: 48
 
     BodySlot
       anchors.top: prev.bottom
@@ -204,10 +204,11 @@ MiniWindowHeadLess
       anchors.horizontalCenter: prev.horizontalCenter
       margin-top: 3
 
-    PurseButton
-      margin-top: 3
+    OptionsButton
       anchors.top: prev.bottom
-      anchors.horizontalCenter: prev.horizontalCenter
+      anchors.right: parent.right
+      margin: 3 3 0 0
+      size: 45 22
 
 
 
@@ -273,7 +274,7 @@ MiniWindowHeadLess
     Panel
       id: pvpModesPanel
       anchors.right: parent.right
-      anchors.top: prev.bottom
+      anchors.top: safeFightBox.bottom
       width: 50
       height: 50
       margin-top: 5

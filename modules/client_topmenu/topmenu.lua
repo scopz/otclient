@@ -77,6 +77,8 @@ function online()
       pingLabel:hide()
     end
   end)
+
+  hide()
 end
 
 function offline()
@@ -174,14 +176,28 @@ function toggle()
   end
 
   if menu:isVisible() then
+    hide()
+  else
+    show()
+  end
+end
+
+function hide()
+    local menu = getTopMenu()
+    if not menu then
+      return
+    end
     menu:hide()
     modules.client_background.getBackground():addAnchor(AnchorTop, 'parent', AnchorTop)
     modules.game_interface.getRootPanel():addAnchor(AnchorTop, 'parent', AnchorTop)
-    modules.game_interface.getShowTopMenuButton():show()
-  else
+end
+
+function show()
+    local menu = getTopMenu()
+    if not menu then
+      return
+    end
     menu:show()
     modules.client_background.getBackground():addAnchor(AnchorTop, 'topMenu', AnchorBottom)
     modules.game_interface.getRootPanel():addAnchor(AnchorTop, 'topMenu', AnchorBottom)
-    modules.game_interface.getShowTopMenuButton():hide()
-  end
 end

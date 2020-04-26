@@ -847,7 +847,7 @@ std::tuple<std::vector<Otc::Direction>, Otc::PathFindResult> Map::findPath(const
 
                 Otc::Direction walkDir = currentNode->pos.getDirectionFromPosition(neighborPos);
                 if(walkDir >= Otc::NorthEast)
-                    walkFactor += std::max(m_diagonalCost/100.f,1.5f);
+                    walkFactor += std::max(m_diagonalCost/100.f,2.5f);
                 else
                     walkFactor += 1.0f;
 

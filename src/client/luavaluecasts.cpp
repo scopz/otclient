@@ -117,8 +117,10 @@ int push_luavalue(const AwareRange& aw)
 	g_lua.setField("r");
 	g_lua.pushInteger(aw.left);
 	g_lua.setField("l");
-	g_lua.pushInteger(aw.extra);
-	g_lua.setField("e");
+	g_lua.pushInteger(aw.horizontal());
+	g_lua.setField("w");
+	g_lua.pushInteger(aw.vertical());
+	g_lua.setField("h");
     return 1;
 }
 

@@ -167,15 +167,16 @@ function show()
   setupViewMode(0)
   updateStretchShrink()
 
-  local awareRangeExtra = g_map.getAwareRange().e*2;
-  gameMapPanel:setZoom(11+awareRangeExtra)
-  gameMapPanel:setVisibleDimension({ width = 15+awareRangeExtra, height = 11+awareRangeExtra })
+  local awareRange = g_map.getAwareRange();
+
+  gameMapPanel:setZoom(10)
+  gameMapPanel:setKeepAspectRatio(true)
   addEvent(function()
     if not limitedZoom or g_game.isGM() then
-      gameMapPanel:setMaxZoomOut(513)
+      gameMapPanel:setMaxZoomOut(20)
       gameMapPanel:setLimitVisibleRange(false)
     else
-      gameMapPanel:setMaxZoomOut(11+awareRangeExtra)
+      gameMapPanel:setMaxZoomOut(10)
       gameMapPanel:setLimitVisibleRange(true)
     end
   end)
@@ -346,11 +347,12 @@ end
 function updateStretchShrink()
   if modules.client_options.getOption('dontStretchShrink') and not alternativeView then
 
-  	local awareRangeExtra = g_map.getAwareRange().e*2;
-    gameMapPanel:setVisibleDimension({ width = 15+awareRangeExtra, height = 11+awareRangeExtra })
+  	local awareRange = g_map.getAwareRange();
+    
+    gameMapPanel:setZoom(10)
 
-    -- Set gameMapPanel size to height = 11+e * 32 + 2
-    bottomSplitter:setMarginBottom(bottomSplitter:getMarginBottom() + (gameMapPanel:getHeight() - 32 * (11+awareRangeExtra)) - 10)
+    -- Set gameMapPanel size to height = 11 * 32 + 2 // if viewport height is set at 6:   (6+1)*2-3 == 11
+    bottomSplitter:setMarginBottom(bottomSplitter:getMarginBottom() + (gameMapPanel:getHeight() - 32 * (awareRange.h-3)) - 10)
   end
 end
 
@@ -833,7 +835,11 @@ function setupViewMode(mode)
     gameMapPanel:addAnchor(AnchorRight, 'gameRightPanel', AnchorLeft)
     gameMapPanel:addAnchor(AnchorRight, 'gameRightExtraPanel', AnchorLeft)
     gameMapPanel:addAnchor(AnchorBottom, 'gameBottomPanel', AnchorTop)
-    gameRootPanel:addAnchor(AnchorTop, 'topMenu', AnchorBottom)
+    
+    if modules.client_topmenu.getTopMenu():isVisible() then 
+        gameRootPanel:addAnchor(AnchorTop, 'topMenu', AnchorBottom)
+    end
+		
     gameLeftPanel:setOn(modules.client_options.getOption('showLeftPanel'))
     gameRightExtraPanel:setOn(modules.client_options.getOption('showRightExtraPanel'))
     gameLeftPanel:setImageColor('white')
@@ -847,34 +853,28 @@ function setupViewMode(mode)
     --g_game.changeMapAwareRange(22, 18)
   end
 
-	local awareRangeExtra = g_map.getAwareRange().e*2;
-
+  local awareRange = g_map.getAwareRange();
+        
   if mode == 0 then
     gameMapPanel:setKeepAspectRatio(true)
     gameMapPanel:setLimitVisibleRange(false)
-    gameMapPanel:setZoom(11+awareRangeExtra)
-    gameMapPanel:setVisibleDimension({ width = 15+awareRangeExtra, height = 11+awareRangeExtra })
+    gameMapPanel:setZoom(10)
   elseif mode == 1 then
     gameMapPanel:setKeepAspectRatio(false)
     gameMapPanel:setLimitVisibleRange(true)
-    gameMapPanel:setZoom(11+awareRangeExtra)
-    gameMapPanel:setVisibleDimension({ width = 15+awareRangeExtra, height = 11+awareRangeExtra })
+    gameMapPanel:setZoom(10)
   elseif mode == 2 then
     local limit = limitedZoom and not g_game.isGM()
     gameMapPanel:setLimitVisibleRange(limit)
-    gameMapPanel:setZoom(11+awareRangeExtra)
-    gameMapPanel:setVisibleDimension({ width = 15+awareRangeExtra, height = 11+awareRangeExtra })
+    gameMapPanel:setZoom(10)
     gameMapPanel:fill('parent')
     gameRootPanel:fill('parent')
     gameLeftPanel:setImageColor('alpha')
     gameRightPanel:setImageColor('alpha')
     gameRightExtraPanel:setImageColor('alpha')
-    gameLeftPanel:setMarginTop(modules.client_topmenu.getTopMenu()
-      :getHeight() - gameLeftPanel:getPaddingTop())
-    gameRightPanel:setMarginTop(modules.client_topmenu.getTopMenu()
-      :getHeight() - gameRightPanel:getPaddingTop())
-    gameRightExtraPanel:setMarginTop(modules.client_topmenu.getTopMenu()
-      :getHeight() - gameRightExtraPanel:getPaddingTop())
+    gameLeftPanel:setMarginTop(modules.client_topmenu.getTopMenu():getHeight() - gameLeftPanel:getPaddingTop())
+    gameRightPanel:setMarginTop(modules.client_topmenu.getTopMenu():getHeight() - gameRightPanel:getPaddingTop())
+    gameRightExtraPanel:setMarginTop(modules.client_topmenu.getTopMenu():getHeight() - gameRightExtraPanel:getPaddingTop())
     gameLeftPanel:setOn(true)
     gameLeftPanel:setVisible(true)
     gameRightPanel:setOn(true)

@@ -71,8 +71,8 @@ void ProtocolGame::parseMessage(const InputMessagePtr& msg)
                 parseUpdateNeeded(msg);
                 break;
             case Proto::GameServerParameters:
-            	parseServerParameters(msg);
-            	break;
+                parseServerParameters(msg);
+                break;
             case Proto::GameServerLoginError:
                 parseLoginError(msg);
                 break;
@@ -682,9 +682,12 @@ void ProtocolGame::parseUpdateNeeded(const InputMessagePtr& msg)
 
 void ProtocolGame::parseServerParameters(const InputMessagePtr& msg)
 {
-	int diagonalCost = msg->getU16();
-	Map::setDiagonalCost(diagonalCost);
-	g_map.setAwareRangeExtra(msg->getU8());
+    int diagonalCost = msg->getU16();
+    Map::setDiagonalCost(diagonalCost);
+
+    uint8_t viewportW = msg->getU8();
+    uint8_t viewportH = msg->getU8();
+    g_map.setAwareRange(viewportW, viewportH);
 }
 
 void ProtocolGame::parseLoginError(const InputMessagePtr& msg)

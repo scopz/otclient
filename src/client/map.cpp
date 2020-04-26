@@ -687,14 +687,13 @@ void Map::setAwareRange(const AwareRange& range)
     removeUnawareThings();
 }
 
-void Map::setAwareRangeExtra(uint8 e)
+void Map::setAwareRange(const uint8_t &sw, const uint8_t &sh)
 {
     AwareRange range;
-    range.left = 8+e;
-    range.top = 6+e;
-    range.bottom = 7+e;
-    range.right = 9+e;
-    range.extra = e;
+    range.left = sw;
+    range.right = sw+1;
+    range.top = sh;
+    range.bottom = sh+1;
     setAwareRange(range);
 }
 
@@ -702,10 +701,9 @@ void Map::resetAwareRange()
 {
     AwareRange range;
     range.left = 8;
+    range.right = 9;
     range.top = 6;
     range.bottom = 7;
-    range.right = 9;
-    range.extra = 0;
     setAwareRange(range);
 }
 

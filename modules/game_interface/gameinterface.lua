@@ -15,6 +15,7 @@ limitedZoom = true
 currentViewMode = 0
 smartWalkDirs = {}
 smartWalkDir = nil
+firstPress = true
 walkFunction = nil
 hookedMenuOptions = {}
 lastDirTime = g_clock.millis()
@@ -90,7 +91,7 @@ function bindKeys()
   bindTurnKey('Ctrl+Numpad4', West)
 
   g_keyboard.bindKeyPress('Escape', function() g_game.cancelAttackAndFollow() end, gameRootPanel)
-  g_keyboard.bindKeyPress('Ctrl+,', function() gameMapPanel:zoomIn() end, gameRootPanel)
+  g_keyboard.bindKeyPress('Ctrl+Plus', function() gameMapPanel:zoomIn() end, gameRootPanel)
   g_keyboard.bindKeyPress('Ctrl+-', function() gameMapPanel:zoomOut() end, gameRootPanel)
   g_keyboard.bindKeyDown('Ctrl+Q', function() tryLogout(false) end, gameRootPanel)
   g_keyboard.bindKeyDown('Ctrl+L', function() tryLogout(false) end, gameRootPanel)
@@ -99,7 +100,7 @@ function bindKeys()
 end
 
 function bindWalkKey(key, dir)
-  g_keyboard.bindKeyDown(key, function() changeWalkDir(dir) end, gameRootPanel, true)
+  g_keyboard.bindKeyDown(key, function() firstPress = true changeWalkDir(dir) end, gameRootPanel, true)
   g_keyboard.bindKeyUp(key, function() changeWalkDir(dir, true) end, gameRootPanel, true)
   g_keyboard.bindKeyPress(key, function() smartWalk(dir) end, gameRootPanel)
 end
@@ -144,13 +145,6 @@ end
 
 function onGameStart()
   show()
-
-  -- open tibia has delay in auto walking
-  if not g_game.isOfficialTibia() then
-    g_game.enableFeature(GameForceFirstAutoWalkStep)
-  else
-    g_game.disableFeature(GameForceFirstAutoWalkStep)
-  end
 end
 
 function onGameEnd()
@@ -338,7 +332,8 @@ function smartWalk(dir)
       func = g_game.walk
     end
     local dire = smartWalkDir or dir
-    func(dire)
+    func(dire, firstPress)
+    firstPress = false
     return true
   end
   return false

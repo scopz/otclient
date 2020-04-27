@@ -854,6 +854,7 @@ Point Creature::getDrawOffset()
 
 int Creature::getStepDuration(bool ignoreDiagonal, Otc::Direction dir)
 {
+    ignoreDiagonal = false;
     int speed = m_speed;
     if(speed < 1)
         return 0;

@@ -150,7 +150,6 @@ function init()
 
   g_keyboard.bindKeyPress('Shift+Enter', function()
     consoleToggleChat:setChecked(not consoleToggleChat:isChecked())
-    toggleChat()
   end, consolePanel)
   
   load()

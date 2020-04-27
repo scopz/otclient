@@ -374,7 +374,6 @@ private:
     uint m_pingSent;
     uint m_pingReceived;
     stdext::timer m_pingTimer;
-    Timer m_dashTimer;
     uint m_seq;
     int m_pingDelay;
     Otc::FightModes m_fightMode;

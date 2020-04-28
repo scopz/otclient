@@ -6,10 +6,11 @@ preloaded = false
 fullmapView = false
 oldZoom = nil
 oldPos = nil
+originalMargin = nil
 
 function init()
   minimapButton = modules.client_topmenu.addRightGameToggleButton('minimapButton', 
-    tr('Minimap') .. ' (Ctrl+M)', '/images/topbuttons/minimap', toggle)
+    tr('Minimap'), '/images/topbuttons/minimap', toggle)
   minimapButton:setOn(true)
 
   minimapWindow = g_ui.loadUI('minimap', modules.game_interface.getRightPanel())
@@ -22,8 +23,7 @@ function init()
   g_keyboard.bindKeyPress('Alt+Right', function() minimapWidget:move(-1,0) end, gameRootPanel)
   g_keyboard.bindKeyPress('Alt+Up', function() minimapWidget:move(0,1) end, gameRootPanel)
   g_keyboard.bindKeyPress('Alt+Down', function() minimapWidget:move(0,-1) end, gameRootPanel)
-  g_keyboard.bindKeyDown('Ctrl+M', toggle)
-  g_keyboard.bindKeyDown('Ctrl+Shift+M', toggleFullMap)
+  g_keyboard.bindKeyDown('Ctrl+M', toggleFullMap)
 
   minimapWindow:setup()
 
@@ -61,7 +61,6 @@ function terminate()
   g_keyboard.unbindKeyPress('Alt+Up', gameRootPanel)
   g_keyboard.unbindKeyPress('Alt+Down', gameRootPanel)
   g_keyboard.unbindKeyDown('Ctrl+M')
-  g_keyboard.unbindKeyDown('Ctrl+Shift+M')
 
   minimapWindow:destroy()
   minimapButton:destroy()
@@ -87,6 +86,13 @@ function preload()
 end
 
 function online()
+  originalMargin = {
+    minimapWidget:getMarginTop(),
+    minimapWidget:getMarginRight(),
+    minimapWidget:getMarginBottom(),
+    minimapWidget:getMarginLeft()
+  }
+
   loadMap(not preloaded)
   updateCameraPosition()
 end
@@ -145,18 +151,24 @@ function toggleFullMap()
   if not fullmapView then
     fullmapView = true
     minimapWindow:hide()
-    minimapWidget:setParent(modules.game_interface.getRootPanel())
+    minimapWidget:setParent(modules.game_interface.getMapPanel())
+    minimapWidget:setMargin(0)
     minimapWidget:fill('parent')
     minimapWidget:setAlternativeWidgetsVisible(true)
+    oldPos = minimapWidget.cross.pos
   else
     fullmapView = false
     minimapWidget:setParent(minimapWindow:getChildById('contentsPanel'))
     minimapWidget:fill('parent')
+    minimapWidget:setMarginTop(originalMargin[1])
+    minimapWidget:setMarginRight(originalMargin[2])
+    minimapWidget:setMarginBottom(originalMargin[3])
+    minimapWidget:setMarginLeft(originalMargin[4])
     minimapWindow:show()
     minimapWidget:setAlternativeWidgetsVisible(false)
   end
 
-  local zoom = oldZoom or 0
+  local zoom = oldZoom or minimapWidget:getZoom()
   local pos = oldPos or minimapWidget:getCameraPosition()
   oldZoom = minimapWidget:getZoom()
   oldPos = minimapWidget:getCameraPosition()

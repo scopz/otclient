@@ -32,6 +32,7 @@ SkillPercentPanel < ProgressBar
   anchors.right: parent.right
   anchors.top: parent.top
   phantom: false
+  &onClick: onSkillButtonClick
 
 MiniWindow
   id: skillWindow

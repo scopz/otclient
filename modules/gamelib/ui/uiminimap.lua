@@ -103,7 +103,6 @@ function UIMinimap:setCrossPosition(pos)
     self.cross = cross
   end
 
-  pos.z = self:getCameraPosition().z
   cross.pos = pos
   if pos then
     self:centerInPosition(cross, pos)
@@ -187,7 +186,6 @@ function UIMinimap:removeFlag(pos, icon, description)
 end
 
 function UIMinimap:reset()
-  self:setZoom(0)
   if self.cross then
     self:setCameraPosition(self.cross.pos)
   end
@@ -210,9 +208,9 @@ function UIMinimap:onMouseWheel(mousePos, direction)
   elseif direction == MouseWheelDown and keyboardModifiers == KeyboardNoModifier then
     self:zoomOut()
   elseif direction == MouseWheelDown and keyboardModifiers == KeyboardCtrlModifier then
-    self:floorUp(1)
-  elseif direction == MouseWheelUp and keyboardModifiers == KeyboardCtrlModifier then
     self:floorDown(1)
+  elseif direction == MouseWheelUp and keyboardModifiers == KeyboardCtrlModifier then
+    self:floorUp(1)
   end
 end
 

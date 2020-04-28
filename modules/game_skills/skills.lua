@@ -230,9 +230,9 @@ function refresh()
   local contentsPanel = skillsWindow:getChildById('contentsPanel')
   skillsWindow:setContentMinimumHeight(44)
   if hasAdditionalSkills then
-    skillsWindow:setContentMaximumHeight(480)
+    skillsWindow:setContentMaximumHeight(433)
   else
-    skillsWindow:setContentMaximumHeight(390)
+    skillsWindow:setContentMaximumHeight(343)
   end
 end
 
@@ -273,13 +273,18 @@ function onMiniWindowClose()
 end
 
 function onSkillButtonClick(button)
+  if button:getId() == 'percent' then
+    button = button:getParent()
+  end
   local percentBar = button:getChildById('percent')
   if percentBar then
     percentBar:setVisible(not percentBar:isVisible())
     if percentBar:isVisible() then
       button:setHeight(21)
+      skillsWindow:modifyMaximumHeight(6)
     else
       button:setHeight(21 - 6)
+      skillsWindow:modifyMaximumHeight(-6)
     end
   end
 end

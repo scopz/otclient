@@ -656,9 +656,15 @@ void Creature::setHealthPercent(uint8 healthPercent)
         onDeath();
 }
 
-void Creature::setDirection(Otc::Direction direction)
+void Creature::setDirection(Otc::Direction direction, bool force /* = true */)
 {
     assert(direction != Otc::InvalidDirection);
+    if (!force && m_direction >= 4) {
+        if ((direction == Otc::Direction::East && (m_direction == Otc::Direction::NorthEast || m_direction == Otc::Direction::SouthEast)) ||
+                (direction == Otc::Direction::West && (m_direction == Otc::Direction::NorthWest || m_direction == Otc::Direction::SouthWest))) {
+            return;
+        }
+    }
     m_direction = direction;
 }
 

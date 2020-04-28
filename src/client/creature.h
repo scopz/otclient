@@ -53,7 +53,7 @@ public:
     void setId(uint32 id) { m_id = id; }
     void setName(const std::string& name);
     void setHealthPercent(uint8 healthPercent);
-    void setDirection(Otc::Direction direction);
+    void setDirection(Otc::Direction direction, bool force = true);
     void setOutfit(const Outfit& outfit);
     void setOutfitColor(const Color& color, int duration);
     void setLight(const Light& light) { m_light = light; }

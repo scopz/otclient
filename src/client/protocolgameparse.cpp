@@ -2317,7 +2317,7 @@ CreaturePtr ProtocolGame::getCreature(const InputMessagePtr& msg, int type)
 
         if(creature) {
             creature->setHealthPercent(healthPercent);
-            creature->setDirection(direction);
+            creature->setDirection(direction, false);
             creature->setOutfit(outfit);
             creature->setSpeed(speed);
             creature->setSkull(skull);

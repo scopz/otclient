@@ -576,10 +576,15 @@ void Creature::nextWalkUpdate()
     // schedules next update
     if(m_walking) {
         auto self = static_self_cast<Creature>();
+
+        int ticksMultiplier = 1;
+        if(m_lastStepDirection >= Otc::NorthEast && m_lastStepDirection != Otc::InvalidDirection)
+            ticksMultiplier = g_map.getDiagonalCost()/100;
+
         m_walkUpdateEvent = g_dispatcher.scheduleEvent([self] {
             self->m_walkUpdateEvent = nullptr;
             self->nextWalkUpdate();
-        }, getStepDuration(true) / 32);
+        }, getStepDuration(true) / (32*ticksMultiplier));
     }
 }
 

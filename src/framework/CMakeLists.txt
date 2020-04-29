@@ -1,5 +1,4 @@
 # framework flags
-# FRAMEWORK_SOUND
 # FRAMEWORK_GRAPHICS
 # FRAMEWORK_NET
 # FRAMEWORK_XML
@@ -460,43 +459,6 @@ else()
         ${CMAKE_CURRENT_LIST_DIR}/core/consoleapplication.cpp
         ${CMAKE_CURRENT_LIST_DIR}/core/consoleapplication.h
     )
-endif()
-
-if(FRAMEWORK_SOUND)
-    find_package(OpenAL REQUIRED)
-    find_package(VorbisFile REQUIRED)
-    find_package(Vorbis REQUIRED)
-    find_package(Ogg REQUIRED)
-
-    set(framework_INCLUDE_DIRS ${framework_INCLUDE_DIRS} ${OPENAL_INCLUDE_DIR} ${VORBISFILE_INCLUDE_DIR})
-    set(framework_LIBRARIES ${OPENAL_LIBRARY} ${VORBISFILE_LIBRARY} ${VORBIS_LIBRARY} ${OGG_LIBRARY} ${framework_LIBRARIES})
-
-    if(WIN32)
-        set(framework_LIBRARIES ${framework_LIBRARIES} winmm)
-    elseif(APPLE)
-        set(framework_LIBRARIES ${framework_LIBRARIES} System)
-    endif()
-
-    set(framework_SOURCES ${framework_SOURCES}
-        ${CMAKE_CURRENT_LIST_DIR}/sound/combinedsoundsource.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/sound/combinedsoundsource.h
-        ${CMAKE_CURRENT_LIST_DIR}/sound/declarations.h
-        ${CMAKE_CURRENT_LIST_DIR}/sound/oggsoundfile.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/sound/oggsoundfile.h
-        ${CMAKE_CURRENT_LIST_DIR}/sound/soundbuffer.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/sound/soundbuffer.h
-        ${CMAKE_CURRENT_LIST_DIR}/sound/soundchannel.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/sound/soundchannel.h
-        ${CMAKE_CURRENT_LIST_DIR}/sound/soundfile.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/sound/soundfile.h
-        ${CMAKE_CURRENT_LIST_DIR}/sound/soundmanager.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/sound/soundmanager.h
-        ${CMAKE_CURRENT_LIST_DIR}/sound/soundsource.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/sound/soundsource.h
-        ${CMAKE_CURRENT_LIST_DIR}/sound/streamsoundsource.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/sound/streamsoundsource.h
-    )
-    set(framework_DEFINITIONS ${framework_DEFINITIONS} -DFW_SOUND)
 endif()
 
 if(FRAMEWORK_NET)

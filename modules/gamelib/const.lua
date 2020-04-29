@@ -272,11 +272,10 @@ ExtendedIds = {
   Activate = 0,
   Locale = 1,
   Ping = 2,
-  Sound = 3,
-  Game = 4,
-  Particles = 5,
-  MapShader = 6,
-  NeedsUpdate = 7
+  Game = 3,
+  Particles = 4,
+  MapShader = 5,
+  NeedsUpdate = 6
 }
 
 PreviewState = {

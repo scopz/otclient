@@ -313,9 +313,3 @@ NetworkMessageTypes = {
   String = 7,
   Table = 8,
 }
-
-SoundChannels = {
-  Music = 1,
-  Ambient = 2,
-  Effect = 3,
-}

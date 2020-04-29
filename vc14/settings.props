@@ -20,7 +20,6 @@
         CRASH_HANDLER;
         FW_GRAPHICS;
         FW_NET;
-        FW_SOUND;
         FW_XML;
         BUILD_TYPE="RelWithDebInfo";
         BUILD_COMMIT="devel";

@@ -20,9 +20,6 @@ local defaultOptions = {
   foregroundFrameRate = 61,
   backgroundFrameRate = 201,
   painterEngine = 0,
-  enableAudio = true,
-  enableMusicSound = true,
-  musicSoundVolume = 100,
   enableLights = true,
   ambientLight = 25,
   displayNames = true,
@@ -41,7 +38,6 @@ local generalPanel
 local controlPanel
 local consolePanel
 local graphicsPanel
-local soundPanel
 
 local function setupGraphicsEngines()
   local enginesRadioGroup = UIRadioGroup.create()
@@ -112,9 +108,6 @@ function init()
 
   graphicsPanel = g_ui.loadUI('graphics')
   optionsTabBar:addTab(tr('Graphics'), graphicsPanel, '/images/optionstab/graphics')
-
-  audioPanel = g_ui.loadUI('audio')
-  optionsTabBar:addTab(tr('Audio'), audioPanel, '/images/optionstab/audio')
 
   addEvent(function() setup() end)
 end
@@ -188,13 +181,6 @@ function setOption(key, value, force)
     modules.client_topmenu.setPingVisible(value)
   elseif key == 'fullscreen' then
     g_window.setFullscreen(value)
-  elseif key == 'enableAudio' then
-    g_sounds.setAudioEnabled(value)
-  elseif key == 'enableMusicSound' then
-    g_sounds.getChannel(SoundChannels.Music):setEnabled(value)
-  elseif key == 'musicSoundVolume' then
-    g_sounds.getChannel(SoundChannels.Music):setGain(value/100)
-    audioPanel:getChildById('musicSoundVolumeLabel'):setText(tr('Music volume: %d', value))
   elseif key == 'showLeftPanel' then
     modules.game_interface.getLeftPanel():setOn(value)
   elseif key == 'showRightExtraPanel' then

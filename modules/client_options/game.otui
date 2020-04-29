@@ -71,12 +71,3 @@ Panel
     margin-top: 3
     minimum: 30
     maximum: 250
-
-  Button
-    id: changeLocale
-    !text: tr('Change language')
-    @onClick: modules.client_locales.createWindow()
-    anchors.top: prev.bottom
-    anchors.left: prev.left
-    margin-top: 12
-    width: 120

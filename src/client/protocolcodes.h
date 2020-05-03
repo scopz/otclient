@@ -44,7 +44,7 @@ namespace Proto {
     {
         GameServerLoginOrPendingState       = 10,
         GameServerGMActions                 = 11,
-         GameServerParameters                = 12,
+        GameServerParameters                = 12,
         GameServerEnterGame                 = 15,
         GameServerUpdateNeeded              = 17,
         GameServerLoginError                = 20,
@@ -67,6 +67,7 @@ namespace Proto {
         // NOTE: add any custom opcodes in this range
         // 51 - 99
         GameServerChangeMapAwareRange       = 51,
+		GameServerRequireTarget             = 52,
 
         // original tibia ONLY
         GameServerFullMap                   = 100,
@@ -184,6 +185,7 @@ namespace Proto {
 
         // NOTE: add any custom opcodes in this range
         // 51 - 99
+		ClientTalkTargeted                  = 52,
 
         // original tibia ONLY
         ClientAutoWalk                      = 100,

@@ -322,7 +322,7 @@ StoreState = {
 
 AccountStatus = {
   Ok = 0,
-  Frozen = 1,
+  Stopped = 1,
   Suspended = 2,
 }
 

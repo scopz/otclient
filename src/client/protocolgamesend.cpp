@@ -515,6 +515,35 @@ void ProtocolGame::sendTalk(Otc::MessageMode mode, int channelId, const std::str
     send(msg);
 }
 
+void ProtocolGame::sendTalkTargeted(const std::string& message, const ThingPtr& thing)
+{
+    if(message.empty())
+        return;
+
+    if(message.length() > 255) {
+        g_logger.traceError("message too large");
+        return;
+    }
+
+    OutputMessagePtr msg(new OutputMessage);
+    msg->addU8(Proto::ClientTalkTargeted);
+
+    if(thing->isCreature()) {
+    	msg->addU8(0x2); // isCreature
+    	msg->addU32(thing->getId());
+
+    } else {
+    	msg->addU8(0x1); // isPosition
+
+    	Position pos = thing->getPosition();
+    	msg->addU16(pos.x);
+    	msg->addU16(pos.y);
+    	msg->addU16(pos.z);
+    }
+    msg->addString(message);
+    send(msg);
+}
+
 void ProtocolGame::sendRequestChannels()
 {
     OutputMessagePtr msg(new OutputMessage);

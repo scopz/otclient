@@ -78,6 +78,7 @@ protected:
     void processUpdateNeeded(const std::string& signature);
     void processLoginError(const std::string& error);
     void processLoginAdvice(const std::string& message);
+    void processSelectTarget(int code, const std::function<void(ThingPtr)>& callback);
     void processLoginWait(const std::string& message, int time);
     void processLoginToken(bool unknown);
     void processLogin();
@@ -178,6 +179,7 @@ public:
     void rotate(const ThingPtr& thing);
     void use(const ThingPtr& thing);
     void useWith(const ItemPtr& item, const ThingPtr& toThing);
+    void selectTarget(const int& code, const ThingPtr& toThing);
     void useInventoryItem(int itemId);
     void useInventoryItemWith(int itemId, const ThingPtr& toThing);
     ItemPtr findItemInContainers(uint itemId, int subType);
@@ -364,6 +366,9 @@ private:
     ProtocolGamePtr m_protocolGame;
     std::map<int, ContainerPtr> m_containers;
     std::map<int, Vip> m_vips;
+
+    typedef std::map<int, std::function<void(ThingPtr)>> CallbacksMap;
+    CallbacksMap m_callbacks;
 
     bool m_online;
     bool m_denyBotCall;

@@ -27,6 +27,7 @@ function init()
     onGameStart = onGameStart,
     onGameEnd = onGameEnd,
     onLoginAdvice = onLoginAdvice,
+	onSelectTarget = startSelectTarget
   }, true)
 
   -- Call load AFTER game window has been created and 
@@ -225,8 +226,8 @@ function tryExit()
     return true
   end
 
-  local exitFunc = function() g_game.safeLogout() forceExit() end
-  local logoutFunc = function() g_game.safeLogout() exitWindow:destroy() exitWindow = nil end
+  local exitFunc = function() safeLogout() forceExit() end
+  local logoutFunc = function() safeLogout() exitWindow:destroy() exitWindow = nil end
   local cancelFunc = function() exitWindow:destroy() exitWindow = nil end
 
   exitWindow = displayGeneralBox(tr('Exit'), tr("If you shut down the program, your character might stay in the game.\nClick on 'Logout' to ensure that you character leaves the game properly.\nClick on 'Exit' if you want to exit the program without logging out your character."),
@@ -236,6 +237,22 @@ function tryExit()
     anchor=AnchorHorizontalCenter }, logoutFunc, cancelFunc)
 
   return true
+end
+
+function safeLogout()
+  if g_ui.isMouseGrabbed() then
+    g_mouse.popCursor('target')
+    mouseGrabberWidget:ungrabMouse()
+  end
+  g_game.safeLogout()
+end
+
+function forceLogout()
+  if g_ui.isMouseGrabbed() then
+    g_mouse.popCursor('target')
+    mouseGrabberWidget:ungrabMouse()
+  end
+  g_game.forceLogout()
 end
 
 function tryLogout(prompt)
@@ -256,7 +273,7 @@ function tryLogout(prompt)
     msg = 'Your connection is failing, if you logout now your character will be still online, do you want to force logout?'
 
     yesCallback = function()
-      g_game.forceLogout()
+      forceLogout()
       if logoutWindow then
         logoutWindow:destroy()
         logoutWindow=nil
@@ -266,7 +283,7 @@ function tryLogout(prompt)
     msg = 'Are you sure you want to logout?'
 
     yesCallback = function()
-      g_game.safeLogout()
+      safeLogout()
       if logoutWindow then
         logoutWindow:destroy()
         logoutWindow=nil
@@ -360,6 +377,8 @@ function onMouseGrabberRelease(self, mousePosition, mouseButton)
         onUseWith(clickedWidget, mousePosition)
       elseif selectedType == 'trade' then
         onTradeWith(clickedWidget, mousePosition)
+      elseif selectedType == 'target' then
+        onSelectTarget(clickedWidget, mousePosition)
       end
     end
   end
@@ -404,6 +423,24 @@ function onTradeWith(clickedWidget, mousePosition)
   end
 end
 
+function onSelectTarget(clickedWidget, mousePosition)
+  if clickedWidget:getClassName() == 'UIGameMap' then
+    local tile = clickedWidget:getTile(mousePosition)
+    if tile then
+      g_game.selectTarget(selectedThing, tile:getTopUseThing())
+    end
+--[[
+  elseif clickedWidget:getClassName() == 'UIItem' and not clickedWidget:isVirtual() then
+    g_game.useWith(selectedThing, clickedWidget:getItem())
+  elseif clickedWidget:getClassName() == 'UICreatureButton' then
+    local creature = clickedWidget:getCreature()
+    if creature then
+      g_game.useWith(selectedThing, creature)
+    end
+]]--
+  end
+end
+
 function startUseWith(thing)
   if not thing then return end
   if g_ui.isMouseGrabbed() then
@@ -430,6 +467,18 @@ function startTradeWith(thing)
   end
   selectedType = 'trade'
   selectedThing = thing
+  mouseGrabberWidget:grabMouse()
+  g_mouse.pushCursor('target')
+end
+
+function startSelectTarget(code)
+  if g_ui.isMouseGrabbed() then
+    g_mouse.popCursor('target')
+    mouseGrabberWidget:ungrabMouse()
+  end
+  
+  selectedType = 'target'
+  selectedThing = code
   mouseGrabberWidget:grabMouse()
   g_mouse.pushCursor('target')
 end

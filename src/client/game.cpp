@@ -152,6 +152,12 @@ void Game::processLoginAdvice(const std::string& message)
     g_lua.callGlobalField("g_game", "onLoginAdvice", message);
 }
 
+void Game::processSelectTarget(int code, const std::function<void(ThingPtr)> &callback)
+{
+    m_callbacks[code] = callback;
+    g_lua.callGlobalField("g_game", "onSelectTarget", code);
+}
+
 void Game::processLoginWait(const std::string& message, int time)
 {
     g_lua.callGlobalField("g_game", "onLoginWait", message, time);
@@ -588,6 +594,10 @@ bool Game::walk(Otc::Direction direction, bool direct)
             m_walkEvent = nullptr;
         }
 
+        if ((m_localPlayer->getStates() & 256) > 0) { //isStopped
+        	return false;
+        }
+
         Position toPos = m_localPlayer->getPosition().translatedToDirection(direction);
         TilePtr toTile = g_map.getTile(toPos);
         bool isWalkable = false;
@@ -862,6 +872,15 @@ void Game::useInventoryItemWith(int itemId, const ThingPtr& toThing)
         m_protocolGame->sendUseOnCreature(pos, itemId, 0, toThing->getId());
     else
         m_protocolGame->sendUseItemWith(pos, itemId, 0, toThing->getPosition(), toThing->getId(), toThing->getStackPos());
+}
+
+void Game::selectTarget(const int& code, const ThingPtr& thing)
+{
+    CallbacksMap::iterator it = m_callbacks.find(code);
+    if (it != m_callbacks.end()) {
+        it->second(thing);
+        m_callbacks.erase(it);
+    }
 }
 
 ItemPtr Game::findItemInContainers(uint itemId, int subType)
@@ -1512,9 +1531,11 @@ void Game::setClientVersion(int version)
         enableFeature(Otc::GameLooktypeU16);
         enableFeature(Otc::GameMessageStatements);
         enableFeature(Otc::GameLoginPacketEncryption);
-        if (version == 772) {
-            enableFeature(Otc::GameDoubleFreeCapacity);
-        }
+    }
+
+    if (version == 773) {
+        enableFeature(Otc::GameDoubleFreeCapacity);
+        enableFeature(Otc::GamePlayerStateU16);
     }
 
     if(version >= 780) {

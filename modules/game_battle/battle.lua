@@ -23,6 +23,7 @@ function init()
   battleButton:setOn(true)
   battleWindow = g_ui.loadUI('battle', modules.game_interface.getRightPanel())
   g_keyboard.bindKeyDown('Ctrl+B', toggle)
+  g_keyboard.bindKeyDown('Space', attackNext)
 
   -- this disables scrollbar auto hiding
   local scrollbar = battleWindow:getChildById('miniwindowScrollBar')
@@ -90,6 +91,7 @@ end
 
 function terminate()
   g_keyboard.unbindKeyDown('Ctrl+B')
+  g_keyboard.unbindKeyDown('Space')
   battleButtonsByCreaturesList = {}
   battleButton:destroy()
   battleWindow:destroy()
@@ -124,6 +126,37 @@ function toggle()
     battleWindow:open()
     battleButton:setOn(true)
   end
+end
+
+function attackNext()
+  if not modules.game_console.consoleToggleChat:isChecked() then
+    return false
+  end
+  local atk = false
+  local shouldAtkNext = false
+  local firstElement = false
+  local children = battlePanel:getChildren()
+
+  for _, battleButton in pairs(battlePanel:getChildren()) do
+    if battleButton:isVisible() then
+      if not firstElement then
+        firstElement = battleButton
+      end
+
+      if battleButton.isTarget then
+        shouldAtkNext = true
+      elseif shouldAtkNext then
+        g_game.attack(battleButton.creature)
+        atk = true
+        break
+      end
+    end
+  end
+
+  if not atk and firstElement then
+    g_game.attack(firstElement.creature)
+  end
+  return true
 end
 
 function onMiniWindowClose()

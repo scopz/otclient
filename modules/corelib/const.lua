@@ -313,3 +313,9 @@ NetworkMessageTypes = {
   String = 7,
   Table = 8,
 }
+
+Server = {
+  version = 773,
+  ip = 'localhost',
+  port = 7171
+}

@@ -15,19 +15,12 @@ LoginServerExtendedCharacterList = 101
 LoginServerRetry = 10
 LoginServerErrorNew = 11
 
-function ProtocolLogin:login(host, port, accountName, accountPassword, authenticatorToken, stayLogged)
-  if string.len(host) == 0 or port == nil or port == 0 then
-    signalcall(self.onLoginError, self, tr("You must enter a valid server address and port."))
-    return
-  end
-
+function ProtocolLogin:login(accountName, accountPassword)
   self.accountName = accountName
   self.accountPassword = accountPassword
-  self.authenticatorToken = authenticatorToken
-  self.stayLogged = stayLogged
   self.connectCallback = self.sendLoginPacket
 
-  self:connect(host, port)
+  self:connect(Server.ip, Server.port)
 end
 
 function ProtocolLogin:cancelLogin()
@@ -105,27 +98,6 @@ function ProtocolLogin:sendLoginPacket()
       msg:addString(g_graphics.getRenderer())
     end
     msg:addString(g_graphics.getVersion())
-  end
-
-  -- add RSA encrypted auth token
-  if g_game.getFeature(GameAuthenticator) then
-    offset = msg:getMessageSize()
-
-    -- first RSA byte must be 0
-    msg:addU8(0)
-    msg:addString(self.authenticatorToken)
-
-    if g_game.getFeature(GameSessionKey) then
-      msg:addU8(booleantonumber(self.stayLogged))
-    end
-
-    paddingBytes = g_crypt.rsaGetSize() - (msg:getMessageSize() - offset)
-    assert(paddingBytes >= 0)
-    for i = 1, paddingBytes do
-      msg:addU8(math.random(0, 0xff))
-    end
-
-    msg:encryptRsa()
   end
 
   if g_game.getFeature(GameProtocolChecksum) then

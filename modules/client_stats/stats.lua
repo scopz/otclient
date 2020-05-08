@@ -79,8 +79,8 @@ function onConnect(protocol)
   post = post .. '&window_height='     .. urlencode(g_window.getHeight())
   post = post .. '&player_name='       .. urlencode(g_game.getCharacterName())
   post = post .. '&world_name='        .. urlencode(g_game.getWorldName())
-  post = post .. '&otserv_host='       .. urlencode(G.host)
-  post = post .. '&otserv_port='       .. G.port
+  post = post .. '&otserv_host='       .. urlencode(Server.ip)
+  post = post .. '&otserv_port='       .. Server.port
   post = post .. '&otserv_protocol='   .. urlencode(g_game.getProtocolVersion())
   post = post .. '&otserv_client='     .. urlencode(g_game.getClientVersion())
   post = post .. '&build_version='     .. urlencode(g_app.getVersion())

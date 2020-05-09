@@ -79,6 +79,8 @@ function online()
     unjustifiedPointsWindow:close()
   end
 
+  unjustifiedPointsWindow:setupOnStart()
+
   refresh()
 end
 

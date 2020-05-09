@@ -1,6 +1,4 @@
 UUID = nil
-HOST = 'otclient.herokuapp.com'
-PORT = 80
 FIRST_REPORT_DELAY = 15
 REPORT_DELAY = 60
 
@@ -29,24 +27,15 @@ function terminate()
   removeEvent(sendReportEvent)
 end
 
-function configure(host, port, delay)
-  if not host then return end
-  HOST = host
-  PORT = port or PORT
-  REPORT_DELAY = delay or REPORT_DELAY
-end
-
 function sendReport()
-  if not HOST then return end
   local protocolHttp = ProtocolHttp.create()
   protocolHttp.onConnect = onConnect
   protocolHttp.onRecv = onRecv
   protocolHttp.onError = onError
-  protocolHttp:connect(HOST, PORT)
+  protocolHttp:connect(Server.Stats.host, Server.Stats.port)
 end
 
 function onGameStart()
-  if not HOST then return end
   removeEvent(firstReportEvent)
   removeEvent(sendReportEvent)
   firstReportEvent = addEvent(sendReport, FIRST_REPORT_DELAY*1000)
@@ -79,7 +68,7 @@ function onConnect(protocol)
   post = post .. '&window_height='     .. urlencode(g_window.getHeight())
   post = post .. '&player_name='       .. urlencode(g_game.getCharacterName())
   post = post .. '&world_name='        .. urlencode(g_game.getWorldName())
-  post = post .. '&otserv_host='       .. urlencode(Server.ip)
+  post = post .. '&otserv_host='       .. urlencode(Server.host)
   post = post .. '&otserv_port='       .. Server.port
   post = post .. '&otserv_protocol='   .. urlencode(g_game.getProtocolVersion())
   post = post .. '&otserv_client='     .. urlencode(g_game.getClientVersion())
@@ -96,7 +85,7 @@ function onConnect(protocol)
 
   local message = ''
   message = message .. "POST /report HTTP/1.1\r\n"
-  message = message .. "Host: " .. HOST .. "\r\n"
+  message = message .. "Host: " .. Server.Stats.host .. "\r\n"
   message = message .. "Accept: */*\r\n"
   message = message .. "Connection: close\r\n"
   message = message .. "Content-Type: application/x-www-form-urlencoded\r\n"

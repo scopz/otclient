@@ -22,11 +22,10 @@ Module
     - game_playertrade
     - game_bugreport
     - game_playerdeath
-    - game_playermount
+//    - game_playermount
     - game_ruleviolation
-    - game_market
-    - game_spelllist
-    - game_cooldown
+//    - game_market
+//    - game_spelllist
     - game_modaldialog
     - game_unjustifiedpoints
   @onLoad: init()

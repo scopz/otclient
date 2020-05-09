@@ -316,6 +316,11 @@ NetworkMessageTypes = {
 
 Server = {
   version = 773,
-  ip = 'localhost',
-  port = 7171
+  host = 'localhost',
+  port = 7171,
+
+  Stats = {
+    host = 'localhost',
+    port = 80
+  }
 }

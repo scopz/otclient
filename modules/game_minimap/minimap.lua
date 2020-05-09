@@ -95,6 +95,10 @@ function online()
 
   loadMap(not preloaded)
   updateCameraPosition()
+
+  if g_game.isOnline() then
+    minimapWindow:setupOnStart()
+  end
 end
 
 function offline()

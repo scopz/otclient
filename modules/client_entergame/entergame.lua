@@ -117,7 +117,7 @@ function EnterGame.firstShow()
 
   local account = g_crypt.decrypt(g_settings.get('account'))
   local password = g_crypt.decrypt(g_settings.get('password'))
-  local host = Server.ip
+  local host = Server.host
   local autologin = g_settings.getBoolean('autologin')
   if #host > 0 and #password > 0 and #account > 0 and autologin then
     addEvent(function()
@@ -216,7 +216,7 @@ function EnterGame.doLogin()
 
   g_game.setClientVersion(Server.version)
   g_game.setProtocolVersion(g_game.getClientProtocolVersion(Server.version))
-  g_game.chooseRsa(Server.ip)
+  g_game.chooseRsa(Server.host)
 
   if modules.game_things.isLoaded() then
     protocolLogin:login(G.account, G.password)

@@ -244,6 +244,8 @@ function online()
     onFreeCapacityChange(player, player:getFreeCapacity())
     onStatesChange(player, player:getStates(), 0)
 
+    inventoryWindow:setupOnStart()
+
     update()
   end
 

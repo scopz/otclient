@@ -264,6 +264,8 @@ function refresh()
         end
       end
     end
+
+    skillsWindow:setupOnStart()
   end
 
   skillsWindow:setContentMinimumHeight(44)

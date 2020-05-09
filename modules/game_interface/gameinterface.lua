@@ -27,7 +27,7 @@ function init()
     onGameStart = onGameStart,
     onGameEnd = onGameEnd,
     onLoginAdvice = onLoginAdvice,
-	onSelectTarget = startSelectTarget
+	  onSelectTarget = startSelectTarget
   }, true)
 
   -- Call load AFTER game window has been created and 

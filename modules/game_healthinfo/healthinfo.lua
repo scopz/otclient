@@ -11,7 +11,7 @@ function init()
   connect(LocalPlayer, { onHealthChange = onHealthChange,
                          onManaChange = onManaChange })
 
-  connect(g_game, { onGameEnd = offline })
+  connect(g_game, { onGameStart = online })
 
   healthInfoButton = modules.client_topmenu.addRightGameToggleButton('healthInfoButton', tr('Health Information'), '/images/topbuttons/healthinfo', toggle)
   healthInfoButton:setOn(true)
@@ -36,8 +36,7 @@ end
 function terminate()
   disconnect(LocalPlayer, { onHealthChange = onHealthChange,
                             onManaChange = onManaChange })
-
-  disconnect(g_game, { onGameEnd = offline })
+  disconnect(g_game, { onGameStart = online })
 
   healthInfoWindow:destroy()
   healthInfoButton:destroy()
@@ -53,7 +52,10 @@ function toggle()
   end
 end
 
-function offline()
+function online()
+  if g_game.isOnline() then
+    healthInfoWindow:setupOnStart()
+  end
 end
 
 function onHealthChange(localPlayer, health, maxHealth)

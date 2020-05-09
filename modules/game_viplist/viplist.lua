@@ -5,7 +5,7 @@ editVipWindow = nil
 vipInfo = {}
 
 function init()
-  connect(g_game, { onGameStart = refresh,
+  connect(g_game, { onGameStart = online,
                     onGameEnd = clear,
                     onAddVip = onAddVip,
                     onVipStateChange = onVipStateChange })
@@ -26,7 +26,7 @@ end
 
 function terminate()
   g_keyboard.unbindKeyDown('Ctrl+P')
-  disconnect(g_game, { onGameStart = refresh,
+  disconnect(g_game, { onGameStart = online,
                        onGameEnd = clear,
                        onAddVip = onAddVip,
                        onVipStateChange = onVipStateChange })
@@ -60,6 +60,12 @@ function saveVipInfo()
   settings = {}
   settings['VipInfo'] = vipInfo
   g_settings.mergeNode('VipList', settings)
+end
+
+
+function online()
+  refresh()
+  vipWindow:setupOnStart()
 end
 
 

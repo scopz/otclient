@@ -20,7 +20,7 @@ function ProtocolLogin:login(accountName, accountPassword)
   self.accountPassword = accountPassword
   self.connectCallback = self.sendLoginPacket
 
-  self:connect(Server.ip, Server.port)
+  self:connect(Server.host, Server.port)
 end
 
 function ProtocolLogin:cancelLogin()

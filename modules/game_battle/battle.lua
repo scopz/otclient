@@ -82,11 +82,18 @@ function init()
   connect(g_game, {
     onAttackingCreatureChange = onAttack,
     onFollowingCreatureChange = onFollow,
+    onGameStart = online,
     onGameEnd = removeAllCreatures
   })
 
   checkCreatures()
   battleWindow:setup()
+end
+
+function online()
+  if g_game.isOnline() then
+    battleWindow:setupOnStart()
+  end
 end
 
 function terminate()
@@ -114,6 +121,7 @@ function terminate()
   disconnect(g_game, {
     onAttackingCreatureChange = onAttack,
     onFollowingCreatureChange = onFollow,
+    onGameStart = online,
     onGameEnd = removeAllCreatures
   })
 end

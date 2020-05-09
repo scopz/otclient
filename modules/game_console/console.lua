@@ -194,9 +194,9 @@ function enableChat()
   consoleTextEdit:setVisible(true)
   consoleTextEdit:setText("")
 
-  g_keyboard.unbindKeyUp("Space")
-  g_keyboard.unbindKeyUp("Enter")
-  g_keyboard.unbindKeyUp("Escape")
+  --g_keyboard.unbindKeyUp("Space")
+  --g_keyboard.unbindKeyUp("Enter")
+  --g_keyboard.unbindKeyUp("Escape")
 
   gameInterface.unbindWalkKey("W")
   gameInterface.unbindWalkKey("D")
@@ -225,7 +225,7 @@ function disableChat()
   end
   --g_keyboard.bindKeyUp("Space", quickFunc)
   --g_keyboard.bindKeyUp("Enter", quickFunc)
-  g_keyboard.bindKeyUp("Escape", quickFunc)
+  --g_keyboard.bindKeyUp("Escape", quickFunc)
 
   gameInterface.bindWalkKey("W", North)
   gameInterface.bindWalkKey("D", East)

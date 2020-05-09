@@ -1,5 +1,6 @@
 skillsWindow = nil
 skillsButton = nil
+skillSettings = nil
 
 function init()
   connect(LocalPlayer, {
@@ -30,6 +31,11 @@ function init()
   skillsWindow = g_ui.loadUI('skills', modules.game_interface.getRightPanel())
 
   g_keyboard.bindKeyDown('Ctrl+S', toggle)
+
+  skillSettings = g_settings.getNode('skills-hide')
+  if not skillSettings then
+    skillSettings = {}
+  end
 
   refresh()
   skillsWindow:setup()
@@ -227,17 +233,46 @@ function refresh()
 
   update()
 
-  local contentsPanel = skillsWindow:getChildById('contentsPanel')
-  skillsWindow:setContentMinimumHeight(44)
-  if hasAdditionalSkills then
-    skillsWindow:setContentMaximumHeight(433)
-  else
-    skillsWindow:setContentMaximumHeight(343)
+  local maximumHeight = 433
+  if not hasAdditionalSkills then
+    maximumHeight = 343
   end
+
+  if g_game.isOnline() then
+    local char = g_game.getCharacterName()
+
+    if not skillSettings[char] then
+      skillSettings[char] = {}
+    end
+
+    local skillsButtons = skillsWindow:recursiveGetChildById('experience'):getParent():getChildren()
+
+    for _, skillButton in pairs(skillsButtons) do
+      local percentBar = skillButton:getChildById('percent')
+
+      if percentBar then
+        if skillSettings[char][skillButton:getId()] == 1 then
+          if percentBar:isVisible() then
+            percentBar:setVisible(false)
+            skillButton:setHeight(21-6)
+          end
+          maximumHeight = maximumHeight - 6
+
+        elseif not percentBar:isVisible() then
+          percentBar:setVisible(true)
+          skillButton:setHeight(21)
+        end
+      end
+    end
+  end
+
+  skillsWindow:setContentMinimumHeight(44)
+  skillsWindow:setContentMaximumHeight(maximumHeight)
 end
 
 function offline()
   if expSpeedEvent then expSpeedEvent:cancel() expSpeedEvent = nil end
+  g_settings.setNode('skills-hide', skillSettings)
 end
 
 function toggle()
@@ -273,6 +308,8 @@ function onMiniWindowClose()
 end
 
 function onSkillButtonClick(button)
+  local char = g_game.getCharacterName()
+
   if button:getId() == 'percent' then
     button = button:getParent()
   end
@@ -282,9 +319,11 @@ function onSkillButtonClick(button)
     if percentBar:isVisible() then
       button:setHeight(21)
       skillsWindow:modifyMaximumHeight(6)
+      skillSettings[char][button:getId()] = 0
     else
       button:setHeight(21 - 6)
       skillsWindow:modifyMaximumHeight(-6)
+      skillSettings[char][button:getId()] = 1
     end
   end
 end

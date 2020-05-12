@@ -91,11 +91,11 @@ void Creature::draw(const Point& dest, float scaleFactor, bool animate, LightVie
             light = m_light;
 
         // local player always have a minimum light in complete darkness
-        if(isLocalPlayer() && (g_map.getLight().intensity < 64 || m_position.z > Otc::SEA_FLOOR)) {
-            light.intensity = std::max<uint8>(light.intensity, 3);
-            if(light.color == 0 || light.color > 215)
-                light.color = 215;
-        }
+        // if(isLocalPlayer() && (g_map.getLight().intensity < 64 || m_position.z > Otc::SEA_FLOOR)) {
+        //     light.intensity = std::max<uint8>(light.intensity, 3);
+        //     if(light.color == 0 || light.color > 215)
+        //         light.color = 215;
+        // }
 
         if(light.intensity > 0)
             lightView->addLightSource(dest + (animationOffset + Point(16,16)) * scaleFactor, scaleFactor, light);

@@ -66,6 +66,8 @@ MapView::MapView()
     setVisibleDimension(Size(15, 11));
 
     m_shader = g_shaders.getDefaultMapShader();
+
+    m_lightView = LightViewPtr(new LightView);
 }
 
 MapView::~MapView()
@@ -110,20 +112,19 @@ void MapView::draw(const Rect& rect)
             g_painter->setColor(Color::black);
             g_painter->drawFilledRect(clearRect);
 
-            if(m_drawLights) {
-                m_lightView->reset();
-                m_lightView->resize(m_framebuffer->getSize());
+            //draw lights:
+            m_lightView->reset();
+            m_lightView->resize(m_framebuffer->getSize());
 
-                Light ambientLight;
-                if(cameraPosition.z <= Otc::SEA_FLOOR) {
-                    ambientLight = g_map.getLight();
-                } else {
-                    ambientLight.color = 215;
-                    ambientLight.intensity = 0;
-                }
-                ambientLight.intensity = std::max<int>(m_minimumAmbientLight*255, ambientLight.intensity);
-                m_lightView->setGlobalLight(ambientLight);
+            Light ambientLight;
+            if(cameraPosition.z <= Otc::SEA_FLOOR) {
+                ambientLight = g_map.getLight();
+            } else {
+                ambientLight.color = 215;
+                ambientLight.intensity = 0;
             }
+            ambientLight.intensity = std::max<int>(m_minimumAmbientLight*255, ambientLight.intensity);
+            m_lightView->setGlobalLight(ambientLight);
         }
         g_painter->setColor(Color::white);
 
@@ -240,8 +241,7 @@ void MapView::draw(const Rect& rect)
     }
 
     // lights are drawn after names and before texts
-    if(m_drawLights)
-        m_lightView->draw(rect, srcRect);
+    m_lightView->draw(rect, srcRect);
 
     if(m_viewMode == NEAR_VIEW && m_drawTexts) {
         for(const StaticTextPtr& staticText : g_map.getStaticTexts()) {
@@ -729,19 +729,6 @@ void MapView::setShader(const PainterShaderProgramPtr& shader, float fadein, flo
     m_fadeTimer.restart();
     m_fadeInTime = fadein;
     m_fadeOutTime = fadeout;
-}
-
-
-void MapView::setDrawLights(bool enable)
-{
-    if(enable == m_drawLights)
-        return;
-
-    if(enable)
-        m_lightView = LightViewPtr(new LightView);
-    else
-        m_lightView = nullptr;
-    m_drawLights = enable;
 }
 
 /* vim: set ts=4 sw=4 et: */

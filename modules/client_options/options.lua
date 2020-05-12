@@ -20,8 +20,7 @@ local defaultOptions = {
   foregroundFrameRate = 30,
   backgroundFrameRate = 60,
   painterEngine = 0,
-  enableLights = true,
-  ambientLight = 25,
+  ambientLight = 10,
   displayNames = true,
   displayHealth = true,
   displayMana = true,
@@ -195,14 +194,9 @@ function setOption(key, value, force)
     if value <= 0 or value >= 61 then  text = 'max' v = 0 end
     graphicsPanel:getChildById('foregroundFrameRateLabel'):setText(tr('Interface framerate limit: %s', text))
     g_app.setForegroundPaneMaxFps(v)
-  elseif key == 'enableLights' then
-    gameMapPanel:setDrawLights(value and options['ambientLight'] < 100)
-    graphicsPanel:getChildById('ambientLight'):setEnabled(value)
-    graphicsPanel:getChildById('ambientLightLabel'):setEnabled(value)
   elseif key == 'ambientLight' then
     graphicsPanel:getChildById('ambientLightLabel'):setText(tr('Ambient light: %s%%', value))
     gameMapPanel:setMinimumAmbientLight(value/100)
-    gameMapPanel:setDrawLights(options['enableLights'] and value < 100)
   elseif key == 'painterEngine' then
     g_graphics.selectPainterEngine(value)
   elseif key == 'displayNames' then

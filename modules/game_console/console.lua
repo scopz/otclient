@@ -208,6 +208,11 @@ function enableChat()
   gameInterface.unbindWalkKey("C")
   gameInterface.unbindWalkKey("Z")
 
+  gameInterface.unbindTurnKey("Ctrl+W")
+  gameInterface.unbindTurnKey("Ctrl+D")
+  gameInterface.unbindTurnKey("Ctrl+S")
+  gameInterface.unbindTurnKey("Ctrl+A")
+
   consoleToggleChat:setTooltip(tr("Disable chat mode, allow to walk using ASDW"))
 end
 
@@ -236,6 +241,11 @@ function disableChat()
   gameInterface.bindWalkKey("Q", NorthWest)
   gameInterface.bindWalkKey("C", SouthEast)
   gameInterface.bindWalkKey("Z", SouthWest)
+
+  gameInterface.bindTurnKey("Ctrl+W", North)
+  gameInterface.bindTurnKey("Ctrl+D", East)
+  gameInterface.bindTurnKey("Ctrl+S", South)
+  gameInterface.bindTurnKey("Ctrl+A", West)
 
   consoleToggleChat:setTooltip(tr("Enable chat mode"))
 end
@@ -294,6 +304,7 @@ end
 function save()
   local settings = {}
   settings.messageHistory = messageHistory
+  settings.wasdMode = consoleToggleChat:isChecked()
   g_settings.setNode('game_console', settings)
 end
 
@@ -301,6 +312,7 @@ function load()
   local settings = g_settings.getNode('game_console')
   if settings then
     messageHistory = settings.messageHistory or {}
+    consoleToggleChat:setChecked(settings.wasdMode or false)
   end
   loadCommunicationSettings()
 end

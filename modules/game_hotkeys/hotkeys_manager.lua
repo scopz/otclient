@@ -369,6 +369,7 @@ function addKeyCombo(keyCombo, keySettings, focus)
 end
 
 function doKeyCombo(keyCombo)
+  if not checkChatEnabled(keyCombo) then return end
   if not g_game.isOnline() then return end
   local hotKey = hotkeyList[keyCombo]
   if not hotKey then return end
@@ -594,3 +595,11 @@ function hotkeyCaptureOk(assignWindow, keyCombo)
   addKeyCombo(keyCombo, nil, true)
   assignWindow:destroy()
 end
+
+function checkChatEnabled(keyCombo)
+  return modules.game_console.consoleToggleChat:isChecked() or
+      string.match(keyCombo, "F%d%d?") or
+      string.match(keyCombo, "Ctrl%+") or
+      string.match(keyCombo, "Alt%+")
+end
+

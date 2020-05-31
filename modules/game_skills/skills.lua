@@ -26,11 +26,11 @@ function init()
     onGameEnd = offline
   })
 
-  skillsButton = modules.client_topmenu.addRightGameToggleButton('skillsButton', tr('Skills') .. ' (Ctrl+S)', '/images/topbuttons/skills', toggle)
+  skillsButton = modules.client_topmenu.addRightGameToggleButton('skillsButton', tr('Skills') .. ' (Alt+S)', '/images/topbuttons/skills', toggle)
   skillsButton:setOn(true)
   skillsWindow = g_ui.loadUI('skills', modules.game_interface.getRightPanel())
 
-  g_keyboard.bindKeyDown('Ctrl+S', toggle)
+  g_keyboard.bindKeyDown('Alt+S', toggle)
 
   skillSettings = g_settings.getNode('skills-hide')
   if not skillSettings then
@@ -65,7 +65,7 @@ function terminate()
     onGameEnd = offline
   })
 
-  g_keyboard.unbindKeyDown('Ctrl+S')
+  g_keyboard.unbindKeyDown('Alt+S')
   skillsWindow:destroy()
   skillsButton:destroy()
 end

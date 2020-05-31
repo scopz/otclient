@@ -11,13 +11,25 @@ Panel
   focusable: false
 
   UILabel
-    id: clientVersionLabel
-    background-color: #00000099
+    id: bgCredits
+    text: "Smuggler's Cave [by deviantart @TomPrante]"
     anchors.right: parent.right
     anchors.bottom: parent.bottom
+    text-auto-resize: true
+    width: 120
+    padding: 2
+    opacity: 0.5
+    color: #b29562
+    font: sans-bold-16px
+
+  UILabel
+    id: clientVersionLabel
+    anchors.right: parent.right
+    anchors.top: parent.top
     text-align: center
     text-auto-resize: true
     width: 120
     padding: 2
-    color: #ffffff
+    color: #aaaaaa
+    background-color: #00000090
     font: verdana-11px-monochrome

@@ -3,9 +3,9 @@
 First install required development packages using apt-get
 
 ```sh
-sudo apt-get install -y build-essential cmake git-core
-sudo apt-get install -y libboost-all-dev libphysfs-dev libssl-dev liblua5.1-0-dev
-sudo apt-get install -y libglew-dev libvorbis-dev libopenal-dev zlib1g-dev
+sudo apt install -y build-essential cmake git-core
+sudo apt install -y libboost-all-dev libphysfs-dev libssl-dev liblua5.1-0-dev
+sudo apt install -y libglew-dev libvorbis-dev libopenal-dev zlib1g-dev
 ```
 
 and if you are using 18.04, you may also need `sudo apt-get install -y libogg-dev`
@@ -26,17 +26,16 @@ Linking CXX executable otclient /usr/lib/gcc/x86_64-linux-gnu/5/../../../x86_64-
 ```
 
 Then do:
-```
-sudo apt-get install libncurses5-dev
-sudo apt-get install mercurial
+```sh
+sudo apt install -y libncurses5-dev mercurial
 hg clone -r stable-3.0 http://hg.icculus.org/icculus/physfs/
-cd physfs
-sudo mkdir build
-cd build
-sudo cmake ..
-sudo make
+cd physfs; mkdir build; cd build
+cmake ..
+make
 sudo make install
 sudo mv /usr/local/lib/libphysfs.a /usr/lib/x86_64-linux-gnu/.
+cd ../..; rm -fr physfs
+sudo apt autoremove -y libncurses5-dev mercurial
 ```
 
 
@@ -85,7 +84,7 @@ The final command, `make`, will take most time. If you have a multi-core process
 
 ```
 mkdir build && cd build
-cmake  -DUSE_STATIC_LIBS=OFF -DLUA_LIBRARY=/opt/lua5.1/lib/liblua.a -DLUA_INCLUDE_DIR=/opt/lua5.1/include/ ..
+cmake -DUSE_STATIC_LIBS=OFF -DLUA_LIBRARY=/opt/lua5.1/lib/liblua.a -DLUA_INCLUDE_DIR=/opt/lua5.1/include/ ..
 make
 ```
 

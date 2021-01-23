@@ -95,7 +95,7 @@ protected:
     void processWalkCancel(Otc::Direction direction);
 
     void processPlayerHelpers(int helpers);
-    void processPlayerModes(Otc::FightModes fightMode, Otc::ChaseModes chaseMode, bool safeMode, Otc::PVPModes pvpMode);
+    void processPlayerModes(Otc::FightModes fightMode, Otc::ChaseModes chaseMode, Otc::PickUpModes pickUpMode, bool safeMode, Otc::PVPModes pvpMode);
 
     // message related
     void processTextMessage(Otc::MessageMode mode, const std::string& text);
@@ -231,10 +231,12 @@ public:
 
     // fight modes related
     void setChaseMode(Otc::ChaseModes chaseMode);
+    void setPickUpMode(Otc::PickUpModes pickUpMode);
     void setFightMode(Otc::FightModes fightMode);
     void setSafeFight(bool on);
     void setPVPMode(Otc::PVPModes pvpMode);
     Otc::ChaseModes getChaseMode() { return m_chaseMode; }
+    Otc::PickUpModes getPickUpMode() { return m_pickUpMode; }
     Otc::FightModes getFightMode() { return m_fightMode; }
     bool isSafeFight() { return m_safeFight; }
     Otc::PVPModes getPVPMode() { return m_pvpMode; }
@@ -383,6 +385,7 @@ private:
     int m_pingDelay;
     Otc::FightModes m_fightMode;
     Otc::ChaseModes m_chaseMode;
+    Otc::PickUpModes m_pickUpMode;
     Otc::PVPModes m_pvpMode;
     Otc::Direction m_lastWalkDir;
     UnjustifiedPoints m_unjustifiedPoints;

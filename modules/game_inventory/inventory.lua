@@ -39,6 +39,7 @@ fightOffensiveBox = nil
 fightBalancedBox = nil
 fightDefensiveBox = nil
 chaseModeButton = nil
+pickUpButton = nil
 safeFightButton = nil
 whiteDoveBox = nil
 whiteHandBox = nil
@@ -65,6 +66,7 @@ function init()
   fightDefensiveBox = inventoryWindow:recursiveGetChildById('fightDefensiveBox')
 
   chaseModeButton = inventoryWindow:recursiveGetChildById('chaseModeBox')
+  pickUpButton = inventoryWindow:recursiveGetChildById('pickUpButton')
   safeFightButton = inventoryWindow:recursiveGetChildById('safeFightBox')
 
   mountButton = inventoryWindow:recursiveGetChildById('mountButton')
@@ -106,12 +108,14 @@ function init()
   connect(fightModeRadioGroup, { onSelectionChange = onSetFightMode })
   connect(pvpModeRadioGroup, { onSelectionChange = onSetPVPMode })
   connect(chaseModeButton, { onCheckChange = onSetChaseMode })
+  connect(pickUpButton, { onCheckChange = onSetPickUpMode })
   connect(safeFightButton, { onCheckChange = onSetSafeFight })
   connect(g_game, {
     onGameStart = online,
     onGameEnd = offline,
     onFightModeChange = update,
     onChaseModeChange = update,
+    onPickUpModeChange = update,
     onSafeFightChange = update,
     onPVPModeChange   = update,
     onWalk = check,
@@ -120,6 +124,7 @@ function init()
 
   connect(LocalPlayer, {
     onInventoryChange = onInventoryChange,
+    onVocationChange = onVocationChange,
     onBlessingsChange = onBlessingsChange,
     onOutfitChange = onOutfitChange,
     onSoulChange = onSoulChange,
@@ -147,6 +152,7 @@ function terminate()
     onGameEnd = offline,
     onFightModeChange = update,
     onChaseModeChange = update,
+    onPickUpModeChange = update,
     onSafeFightChange = update,
     onPVPModeChange   = update,
     onWalk = check,
@@ -155,6 +161,7 @@ function terminate()
 
   disconnect(LocalPlayer, {
     onInventoryChange = onInventoryChange,
+    onVocationChange = onVocationChange,
     onBlessingsChange = onBlessingsChange,
     onOutfitChange = onOutfitChange,
     onSoulChange = onSoulChange,
@@ -184,6 +191,9 @@ function update()
 
   local chaseMode = g_game.getChaseMode()
   chaseModeButton:setChecked(chaseMode == ChaseOpponent)
+
+  local pickUpMode = g_game.getPickUpMode()
+  pickUpButton:setChecked(pickUpMode == PickUpAmmo)
 
   local safeFight = g_game.isSafeFight()
   safeFightButton:setChecked(not safeFight)
@@ -220,6 +230,7 @@ function online()
       if lastCombatControls[char] then
         g_game.setFightMode(lastCombatControls[char].fightMode)
         g_game.setChaseMode(lastCombatControls[char].chaseMode)
+        g_game.setPickUpMode(lastCombatControls[char].pickUpMode)
         g_game.setSafeFight(lastCombatControls[char].safeFight)
         if lastCombatControls[char].pvpMode then
           g_game.setPVPMode(lastCombatControls[char].pvpMode)
@@ -261,6 +272,7 @@ function offline()
     lastCombatControls[char] = {
       fightMode = g_game.getFightMode(),
       chaseMode = g_game.getChaseMode(),
+      pickUpMode = g_game.getPickUpMode(),
       safeFight = g_game.isSafeFight()
     }
 
@@ -321,6 +333,11 @@ function onInventoryChange(player, slot, item, oldItem)
     itemWidget:setStyle(InventorySlotStyles[slot])
     itemWidget:setItem(nil)
   end
+end
+
+function onVocationChange(player, vocation, oldVocation)
+  -- only show pickUp button for pally or none
+  pickUpButton:setVisible(vocation == 3 or vocation == 0)
 end
 
 function onSoulChange(localPlayer, soul)
@@ -393,6 +410,16 @@ function onSetChaseMode(self, checked)
     chaseMode = DontChase
   end
   g_game.setChaseMode(chaseMode)
+end
+
+function onSetPickUpMode(self, checked)
+  local pickUpMode
+  if checked then
+    pickUpMode = PickUpAmmo
+  else
+    pickUpMode = DontPickUp
+  end
+  g_game.setPickUpMode(pickUpMode)
 end
 
 function onSetSafeFight(self, checked)

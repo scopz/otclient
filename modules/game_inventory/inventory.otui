@@ -97,6 +97,8 @@ FightDefensiveBox < CombatBox
   image-source: /images/game/combatmodes/fightdefensive
 ChaseModeBox < CombatBox
   image-source: /images/game/combatmodes/chasemode
+PickUpBox < CombatBox
+  image-source: /images/game/combatmodes/pickup
 SafeFightBox < CombatBox
   image-source: /images/game/combatmodes/safefight
 
@@ -233,15 +235,18 @@ MiniWindowHeadLess
       anchors.top: prev.bottom
       anchors.horizontalCenter: prev.horizontalCenter
 
-
-
-    MountButton
-      id: mountButton
+    PickUpBox
+      id: pickUpButton
       anchors.top: chaseModeBox.bottom
       anchors.horizontalCenter: chaseModeBox.horizontalCenter
 
     SafeFightBox
       id: safeFightBox
+      anchors.top: prev.bottom
+      anchors.horizontalCenter: prev.horizontalCenter
+
+    MountButton
+      id: mountButton
       anchors.top: prev.bottom
       anchors.horizontalCenter: prev.horizontalCenter
 

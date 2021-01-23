@@ -191,7 +191,7 @@ void Game::processGameStart()
     m_online = true;
 
     // synchronize fight modes with the server
-    m_protocolGame->sendChangeFightModes(m_fightMode, m_chaseMode, m_safeFight, m_pvpMode);
+    m_protocolGame->sendChangeFightModes(m_fightMode, m_chaseMode, m_pickUpMode, m_safeFight, m_pvpMode);
 
     // NOTE: the entire map description and local player information is not known yet (bot call is allowed here)
     enableBotCall();
@@ -254,15 +254,17 @@ void Game::processPlayerHelpers(int helpers)
     g_lua.callGlobalField("g_game", "onPlayerHelpersUpdate", helpers);
 }
 
-void Game::processPlayerModes(Otc::FightModes fightMode, Otc::ChaseModes chaseMode, bool safeMode, Otc::PVPModes pvpMode)
+void Game::processPlayerModes(Otc::FightModes fightMode, Otc::ChaseModes chaseMode, Otc::PickUpModes pickUpMode, bool safeMode, Otc::PVPModes pvpMode)
 {
     m_fightMode = fightMode;
     m_chaseMode = chaseMode;
+    m_pickUpMode = pickUpMode;
     m_safeFight = safeMode;
     m_pvpMode = pvpMode;
 
     g_lua.callGlobalField("g_game", "onFightModeChange", fightMode);
     g_lua.callGlobalField("g_game", "onChaseModeChange", chaseMode);
+    g_lua.callGlobalField("g_game", "onPickUpModeChange", pickUpMode);
     g_lua.callGlobalField("g_game", "onSafeFightChange", safeMode);
     g_lua.callGlobalField("g_game", "onPVPModeChange", pvpMode);
 }
@@ -1176,8 +1178,19 @@ void Game::setChaseMode(Otc::ChaseModes chaseMode)
     if(m_chaseMode == chaseMode)
         return;
     m_chaseMode = chaseMode;
-    m_protocolGame->sendChangeFightModes(m_fightMode, m_chaseMode, m_safeFight, m_pvpMode);
+    m_protocolGame->sendChangeFightModes(m_fightMode, m_chaseMode, m_pickUpMode, m_safeFight, m_pvpMode);
     g_lua.callGlobalField("g_game", "onChaseModeChange", chaseMode);
+}
+
+void Game::setPickUpMode(Otc::PickUpModes pickUpMode)
+{
+    if(!canPerformGameAction())
+        return;
+    if(m_pickUpMode == pickUpMode)
+        return;
+    m_pickUpMode = pickUpMode;
+    m_protocolGame->sendChangeFightModes(m_fightMode, m_chaseMode, m_pickUpMode, m_safeFight, m_pvpMode);
+    g_lua.callGlobalField("g_game", "onPickUpModeChange", pickUpMode);
 }
 
 void Game::setFightMode(Otc::FightModes fightMode)
@@ -1187,7 +1200,7 @@ void Game::setFightMode(Otc::FightModes fightMode)
     if(m_fightMode == fightMode)
         return;
     m_fightMode = fightMode;
-    m_protocolGame->sendChangeFightModes(m_fightMode, m_chaseMode, m_safeFight, m_pvpMode);
+    m_protocolGame->sendChangeFightModes(m_fightMode, m_chaseMode, m_pickUpMode, m_safeFight, m_pvpMode);
     g_lua.callGlobalField("g_game", "onFightModeChange", fightMode);
 }
 
@@ -1198,7 +1211,7 @@ void Game::setSafeFight(bool on)
     if(m_safeFight == on)
         return;
     m_safeFight = on;
-    m_protocolGame->sendChangeFightModes(m_fightMode, m_chaseMode, m_safeFight, m_pvpMode);
+    m_protocolGame->sendChangeFightModes(m_fightMode, m_chaseMode, m_pickUpMode, m_safeFight, m_pvpMode);
     g_lua.callGlobalField("g_game", "onSafeFightChange", on);
 }
 
@@ -1211,7 +1224,7 @@ void Game::setPVPMode(Otc::PVPModes pvpMode)
     if(m_pvpMode == pvpMode)
         return;
     m_pvpMode = pvpMode;
-    m_protocolGame->sendChangeFightModes(m_fightMode, m_chaseMode, m_safeFight, m_pvpMode);
+    m_protocolGame->sendChangeFightModes(m_fightMode, m_chaseMode, m_pickUpMode, m_safeFight, m_pvpMode);
     g_lua.callGlobalField("g_game", "onPVPModeChange", pvpMode);
 }
 

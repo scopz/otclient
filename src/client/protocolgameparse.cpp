@@ -1493,13 +1493,14 @@ void ProtocolGame::parsePlayerModes(const InputMessagePtr& msg)
 {
     int fightMode = msg->getU8();
     int chaseMode = msg->getU8();
+    int pickUpMode = msg->getU8();
     bool safeMode = msg->getU8();
 
     int pvpMode = 0;
     if(g_game.getFeature(Otc::GamePVPMode))
         pvpMode = msg->getU8();
 
-    g_game.processPlayerModes((Otc::FightModes)fightMode, (Otc::ChaseModes)chaseMode, safeMode, (Otc::PVPModes)pvpMode);
+    g_game.processPlayerModes((Otc::FightModes)fightMode, (Otc::ChaseModes)chaseMode, (Otc::PickUpModes)pickUpMode, safeMode, (Otc::PVPModes)pvpMode);
 }
 
 void ProtocolGame::parseSpellCooldown(const InputMessagePtr& msg)

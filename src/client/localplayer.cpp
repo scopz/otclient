@@ -30,7 +30,7 @@
 LocalPlayer::LocalPlayer()
 {
     m_states = 0;
-    m_vocation = 0;
+    m_vocation = -1;
     m_blessings = Otc::BlessingNone;
     m_walkLockExpiration = 0;
 
@@ -493,7 +493,7 @@ void LocalPlayer::setInventoryItem(Otc::InventorySlot inventory, const ItemPtr& 
 void LocalPlayer::setVocation(int vocation)
 {
     if(m_vocation != vocation) {
-        int oldVocation = m_vocation;
+        int oldVocation = m_vocation <= 0? 0 : m_vocation;
         m_vocation = vocation;
 
         callLuaField("onVocationChange", vocation, oldVocation);

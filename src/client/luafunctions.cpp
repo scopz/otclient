@@ -233,10 +233,12 @@ void Client::registerLuaFunctions()
     g_lua.bindSingletonFunction("g_game", "removeVip", &Game::removeVip, &g_game);
     g_lua.bindSingletonFunction("g_game", "editVip", &Game::editVip, &g_game);
     g_lua.bindSingletonFunction("g_game", "setChaseMode", &Game::setChaseMode, &g_game);
+    g_lua.bindSingletonFunction("g_game", "setPickUpMode", &Game::setPickUpMode, &g_game);
     g_lua.bindSingletonFunction("g_game", "setFightMode", &Game::setFightMode, &g_game);
     g_lua.bindSingletonFunction("g_game", "setPVPMode", &Game::setPVPMode, &g_game);
     g_lua.bindSingletonFunction("g_game", "setSafeFight", &Game::setSafeFight, &g_game);
     g_lua.bindSingletonFunction("g_game", "getChaseMode", &Game::getChaseMode, &g_game);
+    g_lua.bindSingletonFunction("g_game", "getPickUpMode", &Game::getPickUpMode, &g_game);
     g_lua.bindSingletonFunction("g_game", "getFightMode", &Game::getFightMode, &g_game);
     g_lua.bindSingletonFunction("g_game", "getPVPMode", &Game::getPVPMode, &g_game);
     g_lua.bindSingletonFunction("g_game", "getUnjustifiedPoints", &Game::getUnjustifiedPoints, &g_game);

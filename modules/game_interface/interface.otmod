@@ -27,6 +27,6 @@ Module
 //    - game_market
 //    - game_spelllist
     - game_modaldialog
-    - game_unjustifiedpoints
+//    - game_unjustifiedpoints
   @onLoad: init()
   @onUnload: terminate()

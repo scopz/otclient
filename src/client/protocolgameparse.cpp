@@ -86,12 +86,11 @@ void ProtocolGame::parseMessage(const InputMessagePtr& msg)
                 parseLoginToken(msg);
                 break;
             case Proto::GameServerPing:
+                parsePing(msg);
+                break;
             case Proto::GameServerPingBack:
-                if((opcode == Proto::GameServerPing && g_game.getFeature(Otc::GameClientPing)) ||
-                   (opcode == Proto::GameServerPingBack && !g_game.getFeature(Otc::GameClientPing)))
+                if(g_game.getFeature(Otc::GameClientPing))
                     parsePingBack(msg);
-                else
-                    parsePing(msg);
                 break;
             case Proto::GameServerChallenge:
                 parseChallenge(msg);

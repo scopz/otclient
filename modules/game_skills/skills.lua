@@ -1,5 +1,4 @@
 skillsWindow = nil
-skillsButton = nil
 skillSettings = nil
 
 function init()
@@ -26,8 +25,6 @@ function init()
     onGameEnd = offline
   })
 
-  skillsButton = modules.client_topmenu.addRightGameToggleButton('skillsButton', tr('Skills') .. ' (Alt+S)', '/images/topbuttons/skills', toggle)
-  skillsButton:setOn(true)
   skillsWindow = g_ui.loadUI('skills', modules.game_interface.getRightPanel())
 
   g_keyboard.bindKeyDown('Alt+S', toggle)
@@ -67,7 +64,6 @@ function terminate()
 
   g_keyboard.unbindKeyDown('Alt+S')
   skillsWindow:destroy()
-  skillsButton:destroy()
 end
 
 function expForLevel(level)
@@ -278,13 +274,15 @@ function offline()
 end
 
 function toggle()
-  if skillsButton:isOn() then
+  if skillsWindow:isVisible() then
     skillsWindow:close()
-    skillsButton:setOn(false)
   else
     skillsWindow:open()
-    skillsButton:setOn(true)
   end
+end
+
+function onMiniWindowClose()
+
 end
 
 function checkExpSpeed()
@@ -303,10 +301,6 @@ function checkExpSpeed()
   if #player.lastExps > 30 then
     table.remove(player.lastExps, 1)
   end
-end
-
-function onMiniWindowClose()
-  skillsButton:setOn(false)
 end
 
 function onSkillButtonClick(button)

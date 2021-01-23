@@ -20,6 +20,9 @@ walkFunction = nil
 hookedMenuOptions = {}
 lastDirTime = g_clock.millis()
 
+pingLabel = nil
+fpsLabel = nil
+
 function init()
   g_ui.importStyle('styles/countwindow')
 
@@ -27,7 +30,8 @@ function init()
     onGameStart = onGameStart,
     onGameEnd = onGameEnd,
     onLoginAdvice = onLoginAdvice,
-	  onSelectTarget = startSelectTarget
+    onSelectTarget = startSelectTarget,
+    onPingBack = updatePing
   }, true)
 
   -- Call load AFTER game window has been created and 
@@ -36,7 +40,8 @@ function init()
   -- events
   connect(g_app, {
     onRun = load,
-    onExit = save
+    onExit = save,
+    onFps = updateFps
   })
   
   gameRootPanel = g_ui.displayUI('gameinterface')
@@ -54,6 +59,10 @@ function init()
   gameRightExtraPanel = gameRootPanel:getChildById('gameRightExtraPanel')
   gameLeftPanel = gameRootPanel:getChildById('gameLeftPanel')
   gameBottomPanel = gameRootPanel:getChildById('gameBottomPanel')
+
+  pingLabel = gameRootPanel:getChildById('pingLabel')
+  fpsLabel = gameRootPanel:getChildById('fpsLabel')
+
   connect(gameLeftPanel, { onVisibilityChange = onExtraPanelVisibilityChange })
   connect(gameRightExtraPanel, { onVisibilityChange = onExtraPanelVisibilityChange })
 
@@ -139,7 +148,13 @@ function terminate()
   disconnect(g_game, {
     onGameStart = onGameStart,
     onGameEnd = onGameEnd,
-    onLoginAdvice = onLoginAdvice
+    onLoginAdvice = onLoginAdvice,
+    onSelectTarget = startSelectTarget,
+    onPingBack = updatePing
+  })
+
+  disconnect(g_app, {
+    onFps = updateFps
   })
 
   disconnect(gameLeftPanel, { onVisibilityChange = onExtraPanelVisibilityChange })
@@ -150,11 +165,64 @@ end
 
 function onGameStart()
   show()
+
+  setPingVisible(modules.client_options.getOption('showPing') and g_game.getFeature(GameClientPing))
+  setFpsVisible(modules.client_options.getOption('showFps'))
 end
 
 function onGameEnd()
   setupViewMode(0)
   hide()
+end
+
+function setPingVisible(enable)
+  pingLabel:setVisible(enable)
+end
+
+function setFpsVisible(enable)
+
+  if enable then
+    pingLabel:addAnchor(AnchorTop, 'fpsLabel', AnchorBottom)
+  else
+    pingLabel:addAnchor(AnchorTop, 'gameMapPanel', AnchorTop)
+  end
+
+  fpsLabel:setVisible(enable)
+end
+
+function updateFps(fps)
+  local color
+
+  if fps < 20 then
+    color = 'red'
+  elseif fps < 45 then
+    color = 'yellow'
+  else
+    color = 'green'
+  end
+
+  fpsLabel:setText(fps .. ' fps')
+  fpsLabel:setColor(color)
+end
+
+function updatePing(ping)
+  local text
+  local color
+  if ping < 0 then
+    text = "??"
+    color = 'yellow'
+  else
+    text = ping .. ' ms'
+    if ping >= 250 then
+      color = 'red'
+    elseif ping >= 150 then
+      color = 'yellow'
+    else
+      color = 'green'
+    end
+  end
+  pingLabel:setColor(color)
+  pingLabel:setText(text)
 end
 
 function show()
@@ -883,10 +951,6 @@ function setupViewMode(mode)
     gameMapPanel:addAnchor(AnchorRight, 'gameRightPanel', AnchorLeft)
     gameMapPanel:addAnchor(AnchorRight, 'gameRightExtraPanel', AnchorLeft)
     gameMapPanel:addAnchor(AnchorBottom, 'gameBottomPanel', AnchorTop)
-    
-    if modules.client_topmenu.getTopMenu():isVisible() then 
-        gameRootPanel:addAnchor(AnchorTop, 'topMenu', AnchorBottom)
-    end
 		
     gameLeftPanel:setOn(modules.client_options.getOption('showLeftPanel'))
     gameRightExtraPanel:setOn(modules.client_options.getOption('showRightExtraPanel'))
@@ -897,7 +961,6 @@ function setupViewMode(mode)
     gameRightPanel:setMarginTop(0)
     gameRightExtraPanel:setMarginTop(0)
     gameBottomPanel:setImageColor('white')
-    modules.client_topmenu.getTopMenu():setImageColor('white')
     --g_game.changeMapAwareRange(22, 18)
   end
 
@@ -920,9 +983,6 @@ function setupViewMode(mode)
     gameLeftPanel:setImageColor('alpha')
     gameRightPanel:setImageColor('alpha')
     gameRightExtraPanel:setImageColor('alpha')
-    gameLeftPanel:setMarginTop(modules.client_topmenu.getTopMenu():getHeight() - gameLeftPanel:getPaddingTop())
-    gameRightPanel:setMarginTop(modules.client_topmenu.getTopMenu():getHeight() - gameRightPanel:getPaddingTop())
-    gameRightExtraPanel:setMarginTop(modules.client_topmenu.getTopMenu():getHeight() - gameRightExtraPanel:getPaddingTop())
     gameLeftPanel:setOn(true)
     gameLeftPanel:setVisible(true)
     gameRightPanel:setOn(true)
@@ -930,7 +990,6 @@ function setupViewMode(mode)
     gameRightExtraPanel:setVisible(true)
     gameMapPanel:setOn(true)
     gameBottomPanel:setImageColor('#ffffff88')
-    modules.client_topmenu.getTopMenu():setImageColor('#ffffff66')
     if not limit then
       --g_game.changeMapAwareRange(28, 24)
     end

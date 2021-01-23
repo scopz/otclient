@@ -4,7 +4,6 @@ EnterGame = { }
 local loadBox
 local enterGame
 local motdWindow
-local motdButton
 local protocolLogin
 local motdEnabled = true
 
@@ -26,9 +25,6 @@ end
 local function onMotd(protocol, motd)
   G.motdNumber = tonumber(motd:sub(0, motd:find("\n")))
   G.motdMessage = motd:sub(motd:find("\n") + 1, #motd)
-  if motdEnabled then
-    motdButton:show()
-  end
 end
 
 local function onSessionKey(protocol, sessionKey)
@@ -88,8 +84,6 @@ end
 -- public functions
 function EnterGame.init()
   enterGame = g_ui.displayUI('entergame')
-  motdButton = modules.client_topmenu.addLeftButton('motdButton', tr('Message of the day'), '/images/topbuttons/motd', EnterGame.displayMotd)
-  motdButton:hide()
   g_keyboard.bindKeyDown('Ctrl+G', EnterGame.openWindow)
 
   if motdEnabled and G.motdNumber then

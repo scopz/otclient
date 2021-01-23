@@ -22,7 +22,6 @@ GameMapPanel < UIGameMap
 UIWidget
   id: gameRootPanel
   anchors.fill: parent
-  anchors.top: topMenu.bottom
 
   GameMapPanel
     id: gameMapPanel
@@ -86,3 +85,25 @@ UIWidget
     id: mouseGrabber
     focusable: false
     visible: false
+
+  Label
+    id: fpsLabel
+    anchors.top: gameMapPanel.top
+    anchors.right: gameMapPanel.right
+    text-align: center
+    text-auto-resize: true
+    padding: 2
+    margin-right: 2
+    color: #aaaaaa
+    font: verdana-11px-rounded
+
+  Label
+    id: pingLabel
+    anchors.top: prev.bottom
+    anchors.right: gameMapPanel.right
+    text-align: center
+    text-auto-resize: true
+    padding: 2
+    margin-right: 2
+    color: #aaaaaa
+    font: verdana-11px-rounded

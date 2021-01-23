@@ -175,9 +175,10 @@ function setOption(key, value, force)
   if key == 'vsync' then
     g_window.setVerticalSync(value)
   elseif key == 'showFps' then
-    modules.client_topmenu.setFpsVisible(value)
+    modules.game_interface.setFpsVisible(value)
   elseif key == 'showPing' then
-    modules.client_topmenu.setPingVisible(value)
+    g_dispatcher.enablePing(value)
+    modules.game_interface.setPingVisible(value)
   elseif key == 'fullscreen' then
     g_window.setFullscreen(value)
   elseif key == 'showLeftPanel' then

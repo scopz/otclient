@@ -34,7 +34,6 @@ InventorySlotStyles = {
 
 inventoryWindow = nil
 inventoryPanel = nil
-inventoryButton = nil
 
 fightOffensiveBox = nil
 fightBalancedBox = nil
@@ -56,8 +55,6 @@ soulLabel = nil
 capLabel = nil
 
 function init()
-  inventoryButton = modules.client_topmenu.addRightGameToggleButton('inventoryButton', tr('Inventory') .. ' (Ctrl+I)', '/images/topbuttons/inventory', toggle)
-  inventoryButton:setOn(true)
 
   inventoryWindow = g_ui.loadUI('inventory', modules.game_interface.getRightPanel())
   inventoryWindow:disableResize()
@@ -144,7 +141,6 @@ function terminate()
   fightModeRadioGroup:destroy()
   pvpModeRadioGroup:destroy()
   inventoryWindow:destroy()
-  inventoryButton:destroy()
 
   disconnect(g_game, {
     onGameStart = online,
@@ -278,12 +274,10 @@ function offline()
 end
 
 function toggle()
-  if inventoryButton:isOn() then
+  if inventoryWindow:isVisible() then
     inventoryWindow:close()
-    inventoryButton:setOn(false)
   else
     inventoryWindow:open()
-    inventoryButton:setOn(true)
   end
 end
 
@@ -293,10 +287,6 @@ function check()
       g_game.setChaseMode(DontChase)
     end
   end
-end
-
-function onMiniWindowClose()
-  inventoryButton:setOn(false)
 end
 
 function toggleConditionIcon(bitChanged)

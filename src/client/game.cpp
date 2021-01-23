@@ -1450,6 +1450,13 @@ void Game::openTransactionHistory(int entriesPerPage)
 
 void Game::ping()
 {
+    if (!g_dispatcher.getPing()){
+        m_pingEvent = g_dispatcher.scheduleEvent([this] {
+            g_game.ping();
+        }, m_pingDelay);
+        return;
+    }
+
     if(!m_protocolGame || !m_protocolGame->isConnected())
         return;
 
@@ -1457,9 +1464,9 @@ void Game::ping()
         return;
 
     m_denyBotCall = false;
+    m_pingSent++;
     m_protocolGame->sendPing();
     m_denyBotCall = true;
-    m_pingSent++;
     m_pingTimer.restart();
 }
 
@@ -1536,6 +1543,7 @@ void Game::setClientVersion(int version)
     if (version == 773) {
         enableFeature(Otc::GameDoubleFreeCapacity);
         enableFeature(Otc::GamePlayerStateU16);
+        enableFeature(Otc::GameClientPing);
     }
 
     if(version >= 780) {

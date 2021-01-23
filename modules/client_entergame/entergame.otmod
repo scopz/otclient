@@ -4,9 +4,6 @@ Module
   author: edubart
   website: https://github.com/edubart/otclient
 
-  dependencies:
-    - client_topmenu
-
   @onLoad: |
     dofile 'entergame'
     dofile 'characterlist'

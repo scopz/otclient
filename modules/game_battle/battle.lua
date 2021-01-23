@@ -1,5 +1,4 @@
 battleWindow = nil
-battleButton = nil
 battlePanel = nil
 filterPanel = nil
 toggleFilterButton = nil
@@ -19,8 +18,6 @@ hidePartyButton = nil
 
 function init()
   g_ui.importStyle('battlebutton')
-  battleButton = modules.client_topmenu.addRightGameToggleButton('battleButton', tr('Battle') .. ' (Ctrl+B)', '/images/topbuttons/battle', toggle)
-  battleButton:setOn(true)
   battleWindow = g_ui.loadUI('battle', modules.game_interface.getRightPanel())
   g_keyboard.bindKeyDown('Ctrl+B', toggle)
   g_keyboard.bindKeyDown('Space', attackNext)
@@ -100,7 +97,6 @@ function terminate()
   g_keyboard.unbindKeyDown('Ctrl+B')
   g_keyboard.unbindKeyDown('Space')
   battleButtonsByCreaturesList = {}
-  battleButton:destroy()
   battleWindow:destroy()
   mouseWidget:destroy()
 
@@ -127,13 +123,15 @@ function terminate()
 end
 
 function toggle()
-  if battleButton:isOn() then
+  if battleWindow:isVisible() then
     battleWindow:close()
-    battleButton:setOn(false)
   else
     battleWindow:open()
-    battleButton:setOn(true)
   end
+end
+
+function onMiniWindowClose()
+
 end
 
 function attackNext()
@@ -165,10 +163,6 @@ function attackNext()
     g_game.attack(firstElement.creature)
   end
   return true
-end
-
-function onMiniWindowClose()
-  battleButton:setOn(false)
 end
 
 function getSortType()

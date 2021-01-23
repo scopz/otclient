@@ -32,18 +32,23 @@
 class EventDispatcher
 {
 public:
+    EventDispatcher() : ping(false) {};
+
     void shutdown();
     void poll();
 
     EventPtr addEvent(const std::function<void()>& callback, bool pushFront = false);
     ScheduledEventPtr scheduleEvent(const std::function<void()>& callback, int delay);
     ScheduledEventPtr cycleEvent(const std::function<void()>& callback, int delay);
+    void enablePing(const bool &enablePing) { ping = enablePing; };
+    bool getPing() { return ping; }
 
 private:
     std::deque<EventPtr> m_eventList;
     int m_pollEventsSize;
     stdext::boolean<false> m_disabled;
     std::priority_queue<ScheduledEventPtr, std::deque<ScheduledEventPtr>, lessScheduledEvent> m_scheduledEventList;
+    bool ping;
 };
 
 extern EventDispatcher g_dispatcher;

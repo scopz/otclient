@@ -1,4 +1,3 @@
-
 healthInfoWindow = nil
 healthBar = nil
 manaBar = nil
@@ -12,9 +11,6 @@ function init()
                          onManaChange = onManaChange })
 
   connect(g_game, { onGameStart = online })
-
-  healthInfoButton = modules.client_topmenu.addRightGameToggleButton('healthInfoButton', tr('Health Information'), '/images/topbuttons/healthinfo', toggle)
-  healthInfoButton:setOn(true)
 
   healthInfoWindow = g_ui.loadUI('healthinfo', modules.game_interface.getRightPanel())
   healthInfoWindow:disableResize()
@@ -39,16 +35,13 @@ function terminate()
   disconnect(g_game, { onGameStart = online })
 
   healthInfoWindow:destroy()
-  healthInfoButton:destroy()
 end
 
 function toggle()
-  if healthInfoButton:isOn() then
+  if healthInfoWindow:isVisible() then
     healthInfoWindow:close()
-    healthInfoButton:setOn(false)
   else
     healthInfoWindow:open()
-    healthInfoButton:setOn(true)
   end
 end
 

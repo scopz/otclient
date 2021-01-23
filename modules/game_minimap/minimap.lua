@@ -1,5 +1,4 @@
 minimapWidget = nil
-minimapButton = nil
 minimapWindow = nil
 otmm = true
 preloaded = false
@@ -9,10 +8,6 @@ oldPos = nil
 originalMargin = nil
 
 function init()
-  minimapButton = modules.client_topmenu.addRightGameToggleButton('minimapButton', 
-    tr('Minimap'), '/images/topbuttons/minimap', toggle)
-  minimapButton:setOn(true)
-
   minimapWindow = g_ui.loadUI('minimap', modules.game_interface.getRightPanel())
   minimapWindow:setContentMinimumHeight(64)
 
@@ -63,21 +58,14 @@ function terminate()
   g_keyboard.unbindKeyDown('Ctrl+M')
 
   minimapWindow:destroy()
-  minimapButton:destroy()
 end
 
 function toggle()
-  if minimapButton:isOn() then
+  if minimapWindow:isVisible() then
     minimapWindow:close()
-    minimapButton:setOn(false)
   else
     minimapWindow:open()
-    minimapButton:setOn(true)
   end
-end
-
-function onMiniWindowClose()
-  minimapButton:setOn(false)
 end
 
 function preload()

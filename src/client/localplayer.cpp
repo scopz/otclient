@@ -29,6 +29,7 @@
 
 LocalPlayer::LocalPlayer()
 {
+    m_floorChange = false;
     m_states = 0;
     m_vocation = -1;
     m_blessings = Otc::BlessingNone;
@@ -72,9 +73,13 @@ bool LocalPlayer::canWalk(Otc::Direction)
     if(m_speed == 0)
         return false;
 
+    // delay time after changing floor
+    if (m_floorChange) 
+        return m_walkTimer.ticksElapsed() >= 150;
+    
     // last walk is not done yet
     if((m_walkTimer.ticksElapsed() < getStepDuration()) && !isAutoWalking())
-        return false;
+        return false; // if last walk was a floorChange, there is no wait
 
     // prewalk has a timeout, because for some reason that I don't know yet the server sometimes doesn't answer the prewalk
     bool prewalkTimeouted = m_walking && m_preWalking && m_walkTimer.ticksElapsed() >= getStepDuration() + PREWALK_TIMEOUT;
@@ -310,6 +315,8 @@ void LocalPlayer::onAppear()
 void LocalPlayer::onPositionChange(const Position& newPos, const Position& oldPos)
 {
     Creature::onPositionChange(newPos, oldPos);
+
+    m_floorChange = newPos.z != oldPos.z && oldPos.z < 200;
 
     if(newPos == m_autoWalkDestination)
         stopAutoWalk();

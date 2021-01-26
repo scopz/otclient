@@ -15,7 +15,7 @@ limitedZoom = true
 currentViewMode = 0
 smartWalkDirs = {}
 smartWalkDir = nil
-firstPress = true
+auxIsKeyDownWalk = true
 walkFunction = nil
 hookedMenuOptions = {}
 lastDirTime = g_clock.millis()
@@ -110,7 +110,7 @@ function bindKeys()
 end
 
 function bindWalkKey(key, dir)
-  g_keyboard.bindKeyDown(key, function() firstPress = true changeWalkDir(dir) end, gameRootPanel, true)
+  g_keyboard.bindKeyDown(key, function() auxKeyDownWalk = true changeWalkDir(dir) end, gameRootPanel, true)
   g_keyboard.bindKeyUp(key, function() changeWalkDir(dir, true) end, gameRootPanel, true)
   g_keyboard.bindKeyPress(key, function() smartWalk(dir) end, gameRootPanel)
 end
@@ -421,8 +421,8 @@ function smartWalk(dir)
       func = g_game.walk
     end
     local dire = smartWalkDir or dir
-    func(dire, firstPress)
-    firstPress = false
+    func(dire, auxKeyDownWalk)
+    auxKeyDownWalk = false
     return true
   end
   return false

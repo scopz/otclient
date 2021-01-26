@@ -166,7 +166,7 @@ public:
     void safeLogout();
 
     // walk related
-    bool walk(Otc::Direction direction, bool direct = false);
+    bool walk(Otc::Direction direction, bool isKeyDown = false, bool direct = false);
     void autoWalk(std::vector<Otc::Direction> dirs);
     void forceWalk(Otc::Direction direction);
     void turn(Otc::Direction direction);
@@ -349,7 +349,6 @@ public:
     std::string getWorldName() { return m_worldName; }
     std::vector<uint8> getGMActions() { return m_gmActions; }
     bool isGM() { return !m_gmActions.empty(); }
-    Otc::Direction getLastWalkDir() { return m_lastWalkDir; }
 
     std::string formatCreatureName(const std::string &name);
     int findEmptyContainerId();
@@ -387,7 +386,7 @@ private:
     Otc::ChaseModes m_chaseMode;
     Otc::PickUpModes m_pickUpMode;
     Otc::PVPModes m_pvpMode;
-    Otc::Direction m_lastWalkDir;
+    Otc::Direction m_nextWalkDir;
     UnjustifiedPoints m_unjustifiedPoints;
     int m_openPvpSituations;
     bool m_safeFight;
@@ -404,7 +403,6 @@ private:
     int m_clientVersion;
     std::string m_clientSignature;
     int m_clientCustomOs;
-    bool m_nextStepSet;
     bool m_triedStop;
     Timer walkTimer;
 };

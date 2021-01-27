@@ -165,8 +165,6 @@ mkdir $pkgname
 cd $pkgname
 
 # copy otclient files
-mkdir mods
-cp $workdir/otclient/mods/README.txt mods/
 cp -R $workdir/otclient/modules .
 cp -R $workdir/otclient/data .
 cp $workdir/otclient/build.linux32/otclient otclient-32
@@ -211,8 +209,6 @@ mkdir $pkgname
 cd $pkgname
 
 # copy otclient files
-mkdir mods
-cp $workdir/otclient/mods/README.txt mods/
 cp -R $workdir/otclient/modules .
 cp -R $workdir/otclient/data .
 #cp $mingwbin/libEGL.dll .
@@ -230,7 +226,7 @@ cp $workdir/otclient/AUTHORS AUTHORS.txt
 cp $workdir/otclient/BUGS BUGS.txt
 cp $workdir/otclient/LICENSE LICENSE.txt
 cp $workdir/otclient/README.md README.txt
-unix2dos LICENSE.txt README.txt BUGS.txt AUTHORS.txt mods/README.txt
+unix2dos LICENSE.txt README.txt BUGS.txt AUTHORS.txt
 
 # remove git files
 find -name '.git*' -exec rm -rf {} \;

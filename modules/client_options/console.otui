@@ -26,3 +26,19 @@ Panel
   OptionCheckBox
     id: showPrivateMessagesOnScreen
     !text: tr('Show private messages on screen')
+
+  OptionCheckBox
+    id: showOwnCastsInConsole
+    !text: tr('Show your own spell casts in console')
+
+  OptionCheckBox
+    id: showOwnCastsInScreen
+    !text: tr('Show your own spell casts in screen')
+
+  OptionCheckBox
+    id: showOthersCastsInConsole
+    !text: tr('Show spell casts from others in console')
+
+  OptionCheckBox
+    id: showOthersCastsInScreen
+    !text: tr('Show spell casts from others in screen')

@@ -30,6 +30,7 @@
 StaticText::StaticText()
 {
     m_mode = Otc::MessageNone;
+    m_showName = true;
     m_color = Color::white;
     m_cachedText.setFont(g_fonts.getFont("verdana-11px-rounded"));
     m_cachedText.setAlign(Fw::AlignCenter);
@@ -59,13 +60,14 @@ void StaticText::setText(const std::string& text)
     m_cachedText.setText(text);
 }
 
-bool StaticText::addMessage(const std::string& name, Otc::MessageMode mode, const std::string& text)
+bool StaticText::addMessage(const std::string& name, Otc::MessageMode mode, const std::string& text, bool showName)
 {
     //TODO: this could be moved to lua
     // first message
     if(m_messages.empty()) {
         m_name = name;
         m_mode = mode;
+        m_showName = showName;
     }
     // check if we can really own the message
     else if(m_name != name || m_mode != mode) {
@@ -121,24 +123,33 @@ void StaticText::compose()
     std::string text;
 
     if(m_mode == Otc::MessageSay) {
-        text += m_name;
-        text += " says:\n";
+        if (m_showName)
+            text += m_name + " says:\n";
         m_color = Color(239, 239, 0);
+
     } else if(m_mode == Otc::MessageWhisper) {
-        text += m_name;
-        text += " whispers:\n";
+        if (m_showName)
+            text += m_name + " whispers:\n";
         m_color = Color(239, 239, 0);
+
     } else if(m_mode == Otc::MessageYell) {
-        text += m_name;
-        text += " yells:\n";
+        if (m_showName)
+            text += m_name + " yells:\n";
         m_color = Color(239, 239, 0);
-    } else if(m_mode == Otc::MessageMonsterSay || m_mode == Otc::MessageMonsterYell || m_mode == Otc::MessageSpell
-              || m_mode == Otc::MessageBarkLow || m_mode == Otc::MessageBarkLoud) {
+
+    } else if(m_mode == Otc::MessageSpell) {
+        if (m_showName)
+            text += m_name + " casts:\n";
+        m_color = Color(249, 121, 205);
+
+    } else if(m_mode == Otc::MessageMonsterSay || m_mode == Otc::MessageMonsterYell || m_mode == Otc::MessageBarkLow || m_mode == Otc::MessageBarkLoud) {
         m_color = Color(254, 101, 0);
+
     } else if(m_mode == Otc::MessageNpcFrom || m_mode == Otc::MessageNpcFromStartBlock) {
-        text += m_name;
-        text += " says:\n";
+        if (m_showName)
+            text += m_name + " says:\n";
         m_color = Color(95, 247, 247);
+
     } else {
         g_logger.warning(stdext::format("Unknown speak type: %d", m_mode));
     }

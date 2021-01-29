@@ -186,6 +186,34 @@ void buildMessageModesMap(int version) {
         messageModesMap[Otc::MessageLook]                    = 25;
         messageModesMap[Otc::MessageFailure]                 = 26;
         messageModesMap[Otc::MessageBlue]                    = 27;
+    } else if(version == 773) {
+        messageModesMap[Otc::MessageNone]                    = 0;
+        messageModesMap[Otc::MessageSay]                     = 1;
+        messageModesMap[Otc::MessageWhisper]                 = 2;
+        messageModesMap[Otc::MessageYell]                    = 3;
+        messageModesMap[Otc::MessagePrivateFrom]             = 4;
+        messageModesMap[Otc::MessagePrivateTo]               = 4;
+        messageModesMap[Otc::MessageChannel]                 = 5;
+        messageModesMap[Otc::MessageRVRChannel]              = 6;
+        messageModesMap[Otc::MessageRVRAnswer]               = 7;
+        messageModesMap[Otc::MessageRVRContinue]             = 8;
+        messageModesMap[Otc::MessageGamemasterBroadcast]     = 9;
+        messageModesMap[Otc::MessageGamemasterChannel]       = 10;
+        messageModesMap[Otc::MessageGamemasterPrivateFrom]   = 11;
+        messageModesMap[Otc::MessageGamemasterPrivateTo]     = 11;
+        messageModesMap[Otc::MessageChannelHighlight]        = 12;
+        // 13, 14 ??
+        messageModesMap[Otc::MessageSpell]                   = 15;
+        messageModesMap[Otc::MessageMonsterSay]              = 16;
+        messageModesMap[Otc::MessageMonsterYell]             = 17;
+        messageModesMap[Otc::MessageWarning]                 = 18;
+        messageModesMap[Otc::MessageGame]                    = 19;
+        messageModesMap[Otc::MessageLogin]                   = 20;
+        messageModesMap[Otc::MessageStatus]                  = 21;
+        messageModesMap[Otc::MessageLook]                    = 22;
+        messageModesMap[Otc::MessageFailure]                 = 23;
+        messageModesMap[Otc::MessageBlue]                    = 24;
+        messageModesMap[Otc::MessageRed]                     = 25;
     } else if(version >= 760) {
         messageModesMap[Otc::MessageNone]                    = 0;
         messageModesMap[Otc::MessageSay]                     = 1;

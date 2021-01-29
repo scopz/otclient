@@ -43,7 +43,7 @@ public:
 
     void setText(const std::string& text);
     void setFont(const std::string& fontName);
-    bool addMessage(const std::string& name, Otc::MessageMode mode, const std::string& text);
+    bool addMessage(const std::string& name, Otc::MessageMode mode, const std::string& text, bool showName = true);
 
     StaticTextPtr asStaticText() { return static_self_cast<StaticText>(); }
     bool isStaticText() { return true; }
@@ -60,6 +60,7 @@ private:
     std::deque<std::pair<std::string, ticks_t>> m_messages;
     std::string m_name;
     Otc::MessageMode m_mode;
+    bool m_showName;
     Color m_color;
     CachedText m_cachedText;
     ScheduledEventPtr m_updateEvent;

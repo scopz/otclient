@@ -154,9 +154,25 @@ function UIMiniWindow:onVisibilityChange(visible)
   self:fitOnParent()
 end
 
+function UIMiniWindow:onStyleApply(styleName, styleNode)
+  self.containerDraggable = true
+  if styleName == "MiniWindow" or styleName == "ContainerWindow" then
+    for name, value in pairs(styleNode) do
+      if name == 'container-draggable' then
+        self.containerDraggable = value
+      end
+    end
+  end
+end
+
 function UIMiniWindow:onDragEnter(mousePos)
   local parent = self:getParent()
   if not parent then return false end
+
+  local oldPos = self:getPosition()
+  if not self.containerDraggable and mousePos.y-18 > oldPos.y then
+    return false
+  end
 
   if parent:getClassName() == 'UIMiniWindowContainer' then
     local containerParent = parent:getParent()
@@ -165,7 +181,6 @@ function UIMiniWindow:onDragEnter(mousePos)
     parent:saveChildren()
   end
 
-  local oldPos = self:getPosition()
   self.movingReference = { x = mousePos.x - oldPos.x, y = mousePos.y - oldPos.y }
   self:setPosition(oldPos)
   self.free = true

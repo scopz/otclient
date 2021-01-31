@@ -341,7 +341,7 @@ int Tile::getGroundSpeed()
 
 uint8 Tile::getMinimapColorByte()
 {
-    uint8 color = 255; // alpha
+    uint8 color = 0;
     if(m_minimapColor != 0)
         return m_minimapColor;
 

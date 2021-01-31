@@ -103,6 +103,8 @@ void LocalPlayer::walk(const Position& oldPos, const Position& newPos)
         m_preWalking = false;
         m_secondPreWalk = false;
         m_lastPrewalkDone = true;
+        m_direction = oldPos.getDirectionFromPosition(newPos);
+
         // if is to the last prewalk destination, updates the walk preserving the animation
         if(newPos == m_lastPrewalkDestination) {
             updateWalk();

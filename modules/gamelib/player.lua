@@ -11,6 +11,7 @@ PlayerStates = {
   Haste = 64,
   Swords = 128,
   Stopped = 256,
+  AttackBuff = 512,
 --  Drowning = 256,
 --  Freezing = 512,
 --  Dazzled = 1024,

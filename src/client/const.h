@@ -277,7 +277,8 @@ namespace Otc
         IconParalyze = 32,
         IconHaste = 64,
         IconSwords = 128,
-        IconStopped = 256
+        IconStopped = 256,
+        IconAttackBuff = 512,
         //IconDrowning = 256,
         //IconFreezing = 512,
         //IconDazzled = 1024,

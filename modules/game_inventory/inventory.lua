@@ -8,6 +8,7 @@ ConditionIcons = {
   [PlayerStates.Haste] = { tooltip = tr('You are hasted'), path = '/images/game/states/haste', id = 'condition_haste' },
   [PlayerStates.Swords] = { tooltip = tr('You may not logout during a fight'), path = '/images/game/states/logout_block', id = 'condition_logout_block' },
   [PlayerStates.Stopped] = { tooltip = tr('You can\'t move'), path = '/images/game/states/stopped', id = 'condition_trapped' },
+  [PlayerStates.AttackBuff] = { tooltip = tr('Your attack is strengthened'), path = '/images/game/states/attack_buff', id = 'condition_attack_buff' },
 --  [PlayerStates.Drowning] = { tooltip = tr('You are drowning'), path = '/images/game/states/drowning', id = 'condition_drowning' },
 --  [PlayerStates.Freezing] = { tooltip = tr('You are freezing'), path = '/images/game/states/freezing', id = 'condition_freezing' },
 --  [PlayerStates.Dazzled] = { tooltip = tr('You are dazzled'), path = '/images/game/states/dazzled', id = 'condition_dazzled' },

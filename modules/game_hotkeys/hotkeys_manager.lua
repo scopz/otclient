@@ -25,6 +25,7 @@ perServer = true
 perCharacter = true
 mouseGrabberWidget = nil
 currentHotkeys = nil
+disableExpandedHotkeys = 0
 boundCombosCallback = {}
 hotkeysList = {}
 lastHotkeyTime = g_clock.millis()
@@ -99,10 +100,12 @@ function show()
   hotkeysWindow:show()
   hotkeysWindow:raise()
   hotkeysWindow:focus()
+  enableAllHotkeys(false)
 end
 
 function hide()
   hotkeysWindow:hide()
+  enableAllHotkeys(true)
 end
 
 function toggle()
@@ -500,10 +503,18 @@ function hotkeyCaptureOk(assignWindow, keyCombo)
   assignWindow:destroy()
 end
 
+function enableAllHotkeys(value)
+  disableExpandedHotkeys = disableExpandedHotkeys + (value and -1 or 1)
+
+  if disableExpandedHotkeys < 0 then
+    disableExpandedHotkeys = 0;
+  end
+end
+
 function checkChatEnabled(keyCombo)
-  return modules.game_console.consoleToggleChat:isChecked() or
+  return disableExpandedHotkeys == 0 and (modules.game_console.consoleToggleChat:isChecked() or
       string.match(keyCombo, "F%d%d?") or
       string.match(keyCombo, "Ctrl%+") or
-      string.match(keyCombo, "Alt%+")
+      string.match(keyCombo, "Alt%+"))
 end
 

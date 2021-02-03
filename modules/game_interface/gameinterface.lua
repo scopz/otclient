@@ -5,6 +5,8 @@ gameMapPanel = nil
 gameRightPanel = nil
 gameRightExtraPanel = nil
 gameLeftPanel = nil
+gameSelectPanelButtons = {}
+gameSelectedPanel = nil
 gameBottomPanel = nil
 mouseGrabberWidget = nil
 countWindow = nil
@@ -63,6 +65,26 @@ function init()
   pingLabel = gameRootPanel:getChildById('pingLabel')
   fpsLabel = gameRootPanel:getChildById('fpsLabel')
 
+  gameSelectPanelButtons = {
+    {
+      panel = gameRightPanel,
+      button = gameRootPanel:getChildById('gameSelectRightColumn'),
+    },{
+      panel = gameRightExtraPanel,
+      button = gameRootPanel:getChildById('gameSelectRightExtraColumn'),
+    },{
+      panel = gameLeftPanel,
+      button = gameRootPanel:getChildById('gameSelectLeftColumn'),
+    },
+  }
+
+  columnSelectRadioGroup = UIRadioGroup.create()
+  for _,btn in pairs(gameSelectPanelButtons) do
+    columnSelectRadioGroup:addWidget(btn.button)
+    connect(btn.button, { onCheckChange = onSelectPanel })
+  end
+  columnSelectRadioGroup:selectWidget(gameSelectPanelButtons[1].button)
+
   connect(gameLeftPanel, { onVisibilityChange = onExtraPanelVisibilityChange })
   connect(gameRightExtraPanel, { onVisibilityChange = onExtraPanelVisibilityChange })
 
@@ -72,6 +94,17 @@ function init()
 
   if g_game.isOnline() then
     show()
+  end
+end
+
+function onSelectPanel(self, checked)
+  if checked then
+    for _,btn in pairs(gameSelectPanelButtons) do
+      if btn.button == self then
+        gameSelectedPanel = btn
+        break
+      end
+    end
   end
 end
 
@@ -156,6 +189,10 @@ function terminate()
   disconnect(g_app, {
     onFps = updateFps
   })
+
+  for _,btn in pairs(gameSelectPanelButtons) do
+    disconnect(btn.button, { onCheckChange = onSelectPanel })
+  end
 
   disconnect(gameLeftPanel, { onVisibilityChange = onExtraPanelVisibilityChange })
   disconnect(gameRightExtraPanel, { onVisibilityChange = onExtraPanelVisibilityChange })
@@ -929,6 +966,10 @@ end
 
 function getRightExtraPanel()
   return gameRightExtraPanel
+end
+
+function getSelectedPanel()
+  return gameSelectedPanel.panel
 end
 
 function getBottomPanel()

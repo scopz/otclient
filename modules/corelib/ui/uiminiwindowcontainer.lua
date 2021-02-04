@@ -82,6 +82,26 @@ function UIMiniWindowContainer:fitAll(noRemoveChild)
   end
 end
 
+function UIMiniWindowContainer:fits(child, minContentHeight, maxContentHeight)
+  local containerPanel = child:getChildById('contentsPanel')
+  local indispensableHeight = containerPanel:getMarginTop() + containerPanel:getMarginBottom() + containerPanel:getPaddingTop() + containerPanel:getPaddingBottom()
+
+  local totalHeight = 0
+  local children = self:getChildren()
+  for i=1,#children do
+    if children[i]:isVisible() then
+      totalHeight = totalHeight + children[i]:getHeight()
+    end
+  end
+
+  local available = self:getHeight() - (self:getPaddingTop() + self:getPaddingBottom()) - totalHeight
+
+  if maxContentHeight > 0 and available >= (maxContentHeight + indispensableHeight) then return maxContentHeight + indispensableHeight
+  elseif available >= (minContentHeight + indispensableHeight) then return available
+  else return -1
+  end
+end
+
 function UIMiniWindowContainer:onDrop(widget, mousePos)
   if widget.UIMiniWindowContainer then
     local oldParent = widget:getParent()

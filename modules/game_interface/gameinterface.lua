@@ -976,8 +976,24 @@ function getBottomPanel()
   return gameBottomPanel
 end
 
-function onExtraPanelVisibilityChange(leftPanel, visible)
+function findContentPanelAvailable(child, minContentHeight)
+  if gameSelectedPanel.panel:isVisible() and gameSelectedPanel.panel:fits(child, minContentHeight, 0) >= 0 then
+    return gameSelectedPanel.panel
+  end
 
+  for _,btn in pairs(gameSelectPanelButtons) do
+    if btn ~= gameSelectedButton and btn.panel:isVisible() and btn.panel:fits(child, minContentHeight, 0) >= 0 then
+      return btn.panel
+    end
+  end
+
+  return gameSelectedPanel.panel
+end
+
+function onExtraPanelVisibilityChange(panel, visible)
+  if not visible and gameSelectedPanel.panel == panel then
+    columnSelectRadioGroup:selectWidget(gameSelectPanelButtons[1].button)
+  end
 end
 
 function nextViewMode()

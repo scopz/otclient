@@ -38,3 +38,18 @@ function UIWindow:onDragMove(mousePos, mouseMoved)
   self:setPosition(pos)
   self:bindRectToParent()
 end
+
+
+function UIWindow:show()
+  if modules.game_hotkeys then
+    modules.game_hotkeys.enableAllHotkeys(false)
+  end
+  self:setVisible(true)
+end
+
+function UIWindow:hide()
+  if modules.game_hotkeys then
+    modules.game_hotkeys.enableAllHotkeys(true)
+  end
+  self:setVisible(false)
+end

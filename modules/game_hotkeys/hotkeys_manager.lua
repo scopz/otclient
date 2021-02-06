@@ -100,12 +100,10 @@ function show()
   hotkeysWindow:show()
   hotkeysWindow:raise()
   hotkeysWindow:focus()
-  enableAllHotkeys(false)
 end
 
 function hide()
   hotkeysWindow:hide()
-  enableAllHotkeys(true)
 end
 
 function toggle()

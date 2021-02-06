@@ -933,13 +933,17 @@ function moveStackableItem(item, toPos)
   local moveFunc = function()
     g_game.move(item, toPos, itembox:getItemCount())
     okButton:getParent():destroy()
+    modules.game_hotkeys.enableAllHotkeys(true)
     countWindow = nil
   end
   local cancelButton = countWindow:getChildById('buttonCancel')
   local cancelFunc = function()
     cancelButton:getParent():destroy()
+    modules.game_hotkeys.enableAllHotkeys(true)
     countWindow = nil
   end
+
+  modules.game_hotkeys.enableAllHotkeys(false)
 
   countWindow.onEnter = moveFunc
   countWindow.onEscape = cancelFunc

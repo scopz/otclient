@@ -35,7 +35,7 @@ enum {
 LightView::LightView()
 {
     m_lightbuffer = g_framebuffers.createFrameBuffer();
-    m_lightTexture = generateLightBubble(0.1f);
+    m_lightTexture = generateLightBubble(0.25f);
     m_blendEquation = Painter::BlendEquation_Add;
     reset();
 }
@@ -53,7 +53,7 @@ TexturePtr LightView::generateLightBubble(float centerFactor)
             float intensity = stdext::clamp<float>((bubbleRadius - radius) / (float)(bubbleRadius - centerRadius), 0.0f, 1.0f);
 
             // light intensity varies inversely with the square of the distance
-            intensity = intensity * intensity;
+            intensity = std::pow(intensity, 2.5);
             uint8_t colorByte = intensity * 0xff;
 
             uint8_t pixel[4] = {colorByte,colorByte,colorByte,0xff};

@@ -198,6 +198,7 @@ void Client::registerLuaFunctions()
     g_lua.bindSingletonFunction("g_game", "use", &Game::use, &g_game);
     g_lua.bindSingletonFunction("g_game", "useWith", &Game::useWith, &g_game);
     g_lua.bindSingletonFunction("g_game", "selectTarget", &Game::selectTarget, &g_game);
+    g_lua.bindSingletonFunction("g_game", "sellItemToNpc", &Game::sellItemToNpc, &g_game);
     g_lua.bindSingletonFunction("g_game", "useInventoryItem", &Game::useInventoryItem, &g_game);
     g_lua.bindSingletonFunction("g_game", "useInventoryItemWith", &Game::useInventoryItemWith, &g_game);
     g_lua.bindSingletonFunction("g_game", "findItemInContainers", &Game::findItemInContainers, &g_game);

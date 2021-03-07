@@ -157,6 +157,16 @@ void Game::processSelectTarget(int code, const std::function<void(ThingPtr)> &ca
     g_lua.callGlobalField("g_game", "onSelectTarget", code);
 }
 
+void Game::processSellTransaction(int npcId)
+{
+    g_lua.callGlobalField("g_game", "onSellTransaction", npcId);
+}
+
+void Game::processNpcFocusLost(int npcId)
+{
+    g_lua.callGlobalField("g_game", "onNpcFocusLost", npcId);
+}
+
 void Game::processLoginWait(const std::string& message, int time)
 {
     g_lua.callGlobalField("g_game", "onLoginWait", message, time);
@@ -857,6 +867,17 @@ void Game::selectTarget(const int& code, const ThingPtr& thing)
     if (it != m_callbacks.end()) {
         it->second(thing);
         m_callbacks.erase(it);
+    }
+}
+
+void Game::sellItemToNpc(const int& npcId, const ThingPtr& thing)
+{
+    if(!canPerformGameAction() || !thing)
+        return;
+
+    if(thing->isItem()) {
+        ItemPtr item = thing->static_self_cast<Item>();
+        m_protocolGame->sendSellItemToNpc(npcId, item->getPosition(), item->getId(), item->getStackPos());
     }
 }
 

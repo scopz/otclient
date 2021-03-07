@@ -300,6 +300,13 @@ void ProtocolGame::parseMessage(const InputMessagePtr& msg)
             case Proto::GameServerQuestLine:
                 parseQuestLine(msg);
                 break;
+            // PROTOCOL==773
+            case Proto::GameServerStartSellTransaction:
+                parseStartSellTransaction(msg);
+                break;
+            case Proto::GameServerNpcFocusLost:
+                parseNpcFocusLost(msg);
+                break;
             // PROTOCOL>=870
             case Proto::GameServerSpellDelay:
                 parseSpellCooldown(msg);
@@ -1915,6 +1922,18 @@ void ProtocolGame::parseQuestLine(const InputMessagePtr& msg)
     }
 
     g_game.processQuestLine(questId, questMissions);
+}
+
+void ProtocolGame::parseStartSellTransaction(const InputMessagePtr& msg)
+{
+    uint32_t npcId = msg->getU32();
+    g_game.processSellTransaction(npcId);
+}
+
+void ProtocolGame::parseNpcFocusLost(const InputMessagePtr& msg)
+{
+    uint32_t npcId = msg->getU32();
+    g_game.processNpcFocusLost(npcId);
 }
 
 void ProtocolGame::parseChannelEvent(const InputMessagePtr& msg)

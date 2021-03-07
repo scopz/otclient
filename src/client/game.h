@@ -79,6 +79,7 @@ protected:
     void processLoginError(const std::string& error);
     void processLoginAdvice(const std::string& message);
     void processSelectTarget(int code, const std::function<void(ThingPtr)>& callback);
+    void processSellTransaction(int npcId);
     void processLoginWait(const std::string& message, int time);
     void processLoginToken(bool unknown);
     void processLogin();
@@ -138,6 +139,7 @@ protected:
     void processOpenNpcTrade(const std::vector<std::tuple<ItemPtr, std::string, int, int, int> >& items);
     void processPlayerGoods(int money, const std::vector<std::tuple<ItemPtr, int> >& goods);
     void processCloseNpcTrade();
+    void processNpcFocusLost(int npcId);
 
     // player trade
     void processOwnTrade(const std::string& name, const std::vector<ItemPtr>& items);
@@ -180,6 +182,7 @@ public:
     void use(const ThingPtr& thing);
     void useWith(const ItemPtr& item, const ThingPtr& toThing);
     void selectTarget(const int& code, const ThingPtr& toThing);
+    void sellItemToNpc(const int& npcId, const ThingPtr& toThing);
     void useInventoryItem(int itemId);
     void useInventoryItemWith(int itemId, const ThingPtr& toThing);
     ItemPtr findItemInContainers(uint itemId, int subType);

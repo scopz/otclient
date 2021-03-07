@@ -119,11 +119,13 @@ namespace Proto {
         GameServerPlayerSkills              = 161,
         GameServerPlayerState               = 162,
         GameServerClearTarget               = 163,
-        GameServerPlayerModes               = 167,
         GameServerSpellDelay                = 164, // 870
         GameServerSpellGroupDelay           = 165, // 870
         GameServerMultiUseDelay             = 166, // 870
+        GameServerPlayerModes               = 167,
         GameServerSetStoreDeepLink          = 168, // 1097
+        GameServerStartSellTransaction      = 169, // 773
+        GameServerNpcFocusLost              = 185, // 773
         GameServerTalk                      = 170,
         GameServerChannels                  = 171,
         GameServerOpenChannel               = 172,
@@ -186,6 +188,8 @@ namespace Proto {
         // NOTE: add any custom opcodes in this range
         // 51 - 99
 		ClientTalkTargeted                  = 52,
+        ClientSellItemToNpc                 = 53,
+        ClientCancelSellingTransaction      = 54,
 
         // original tibia ONLY
         ClientAutoWalk                      = 100,
@@ -240,7 +244,6 @@ namespace Proto {
         ClientPassLeadership                = 166,
         ClientLeaveParty                    = 167,
         ClientShareExperience               = 168,
-        ClientDisbandParty                  = 169,
         ClientOpenOwnChannel                = 170,
         ClientInviteToOwnChannel            = 171,
         ClientExcludeFromOwnChannel         = 172,

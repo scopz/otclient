@@ -1013,7 +1013,7 @@ void ProtocolGame::parseOpenNpcTrade(const InputMessagePtr& msg)
 
     for(int i = 0; i < listCount; ++i) {
         uint16 itemId = msg->getU16();
-        uint8 count = msg->getU8();
+        uint16 count = msg->getU16();
 
         ItemPtr item = Item::create(itemId);
         item->setCountOrSubType(count);
@@ -1046,7 +1046,7 @@ void ProtocolGame::parsePlayerGoods(const InputMessagePtr& msg)
         if(g_game.getFeature(Otc::GameDoubleShopSellAmount))
             amount = msg->getU16();
         else
-            amount = msg->getU8();
+            amount = msg->getU16();
 
         goods.emplace_back(Item::create(itemId), amount);
     }
@@ -1952,7 +1952,7 @@ void ProtocolGame::parseItemInfo(const InputMessagePtr& msg)
     for(int i=0;i<size;++i) {
         ItemPtr item(new Item);
         item->setId(msg->getU16());
-        item->setCountOrSubType(msg->getU8());
+        item->setCountOrSubType(msg->getU16());
 
         std::string desc = msg->getString();
         list.emplace_back(item, desc);
@@ -2413,7 +2413,7 @@ ItemPtr ProtocolGame::getItem(const InputMessagePtr& msg, int id)
     }
 
     if(item->isStackable() || item->isFluidContainer() || item->isSplash() || item->isChargeable())
-        item->setCountOrSubType(msg->getU8());
+        item->setCountOrSubType(msg->getU16());
 
     if(g_game.getFeature(Otc::GameItemAnimationPhase)) {
         if(item->getAnimationPhases() > 1) {

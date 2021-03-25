@@ -143,9 +143,9 @@ namespace Otc
 
     enum Skill {
         Fist = 0,
-        Club,
-        Sword,
-        Axe,
+        Bash,
+        Thrust,
+        Slash,
         Distance,
         Shielding,
         Fishing,

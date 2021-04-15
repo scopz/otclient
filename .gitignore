@@ -36,7 +36,8 @@ things/*
 [Dd]ebug/
 [Rr]elease/
 x64/
-build/
+build/*
+!build/cmake.sh
 [Bb]in/
 [Oo]bj/
 cmake-build-*/

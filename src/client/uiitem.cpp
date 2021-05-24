@@ -84,6 +84,13 @@ void UIItem::setItemId(int id)
         else
             m_item->setId(id);
     }
+
+    callLuaField("setRank", m_item? m_item->getRank() : -1);
+}
+
+void UIItem::setItem(const ItemPtr& item) {
+    m_item = item;
+    callLuaField("setRank", item? item->getRank() : -1);
 }
 
 void UIItem::onStyleApply(const std::string& styleName, const OTMLNodePtr& styleNode)

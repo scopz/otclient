@@ -55,6 +55,7 @@ enum ItemAttr : uint8
     ATTR_SLEEPSTART = 21,
     ATTR_CHARGES = 22,
     ATTR_CONTAINER_ITEMS = 23,
+    ATTR_RANK = 24,
     ATTR_NAME = 30,
     ATTR_PLURALNAME = 31,
     ATTR_ATTACK = 33,
@@ -108,6 +109,9 @@ public:
 
     void setDoorId(uint8 doorId) { m_attribs.set(ATTR_HOUSEDOORID, doorId); }
     uint8 getDoorId() { return m_attribs.get<uint8>(ATTR_HOUSEDOORID); }
+
+    void setRank(uint8 rank) { m_attribs.set(ATTR_RANK, rank); }
+    uint8 getRank() { return m_attribs.get<uint8>(ATTR_RANK); }
 
     uint16 getUniqueId() { return m_attribs.get<uint16>(ATTR_ACTION_ID); }
     uint16 getActionId() { return m_attribs.get<uint16>(ATTR_UNIQUE_ID); }

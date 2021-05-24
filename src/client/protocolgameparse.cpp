@@ -1013,10 +1013,13 @@ void ProtocolGame::parseOpenNpcTrade(const InputMessagePtr& msg)
 
     for(int i = 0; i < listCount; ++i) {
         uint16 itemId = msg->getU16();
-        uint16 count = msg->getU16();
-
         ItemPtr item = Item::create(itemId);
-        item->setCountOrSubType(count);
+
+        if (!item->isStackable()) {
+            item->setRank(msg->getU8());
+        }
+
+        item->setCountOrSubType(msg->getU16());
 
         std::string name = msg->getString();
         int weight = msg->getU32();
@@ -1041,14 +1044,19 @@ void ProtocolGame::parsePlayerGoods(const InputMessagePtr& msg)
     int size = msg->getU8();
     for(int i = 0; i < size; i++) {
         int itemId = msg->getU16();
-        int amount;
+        ItemPtr item = Item::create(itemId);
 
+        if (!item->isStackable()) {
+            item->setRank(msg->getU8());
+        }
+
+        int amount;
         if(g_game.getFeature(Otc::GameDoubleShopSellAmount))
             amount = msg->getU16();
         else
             amount = msg->getU16();
-
-        goods.emplace_back(Item::create(itemId), amount);
+        
+        goods.emplace_back(item, amount);
     }
 
     g_game.processPlayerGoods(money, goods);
@@ -1952,6 +1960,9 @@ void ProtocolGame::parseItemInfo(const InputMessagePtr& msg)
     for(int i=0;i<size;++i) {
         ItemPtr item(new Item);
         item->setId(msg->getU16());
+        if (!item->isStackable()) {
+            item->setRank(msg->getU8());
+        }
         item->setCountOrSubType(msg->getU16());
 
         std::string desc = msg->getString();
@@ -2407,6 +2418,10 @@ ItemPtr ProtocolGame::getItem(const InputMessagePtr& msg, int id)
     ItemPtr item = Item::create(id);
     if(item->getId() == 0)
         stdext::throw_exception(stdext::format("unable to create item with invalid id %d", id));
+
+    if (!item->isStackable()) {
+        item->setRank(msg->getU8());
+    }
 
     if(g_game.getFeature(Otc::GameThingMarks)) {
         msg->getU8(); // mark

@@ -193,4 +193,5 @@ void UIWidget::setImageSource(const std::string& source)
     }
 
     m_imageMustRecache = true;
+    m_imageSource = source;
 }

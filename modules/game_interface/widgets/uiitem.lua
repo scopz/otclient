@@ -1,3 +1,21 @@
+local itemRanksIcons = {
+  "/images/ui/item",
+  "/images/ui/item-rk1",
+  "/images/ui/item-rk2",
+  "/images/ui/item-rk3",
+  "/images/ui/item-rk4",
+  "/images/ui/item-rk5"
+}
+
+function UIItem:onSetup()
+  local defaultImageSource = self:getImageSource();
+  if defaultImageSource:len() > 0 then
+    self.defaultImageSource = defaultImageSource
+  else
+    self.defaultImageSource = itemRanksIcons[1]
+  end
+end
+
 function UIItem:onDragEnter(mousePos)
   if self:isVirtual() then return false end
 
@@ -17,6 +35,17 @@ function UIItem:onDragLeave(droppedWidget, mousePos)
   self:setBorderWidth(0)
   self.hoveredWho = nil
   return true
+end
+
+function UIItem:setRank(rank)
+  if rank > 5 then
+    rank = 5
+  end
+  if rank < 0 then
+    self:setImageSource(self.defaultImageSource)
+  else
+    self:setImageSource(itemRanksIcons[rank+1])
+  end
 end
 
 function UIItem:onDrop(widget, mousePos)

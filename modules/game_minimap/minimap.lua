@@ -142,6 +142,7 @@ end
 function toggleFullMap()
   if not fullmapView then
     fullmapView = true
+    modules.game_hotkeys.enableAllHotkeys(false)
     minimapWindow:hide()
     minimapWidget:setParent(modules.game_interface.getMapPanel())
     minimapWidget:setMargin(0)
@@ -157,6 +158,7 @@ function toggleFullMap()
     minimapWidget:setMarginBottom(originalMargin[3])
     minimapWidget:setMarginLeft(originalMargin[4])
     minimapWindow:show()
+    modules.game_hotkeys.enableAllHotkeys(true)
     minimapWidget:setAlternativeWidgetsVisible(false)
   end
 

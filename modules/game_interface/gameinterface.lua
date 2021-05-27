@@ -868,6 +868,9 @@ function processMouseAction(menuPosition, mouseButton, autoWalkPos, lookThing, u
         return true
       end
       return true
+    elseif useThing and useThing:isContainer() and keyboardModifiers == KeyboardCtrlShiftModifier and (mouseButton == MouseLeftButton or mouseButton == MouseRightButton) then
+      g_game.open(useThing)
+      return true
     elseif attackCreature and g_keyboard.isAltPressed() and (mouseButton == MouseLeftButton or mouseButton == MouseRightButton) then
       g_game.attack(attackCreature)
       return true
@@ -901,6 +904,9 @@ function processMouseAction(menuPosition, mouseButton, autoWalkPos, lookThing, u
         g_game.use(useThing)
         return true
       end
+      return true
+    elseif useThing and useThing:isContainer() and keyboardModifiers == KeyboardCtrlShiftModifier and (mouseButton == MouseLeftButton or mouseButton == MouseRightButton) then
+      g_game.open(useThing)
       return true
     elseif lookThing and keyboardModifiers == KeyboardShiftModifier and (mouseButton == MouseLeftButton or mouseButton == MouseRightButton) then
       g_game.look(lookThing)

@@ -60,7 +60,7 @@ LocalPlayer::LocalPlayer()
 
 void LocalPlayer::lockWalk(int millis)
 {
-    m_walkLockExpiration = std::max<int>(m_walkLockExpiration, (ticks_t) g_clock.millis() + millis);
+    m_walkLockExpiration = std::max<ticks_t>(m_walkLockExpiration, g_clock.millis() + millis);
 }
 
 bool LocalPlayer::canWalk(Otc::Direction)
@@ -109,8 +109,9 @@ void LocalPlayer::walk(const Position& oldPos, const Position& newPos)
         if(newPos == m_lastPrewalkDestination) {
             updateWalk();
         // was to another direction, replace the walk
-        } else
+        } else {
             Creature::walk(oldPos, newPos);
+        }
     }
     // no prewalk was going on, this must be an server side automated walk
     else {
@@ -266,8 +267,9 @@ void LocalPlayer::updateWalkOffset(int totalPixelsWalked)
             m_walkOffset.x = totalPixelsWalked;
         else if(m_direction == Otc::West || m_direction == Otc::NorthWest || m_direction == Otc::SouthWest)
             m_walkOffset.x = -totalPixelsWalked;
-    } else
+    } else {
         Creature::updateWalkOffset(totalPixelsWalked);
+    }
 }
 
 void LocalPlayer::updateWalk()
@@ -434,7 +436,7 @@ void LocalPlayer::setMana(double mana, double maxMana)
 {
     if(m_mana != mana || m_maxMana != maxMana) {
         double oldMana = m_mana;
-        double oldMaxMana;
+        double oldMaxMana = m_maxMana;
         m_mana = mana;
         m_maxMana = maxMana;
 

@@ -98,13 +98,6 @@ MiniWindow
       SkillValueLabel
 
     SkillButton
-      id: stamina
-      SkillNameLabel
-        !text: tr('Stamina')
-      SkillValueLabel
-      SkillPercentPanel
-
-    SkillButton
       id: offlineTraining
       SkillNameLabel
         !text: tr('Offline Training')

@@ -9,7 +9,6 @@ function init()
     onManaChange = onManaChange,
     onFreeCapacityChange = onFreeCapacityChange,
     onTotalCapacityChange = onTotalCapacityChange,
-    onStaminaChange = onStaminaChange,
     onOfflineTrainingChange = onOfflineTrainingChange,
     onRegenerationChange = onRegenerationChange,
     onSpeedChange = onSpeedChange,
@@ -45,7 +44,6 @@ function terminate()
     onManaChange = onManaChange,
     onFreeCapacityChange = onFreeCapacityChange,
     onTotalCapacityChange = onTotalCapacityChange,
-    onStaminaChange = onStaminaChange,
     onOfflineTrainingChange = onOfflineTrainingChange,
     onRegenerationChange = onRegenerationChange,
     onSpeedChange = onSpeedChange,
@@ -208,7 +206,6 @@ function refresh()
   onHealthChange(player, player:getHealth(), player:getMaxHealth())
   onManaChange(player, player:getMana(), player:getMaxMana())
   onFreeCapacityChange(player, player:getFreeCapacity())
-  onStaminaChange(player, player:getStamina())
   onMagicLevelChange(player, player:getMagicLevel(), player:getMagicLevelPercent())
   onOfflineTrainingChange(player, player:getOfflineTrainingTime())
   onRegenerationChange(player, player:getRegenerationTime())
@@ -368,42 +365,6 @@ end
 
 function onTotalCapacityChange(localPlayer, totalCapacity)
   checkAlert('capacity', localPlayer:getFreeCapacity(), totalCapacity, 20)
-end
-
-function onStaminaChange(localPlayer, stamina)
-  local hours = math.floor(stamina / 60)
-  local minutes = stamina % 60
-  if minutes < 10 then
-    minutes = '0' .. minutes
-  end
-  local percent = math.floor(100 * stamina / (42 * 60)) -- max is 42 hours --TODO not in all client versions
-
-  setSkillValue('stamina', hours .. ":" .. minutes)
-
-  --TODO not all client versions have premium time
-  if stamina > 2400 and g_game.getClientVersion() >= 1038 and localPlayer:isPremium() then
-  	local text = tr("You have %s hours and %s minutes left", hours, minutes) .. '\n' ..
-		tr("Now you will gain 50%% more experience")
-		setSkillPercent('stamina', percent, text, 'green')
-	elseif stamina > 2400 and g_game.getClientVersion() >= 1038 and not localPlayer:isPremium() then
-		local text = tr("You have %s hours and %s minutes left", hours, minutes) .. '\n' ..
-		tr("You will not gain 50%% more experience because you aren't premium player, now you receive only 1x experience points")
-		setSkillPercent('stamina', percent, text, '#89F013')
-	elseif stamina > 2400 and g_game.getClientVersion() < 1038 then
-		local text = tr("You have %s hours and %s minutes left", hours, minutes) .. '\n' ..
-		tr("If you are premium player, you will gain 50%% more experience")
-		setSkillPercent('stamina', percent, text, 'green')
-	elseif stamina <= 2400 and stamina > 840 then
-		setSkillPercent('stamina', percent, tr("You have %s hours and %s minutes left", hours, minutes), 'orange')
-	elseif stamina <= 840 and stamina > 0 then
-		local text = tr("You have %s hours and %s minutes left", hours, minutes) .. "\n" ..
-		tr("You gain only 50%% experience and you don't may gain loot from monsters")
-		setSkillPercent('stamina', percent, text, 'red')
-	elseif stamina == 0 then
-		local text = tr("You have %s hours and %s minutes left", hours, minutes) .. "\n" ..
-		tr("You don't may receive experience and loot from monsters")
-		setSkillPercent('stamina', percent, text, 'black')
-	end
 end
 
 function onOfflineTrainingChange(localPlayer, offlineTrainingTime)

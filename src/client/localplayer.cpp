@@ -50,7 +50,6 @@ LocalPlayer::LocalPlayer()
     m_magicLevel = -1;
     m_magicLevelPercent = -1;
     m_baseMagicLevel = -1;
-    m_soul = -1;
     m_stamina = -1;
     m_baseSpeed = -1;
     m_regenerationTime = -1;
@@ -463,16 +462,6 @@ void LocalPlayer::setBaseMagicLevel(double baseMagicLevel)
         m_baseMagicLevel = baseMagicLevel;
 
         callLuaField("onBaseMagicLevelChange", baseMagicLevel, oldBaseMagicLevel);
-    }
-}
-
-void LocalPlayer::setSoul(double soul)
-{
-    if(m_soul != soul) {
-        double oldSoul = m_soul;
-        m_soul = soul;
-
-        callLuaField("onSoulChange", soul, oldSoul);
     }
 }
 

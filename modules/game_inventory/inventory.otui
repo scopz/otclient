@@ -115,14 +115,14 @@ RedFistBox < CombatBox
   image-source: /images/game/combatmodes/redfistmode
 
 
-SoulLabel < GameLabel
-  text: Soul
+UnusedLabel < GameLabel
+  text: 
   color: #dddddd
   font: verdana-11px-monochrome
 
 
-SoulValueLabel < GameLabel
-  id: soulLabel
+UnusedValueLabel < GameLabel
+  id: unusedLabel
   color: #dddddd
   font: verdana-11px-monochrome
 
@@ -251,12 +251,12 @@ MiniWindowHeadLess
       anchors.horizontalCenter: prev.horizontalCenter
 
 
-    SoulLabel
+    UnusedLabel
       margin-top: 2
       anchors.top: slot9.bottom
       anchors.horizontalCenter: slot9.horizontalCenter
 
-    SoulValueLabel
+    UnusedValueLabel
       anchors.top: prev.bottom
       anchors.horizontalCenter: prev.horizontalCenter
       width: 100

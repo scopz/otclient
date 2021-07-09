@@ -136,7 +136,6 @@ namespace Otc
         MaxMana,
         MagicLevel,
         MagicLevelPercent,
-        Soul,
         Stamina,
         LastStatistic
     };

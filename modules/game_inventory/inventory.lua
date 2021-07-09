@@ -53,7 +53,7 @@ pvpModeRadioGroup = nil
 
 optionsButton = nil
 
-soulLabel = nil
+unusedLabel = nil
 capLabel = nil
 
 function init()
@@ -85,7 +85,7 @@ function init()
     modules.client_options:toggle()
   end
 
-  soulLabel = inventoryWindow:recursiveGetChildById('soulLabel')
+  unusedLabel = inventoryWindow:recursiveGetChildById('unusedLabel')
   capLabel = inventoryWindow:recursiveGetChildById('capLabel')
 
   fightModeRadioGroup = UIRadioGroup.create()
@@ -128,7 +128,6 @@ function init()
     onVocationChange = onVocationChange,
     onBlessingsChange = onBlessingsChange,
     onOutfitChange = onOutfitChange,
-    onSoulChange = onSoulChange,
     onFreeCapacityChange = onFreeCapacityChange,
     onStatesChange = onStatesChange
   })
@@ -165,7 +164,6 @@ function terminate()
     onVocationChange = onVocationChange,
     onBlessingsChange = onBlessingsChange,
     onOutfitChange = onOutfitChange,
-    onSoulChange = onSoulChange,
     onFreeCapacityChange = onFreeCapacityChange,
     onStatesChange = onStatesChange
   })
@@ -248,7 +246,6 @@ function online()
 
     pvpModesPanel:setVisible(g_game.getFeature(GamePVPMode))
 
-    onSoulChange(player, player:getSoul())
     onFreeCapacityChange(player, player:getFreeCapacity())
     onStatesChange(player, player:getStates(), 0)
 
@@ -339,10 +336,6 @@ end
 function onVocationChange(player, vocation, oldVocation)
   -- only show pickUp button for pally or none
   pickUpButton:setVisible(vocation == 3 or vocation == 0)
-end
-
-function onSoulChange(localPlayer, soul)
-  soulLabel:setText(soul)
 end
 
 function onFreeCapacityChange(player, freeCapacity)

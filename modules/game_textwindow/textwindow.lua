@@ -73,6 +73,8 @@ function onGameEditText(id, itemId, maxLength, text, writer, time)
     okButton:setMarginRight(0)
   else
     textWindow:setText(tr('Edit Text'))
+    textEdit:focus()
+    textEdit:setCursorPos(#text)
   end
 
   if description:getHeight() < 64 then
@@ -81,6 +83,7 @@ function onGameEditText(id, itemId, maxLength, text, writer, time)
 
   local function destroy()
     textWindow:destroy()
+    modules.game_hotkeys.enableAllHotkeys(true)
     table.removevalue(windows, textWindow)
   end
 
@@ -99,6 +102,8 @@ function onGameEditText(id, itemId, maxLength, text, writer, time)
   end
 
   textWindow.onEscape = destroy
+
+  modules.game_hotkeys.enableAllHotkeys(false)
 
   table.insert(windows, textWindow)
 end
@@ -119,6 +124,8 @@ function onGameEditList(id, doorId, text)
   textEdit:setMaxLength(8192)
   textEdit:setText(text)
   textEdit:setEditable(true)
+  textEdit:focus()
+  textEdit:setCursorPos(#text)
   description:setText(tr('Enter one name per line.'))
   textWindow:setText(tr('Edit List'))
 
@@ -128,6 +135,7 @@ function onGameEditList(id, doorId, text)
 
   local function destroy()
     textWindow:destroy()
+    modules.game_hotkeys.enableAllHotkeys(true)
     table.removevalue(windows, textWindow)
   end
 
@@ -139,6 +147,8 @@ function onGameEditList(id, doorId, text)
   okButton.onClick = doneFunc
   cancelButton.onClick = destroy
   textWindow.onEscape = destroy
+
+  modules.game_hotkeys.enableAllHotkeys(false)
 
   table.insert(windows, textWindow)
 end

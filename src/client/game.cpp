@@ -597,7 +597,7 @@ bool Game::walk(Otc::Direction direction, bool isKeyDown, bool direct)
     if(isFollowing()) cancelFollow();
 
     // if scheduled, walk directly
-    int ticks = direct || m_localPlayer->canWalk(direction)? 0 : m_localPlayer->getStepDuration() - walkTimer.ticksElapsed();
+    int ticks = direct || m_localPlayer->canWalk(direction)? 0 : m_localPlayer->getLastStepDuration() - walkTimer.ticksElapsed();
     if (ticks > 250 && !isKeyDown) {
     	return false;
     }
@@ -638,6 +638,16 @@ bool Game::walk(Otc::Direction direction, bool isKeyDown, bool direct)
     if (ticks > 0) {
         if (!m_walkEvent) {
             m_walkEvent = g_dispatcher.scheduleEvent([=]() { walk(direction, false, true); }, ticks);
+            m_nextWalkDir = direction;
+        }
+        return false;
+    } else if (m_localPlayer->isPreWalking()) {
+        if (direct || isKeyDown) {
+            if(m_walkEvent) {
+                m_walkEvent->cancel();
+                m_walkEvent = nullptr;
+            }
+            m_walkEvent = g_dispatcher.scheduleEvent([=]() { walk(direction, false, true); }, ticks < 100? 100 : ticks);
             m_nextWalkDir = direction;
         }
         return false;

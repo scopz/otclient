@@ -77,11 +77,11 @@ bool LocalPlayer::canWalk(Otc::Direction)
         return m_walkTimer.ticksElapsed() >= 150;
     
     // last walk is not done yet
-    if((m_walkTimer.ticksElapsed() < getStepDuration()) && !isAutoWalking())
+    if((m_walkTimer.ticksElapsed() < m_lastStepDuration) && !isAutoWalking())
         return false; // if last walk was a floorChange, there is no wait
 
     // prewalk has a timeout, because for some reason that I don't know yet the server sometimes doesn't answer the prewalk
-    bool prewalkTimeouted = m_walking && m_preWalking && m_walkTimer.ticksElapsed() >= getStepDuration() + PREWALK_TIMEOUT;
+    bool prewalkTimeouted = m_walking && m_preWalking && m_walkTimer.ticksElapsed() >= m_lastStepDuration + PREWALK_TIMEOUT;
 
     // avoid doing more walks than wanted when receiving a lot of walks from server
     if(!m_lastPrewalkDone && m_preWalking && !prewalkTimeouted)
@@ -273,7 +273,7 @@ void LocalPlayer::updateWalkOffset(int totalPixelsWalked)
 
 void LocalPlayer::updateWalk()
 {
-    int stepDuration = getStepDuration(true);
+    int stepDuration = m_lastStepDuration;
     int totalPixelsWalked = stepDuration ? std::min<int>((m_walkTimer.ticksElapsed() * Otc::TILE_PIXELS) / stepDuration, Otc::TILE_PIXELS) : 0;
 
     // update walk animation and offsets
@@ -282,7 +282,7 @@ void LocalPlayer::updateWalk()
     updateWalkingTile();
 
     // terminate walk only when client and server side walk are completed
-    if(m_walking && !m_preWalking && m_walkTimer.ticksElapsed() >= getStepDuration())
+    if(m_walking && !m_preWalking && m_walkTimer.ticksElapsed() >= m_lastStepDuration)
         terminateWalk();
 }
 

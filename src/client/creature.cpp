@@ -49,6 +49,7 @@ Creature::Creature() : Thing()
     m_direction = Otc::South;
     m_walkAnimationPhase = 0;
     m_walkedPixels = 0;
+    m_lastStepDuration = 0;
     m_walkTurnDirection = Otc::InvalidDirection;
     m_skull = Otc::SkullNone;
     m_shield = Otc::ShieldNone;
@@ -341,6 +342,7 @@ void Creature::walk(const Position& oldPos, const Position& newPos)
     m_lastStepDirection = oldPos.getDirectionFromPosition(newPos);
     m_lastStepFromPosition = oldPos;
     m_lastStepToPosition = newPos;
+    m_lastStepDuration = getStepDuration(true);
 
     // set current walking direction
     setDirection(m_lastStepDirection);
@@ -510,7 +512,7 @@ void Creature::updateWalkAnimation(int totalPixelsWalked, int stepDuration)
     if(totalPixelsWalked == 32 && !m_walkFinishAnimEvent) {
         auto self = static_self_cast<Creature>();
         m_walkFinishAnimEvent = g_dispatcher.scheduleEvent([self] {
-            if(!self->m_walking || self->m_walkTimer.ticksElapsed() >= self->getStepDuration(true))
+            if(!self->m_walking || self->m_walkTimer.ticksElapsed() >= self->m_lastStepDuration)
                 self->m_walkAnimationPhase = 0;
             self->m_walkFinishAnimEvent = nullptr;
         }, std::min<int>(footDelay, 200));
@@ -584,13 +586,13 @@ void Creature::nextWalkUpdate()
         m_walkUpdateEvent = g_dispatcher.scheduleEvent([self] {
             self->m_walkUpdateEvent = nullptr;
             self->nextWalkUpdate();
-        }, getStepDuration(true) / (Otc::TILE_PIXELS*ticksMultiplier));
+        }, m_lastStepDuration / (Otc::TILE_PIXELS*ticksMultiplier));
     }
 }
 
 void Creature::updateWalk()
 {
-    int stepDuration = getStepDuration(true);
+    int stepDuration = m_lastStepDuration;
     int totalPixelsWalked = stepDuration ? std::min<int>((m_walkTimer.ticksElapsed() * Otc::TILE_PIXELS) / stepDuration, Otc::TILE_PIXELS) : 0;
 
     // needed for paralyze effect
@@ -602,7 +604,7 @@ void Creature::updateWalk()
     updateWalkingTile();
 
     // terminate walk
-    if(m_walking && m_walkTimer.ticksElapsed() >= getStepDuration())
+    if(m_walking && m_walkTimer.ticksElapsed() >= m_lastStepDuration)
         terminateWalk();
 }
 

@@ -94,11 +94,12 @@ public:
     bool isPassable() { return m_passable; }
     Point getDrawOffset();
     int getStepDuration(bool ignoreDiagonal = false, Otc::Direction dir = Otc::InvalidDirection);
+    int getLastStepDuration() { return m_lastStepDuration; };
     Point getWalkOffset() { return m_walkOffset; }
     Position getLastStepFromPosition() { return m_lastStepFromPosition; }
     Position getLastStepToPosition() { return m_lastStepToPosition; }
-    float getStepProgress() { return m_walkTimer.ticksElapsed() / getStepDuration(); }
-    float getStepTicksLeft() { return getStepDuration() - m_walkTimer.ticksElapsed(); }
+    float getStepProgress() { return m_walkTimer.ticksElapsed() / m_lastStepDuration; }
+    float getStepTicksLeft() { return m_lastStepDuration - m_walkTimer.ticksElapsed(); }
     ticks_t getWalkTicksElapsed() { return m_walkTimer.ticksElapsed(); }
     double getSpeedFormula(Otc::SpeedFormula formula) { return m_speedFormula[formula]; }
     bool hasSpeedFormula();
@@ -197,6 +198,7 @@ protected:
     Otc::Direction m_lastStepDirection;
     Position m_lastStepFromPosition;
     Position m_lastStepToPosition;
+    int m_lastStepDuration;
     Position m_oldPosition;
 
     // jump related

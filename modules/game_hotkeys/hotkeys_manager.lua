@@ -431,10 +431,12 @@ function updateHotkeyForm(reset)
       hotkeyText:enable()
       hotkeyText:focus()
       hotKeyTextLabel:enable()
+      hotkeyText:setText(currentHotkeyLabel.value)
       if reset then
         hotkeyText:setCursorPos(-1)
+      else
+        hotkeyText:setCursorPos(#currentHotkeyLabel.value)
       end
-      hotkeyText:setText(currentHotkeyLabel.value)
       sendAutomatically:setChecked(currentHotkeyLabel.autoSend)
       sendAutomatically:setEnabled(currentHotkeyLabel.value and #currentHotkeyLabel.value > 0)
       selectObjectButton:enable()
@@ -507,6 +509,10 @@ function enableAllHotkeys(value)
   if disableExpandedHotkeys < 0 then
     disableExpandedHotkeys = 0;
   end
+end
+
+function areAllHotkeysDisabled()
+  return disableExpandedHotkeys > 0
 end
 
 function checkChatEnabled(keyCombo)

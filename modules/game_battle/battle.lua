@@ -20,7 +20,7 @@ function init()
   g_ui.importStyle('battlebutton')
   battleWindow = g_ui.loadUI('battle', modules.game_interface.getRightPanel())
   g_keyboard.bindKeyDown('Ctrl+B', toggle)
-  g_keyboard.bindKeyDown('Space', attackNext)
+  g_keyboard.bindKeyDown('Space', function() if not modules.game_hotkeys.areAllHotkeysDisabled() then attackNext() end end)
 
   -- this disables scrollbar auto hiding
   local scrollbar = battleWindow:getChildById('miniwindowScrollBar')

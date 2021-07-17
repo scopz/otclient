@@ -20,9 +20,15 @@
  * THE SOFTWARE.
  */
 
+#define PING_SIMULATOR 0
+
 #include "protocol.h"
 #include "connection.h"
 #include <framework/core/application.h>
+#if PING_SIMULATOR > 0
+#include <framework/core/eventdispatcher.h>
+#endif
+
 #include <random>
 
 Protocol::Protocol()
@@ -75,6 +81,24 @@ void Protocol::send(const OutputMessagePtr& outputMessage)
     if(m_xteaEncryptionEnabled)
         xteaEncrypt(outputMessage);
 
+#if PING_SIMULATOR > 0
+    g_dispatcher.scheduleEvent([&, outputMessage]() {
+        // write checksum
+        if(m_checksumEnabled)
+            outputMessage->writeChecksum();
+
+        // write message size
+        outputMessage->writeMessageSize();
+
+        // send
+        if(m_connection)
+            m_connection->write(outputMessage->getHeaderBuffer(), outputMessage->getMessageSize());
+
+        // reset message to allow reuse
+        outputMessage->reset();
+    }, PING_SIMULATOR);
+#else
+
     // write checksum
     if(m_checksumEnabled)
         outputMessage->writeChecksum();
@@ -88,10 +112,28 @@ void Protocol::send(const OutputMessagePtr& outputMessage)
 
     // reset message to allow reuse
     outputMessage->reset();
+#endif
 }
 
 void Protocol::recv()
 {
+#if PING_SIMULATOR > 0
+    g_dispatcher.scheduleEvent([&]() {
+        m_inputMessage->reset();
+
+        // first update message header size
+        int headerSize = 2; // 2 bytes for message size
+        if(m_checksumEnabled)
+            headerSize += 4; // 4 bytes for checksum
+        if(m_xteaEncryptionEnabled)
+            headerSize += 2; // 2 bytes for XTEA encrypted message size
+        m_inputMessage->setHeaderSize(headerSize);
+
+        // read the first 2 bytes which contain the message size
+        if(m_connection)
+            m_connection->read(2, std::bind(&Protocol::internalRecvHeader, asProtocol(), std::placeholders::_1,  std::placeholders::_2));
+    }, PING_SIMULATOR);
+#else
     m_inputMessage->reset();
 
     // first update message header size
@@ -105,6 +147,7 @@ void Protocol::recv()
     // read the first 2 bytes which contain the message size
     if(m_connection)
         m_connection->read(2, std::bind(&Protocol::internalRecvHeader, asProtocol(), std::placeholders::_1,  std::placeholders::_2));
+#endif
 }
 
 void Protocol::internalRecvHeader(uint8* buffer, uint16 size)

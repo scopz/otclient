@@ -1,0 +1,11 @@
+Module
+  name: game_spells
+  description: Manage spells window
+  author: Scopp
+  website: https://github.com/edubart/otclient
+  sandboxed: true
+  scripts: [ spells ]
+  @onLoad: init()
+  @onUnload: terminate()
+  dependencies:
+    - game_interface

@@ -15,6 +15,7 @@ Module
     - game_inventory
     - game_battle
     - game_skills
+    - game_spells
     - game_containers
     - game_viplist
     - game_npctrade

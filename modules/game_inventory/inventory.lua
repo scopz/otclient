@@ -52,6 +52,7 @@ fightModeRadioGroup = nil
 pvpModeRadioGroup = nil
 
 optionsButton = nil
+spellsButton = nil
 
 unusedLabel = nil
 capLabel = nil
@@ -83,6 +84,11 @@ function init()
   optionsButton = inventoryWindow:recursiveGetChildById('optionsButton')
   optionsButton.onClick = function()
     modules.client_options:toggle()
+  end
+
+  spellsButton = inventoryWindow:recursiveGetChildById('spellsButton')
+  spellsButton.onClick = function()
+    modules.game_spells:toggle()
   end
 
   unusedLabel = inventoryWindow:recursiveGetChildById('unusedLabel')

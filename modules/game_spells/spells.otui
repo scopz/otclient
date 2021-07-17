@@ -1,0 +1,163 @@
+SpellDefinition < Panel
+  anchors.top: parent.top
+  anchors.left: parent.left
+  anchors.right: parent.right
+  height: 100
+  margin-top: 10
+  
+  Panel
+    id: icon
+    anchors.top: parent.top
+    anchors.left: parent.left
+    size: 16 16
+    margin-top: 10
+    background-color: #000000
+    border-color: #888888
+    border-width: 1
+
+  Label
+    id: spellName
+    anchors.top: parent.top
+    anchors.left: prev.right
+    width: 175
+    margin: 10 0 0 10
+
+  Label
+    id: spellWords
+    anchors.top: prev.bottom
+    anchors.left: prev.left
+    width: 175
+    margin: 0 0 0 0
+
+  Label
+    id: level
+    anchors.top: prev.bottom
+    anchors.left: prev.left
+    margin: 5 0 0 0
+    color: #888888
+    width: 100
+
+  Label
+    id: mana
+    anchors.top: prev.top
+    anchors.left: prev.right
+    color: #888888
+    width: 175
+
+  Button
+    id: prevButton
+    anchors.top: level.bottom
+    anchors.left: level.left
+    margin: 5 0 0 0
+    !text: tr('<')
+    size: 26 26
+
+  Button
+    id: nextButton
+    anchors.top: prev.top
+    anchors.left: prev.right
+    margin: 0 0 0 5
+    !text: tr('>')
+    size: 26 26
+
+  Button
+    id: upgradeSpell
+    anchors.top: prev.top
+    anchors.left: prev.right
+    margin: 0 0 0 5
+    !text: tr('Upgrade')
+    size: 80 26
+
+  Panel
+    width: 180
+    height: 69
+    anchors.right: parent.right
+    anchors.top: parent.top
+    margin-right: 5
+    background-color: #00000040
+    border-color: black
+    border-width: 1
+    padding: 10
+
+    Label
+      id: levelRequired
+      anchors.top: parent.top
+      anchors.left: prev.left
+      color: #888888
+      width: 160
+
+    Label
+      id: magicLevelRequired
+      anchors.top: prev.bottom
+      anchors.left: prev.left
+      margin: 5 0 0 0
+      color: #888888
+      width: 160
+
+    Label
+      id: cost
+      anchors.top: prev.bottom
+      anchors.left: prev.left
+      margin: 5 0 0 0
+      color: #888888
+      width: 160
+
+
+
+
+MainWindow
+  id: spellsWindow
+  !text: tr('Spells')
+  size: 425 480
+
+  @onEnter: modules.game_spells.hide()
+  @onEscape: modules.game_spells.hide()
+
+  ScrollablePanel
+    id: spellsList
+    anchors.top: parent.top
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: separator.top
+    margin-bottom: 10
+    margin-right: 12
+    vertical-scrollbar: moduleListScrollBar
+
+  VerticalScrollBar
+    id: moduleListScrollBar
+    anchors.top: prev.top
+    anchors.bottom: prev.bottom
+    anchors.left: prev.right
+    step: 14
+    pixels-scroll: true
+
+  HorizontalSeparator
+    id: separator
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: okButton.top
+    margin-bottom: 10
+
+  Label
+    id: availablePoints
+    width: 64
+    anchors.left: parent.left
+    anchors.verticalCenter: okButton.verticalCenter
+    margin-right: 10
+
+  Button
+    id: okButton
+    !text: tr('Ok')
+    width: 64
+    anchors.right: next.left
+    anchors.bottom: parent.bottom
+    @onClick: modules.game_spells.confirm()
+    margin-right: 10
+
+  Button
+    id: cancelButton
+    !text: tr('Cancel')
+    width: 64
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    @onClick: modules.game_spells.hide()

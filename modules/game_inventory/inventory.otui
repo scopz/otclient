@@ -74,9 +74,9 @@ AmmoSlot < InventoryItem
 
 
 
-OptionsButton < Button
-  id: optionsButton
-  !text: tr('Options')
+TextButton < Button
+  
+  
   font: verdana-9px
 
 
@@ -206,13 +206,21 @@ MiniWindowHeadLess
       anchors.horizontalCenter: prev.horizontalCenter
       margin-top: 3
 
-    OptionsButton
+    TextButton
+      id: optionsButton
+      !text: tr('Options')
       anchors.top: prev.bottom
       anchors.right: parent.right
       margin: 3 3 0 0
       size: 45 22
 
-
+    TextButton
+      id: spellsButton
+      !text: tr('Spells')
+      anchors.bottom: prev.top
+      anchors.right: prev.right
+      margin: 0 0 3 0
+      size: 45 22
 
 
     ChaseModeBox

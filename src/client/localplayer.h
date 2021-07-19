@@ -119,13 +119,13 @@ private:
     Position m_lastPrewalkDestination;
     Position m_autoWalkDestination;
     Position m_lastAutoWalkPosition;
+    Otc::Direction m_scheduledNextWalkDir;
     bool m_floorChange;
     ScheduledEventPtr m_serverWalkEndEvent;
     ScheduledEventPtr m_autoWalkContinueEvent;
     ticks_t m_walkLockExpiration;
     stdext::boolean<false> m_preWalking;
     stdext::boolean<true> m_lastPrewalkDone;
-    stdext::boolean<false> m_secondPreWalk;
     stdext::boolean<false> m_serverWalking;
     stdext::boolean<false> m_knownCompletePath;
 

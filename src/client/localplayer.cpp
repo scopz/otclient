@@ -55,6 +55,8 @@ LocalPlayer::LocalPlayer()
     m_regenerationTime = -1;
     m_offlineTrainingTime = -1;
     m_totalCapacity = -1;
+
+    m_scheduledNextWalkDir = Otc::InvalidDirection;
 }
 
 void LocalPlayer::lockWalk(int millis)
@@ -88,28 +90,33 @@ bool LocalPlayer::canWalk(Otc::Direction)
         return false;
 
     // cannot walk while already walking
-    if((m_walking && !isAutoWalking()) && (!prewalkTimeouted || m_secondPreWalk))
+    if(m_walking && !isAutoWalking() && !prewalkTimeouted)
         return false;
 
     return true;
 }
 
+// walk event received from server:
 void LocalPlayer::walk(const Position& oldPos, const Position& newPos)
 {
     // a prewalk was going on
     if(m_preWalking) {
         // switch to normal walking
         m_preWalking = false;
-        m_secondPreWalk = false;
         m_lastPrewalkDone = true;
         m_direction = oldPos.getDirectionFromPosition(newPos);
 
         // if is to the last prewalk destination, updates the walk preserving the animation
         if(newPos == m_lastPrewalkDestination) {
             updateWalk();
-        // was to another direction, replace the walk
+        // was to another direction, correct the walk
         } else {
             Creature::walk(oldPos, newPos);
+        }
+
+        if (m_scheduledNextWalkDir != Otc::InvalidDirection) {
+            g_game.walk(m_scheduledNextWalkDir);
+            m_scheduledNextWalkDir = Otc::InvalidDirection;
         }
     }
     // no prewalk was going on, this must be an server side automated walk
@@ -128,7 +135,6 @@ void LocalPlayer::preWalk(Otc::Direction direction)
 
     // avoid reanimating prewalks
     if(m_preWalking) {
-        m_secondPreWalk = true;
         return;
     }
 
@@ -239,6 +245,7 @@ void LocalPlayer::stopAutoWalk()
     m_autoWalkDestination = Position();
     m_lastAutoWalkPosition = Position();
     m_knownCompletePath = false;
+    m_scheduledNextWalkDir = Otc::InvalidDirection;
 
     if(m_autoWalkContinueEvent)
         m_autoWalkContinueEvent->cancel();
@@ -250,6 +257,7 @@ void LocalPlayer::stopWalk()
 
     m_lastPrewalkDone = true;
     m_lastPrewalkDestination = Position();
+    m_scheduledNextWalkDir = Otc::InvalidDirection;
 }
 
 void LocalPlayer::updateWalkOffset(int totalPixelsWalked)
@@ -290,7 +298,6 @@ void LocalPlayer::terminateWalk()
 {
     Creature::terminateWalk();
     m_preWalking = false;
-    m_secondPreWalk = false;
     m_idleTimer.restart();
 
     auto self = asLocalPlayer();

@@ -641,18 +641,18 @@ bool Game::walk(Otc::Direction direction, bool isKeyDown, bool direct)
             m_nextWalkDir = direction;
         }
         return false;
-    } else if (m_localPlayer->isPreWalking()) {
+    }
+
+    if (m_localPlayer->isPreWalking()) {
         if (direct || isKeyDown) {
             if(m_walkEvent) {
                 m_walkEvent->cancel();
                 m_walkEvent = nullptr;
             }
-            m_walkEvent = g_dispatcher.scheduleEvent([=]() { walk(direction, false, true); }, ticks < 100? 100 : ticks);
-            m_nextWalkDir = direction;
+            m_localPlayer->m_scheduledNextWalkDir = direction;
         }
         return false;
     }
-
 
 	//m_localPlayer->stopAutoWalk();
 
@@ -1000,6 +1000,11 @@ void Game::cancelAttackAndFollow()
         setFollowingCreature(nullptr);
     if(isAttacking())
         setAttackingCreature(nullptr);
+
+    if(m_walkEvent) {
+        m_walkEvent->cancel();
+        m_walkEvent = nullptr;
+    }
 
     m_localPlayer->stopAutoWalk();
 

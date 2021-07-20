@@ -108,7 +108,7 @@ bool luavalue_cast(int index, Position& pos)
 
 int push_luavalue(const AwareRange& aw)
 {
-	g_lua.createTable(0, 5);
+	g_lua.createTable(0, 6);
 	g_lua.pushInteger(aw.top);
 	g_lua.setField("t");
 	g_lua.pushInteger(aw.bottom);
@@ -121,6 +121,47 @@ int push_luavalue(const AwareRange& aw)
 	g_lua.setField("w");
 	g_lua.pushInteger(aw.vertical());
 	g_lua.setField("h");
+    return 1;
+}
+
+int push_luavalue(const SpellSet& spellSet)
+{
+    g_lua.createTable(0, 3);
+    g_lua.pushInteger(spellSet.type);
+    g_lua.setField("type");
+    g_lua.pushInteger(spellSet.currentLevel);
+    g_lua.setField("currentLevel");
+
+    g_lua.newTable();
+    std::list<Spell>::const_iterator it;
+    int index = 1;
+    for (it = spellSet.spells.begin(); it != spellSet.spells.end(); ++it){
+        g_lua.pushNumber(index++);
+        g_lua.newTable();
+
+        g_lua.pushString("name");
+        g_lua.pushString(it->name);
+        g_lua.setTable(-3);
+        g_lua.pushString("words");
+        g_lua.pushString(it->words);
+        g_lua.setTable(-3);
+        g_lua.pushString("lvl");
+        g_lua.pushInteger(it->level);
+        g_lua.setTable(-3);
+        g_lua.pushString("mlvl");
+        g_lua.pushInteger(it->magicLevel);
+        g_lua.setTable(-3);
+        g_lua.pushString("cost");
+        g_lua.pushInteger(it->cost);
+        g_lua.setTable(-3);
+        g_lua.pushString("mana");
+        g_lua.pushInteger(it->mana);
+
+        g_lua.setTable(-3);
+        g_lua.setTable(-3);
+    }
+    g_lua.setField("spells");
+
     return 1;
 }
 

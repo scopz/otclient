@@ -278,6 +278,20 @@ void Game::processPlayerModes(Otc::FightModes fightMode, Otc::ChaseModes chaseMo
     g_lua.callGlobalField("g_game", "onPVPModeChange", pvpMode);
 }
 
+void Game::processSpellTree(std::list<SpellSet> &spellSets)
+{
+    spellSets.sort([]( const SpellSet &a, const SpellSet &b ) {
+        Spell aS = a.spells.front();
+        Spell bS = b.spells.front();
+        if (aS.level == bS.level)
+            return aS.magicLevel < bS.magicLevel;
+        else
+            return aS.level < bS.level;
+    });
+
+    g_lua.callGlobalField("g_game", "onSendSpells", spellSets);
+}
+
 void Game::processPing()
 {
     g_lua.callGlobalField("g_game", "onPing");

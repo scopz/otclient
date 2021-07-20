@@ -222,6 +222,9 @@ void ProtocolGame::parseMessage(const InputMessagePtr& msg)
             case Proto::GameServerPlayerSkills:
                 parsePlayerSkills(msg);
                 break;
+            case Proto::GameServerPlayerSpellTree:
+                parsePlayerSpellTree(msg);
+                break;
             case Proto::GameServerPlayerState:
                 parsePlayerState(msg);
                 break;
@@ -1479,6 +1482,36 @@ void ProtocolGame::parsePlayerSkills(const InputMessagePtr& msg)
         m_localPlayer->setSkill((Otc::Skill)skill, level, levelPercent);
         m_localPlayer->setBaseSkill((Otc::Skill)skill, baseLevel);
     }
+}
+
+void ProtocolGame::parsePlayerSpellTree(const InputMessagePtr& msg)
+{
+    int numberOfSpellSets = msg->getU16();
+
+    std::list<SpellSet> sets;
+
+    for(int i = 0; i < numberOfSpellSets; i++) {
+        SpellSet spellSet;
+
+        spellSet.type = msg->getU8();
+        spellSet.currentLevel = msg->getU8();
+
+        do {
+            Spell spell;
+            spell.name = msg->getString();
+            spell.words = msg->getString();
+            spell.level = msg->getU8();
+            spell.magicLevel = msg->getU8();
+            spell.cost = msg->getU16();
+            spell.mana = msg->getU16();
+
+            spellSet.spells.push_back(spell);
+        } while(msg->getU8() > 0);
+
+        sets.push_back(spellSet);
+    }
+
+    g_game.processSpellTree(sets);
 }
 
 void ProtocolGame::parsePlayerState(const InputMessagePtr& msg)

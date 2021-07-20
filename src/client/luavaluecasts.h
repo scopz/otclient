@@ -41,6 +41,10 @@ bool luavalue_cast(int index, Position& pos);
 int push_luavalue(const AwareRange& aw);
 //bool luavalue_cast(int index, AwareRange& aw);
 
+// spells
+int push_luavalue(const SpellSet& spellSet);
+//bool luavalue_cast(int index, SpellSet& spellSet);
+
 // market
 int push_luavalue(const MarketData& data);
 bool luavalue_cast(int index, MarketData& data);

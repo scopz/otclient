@@ -120,6 +120,21 @@ struct Light {
     uint8 color;
 };
 
+struct Spell {
+    std::string name;
+    std::string words;
+    uint8 level;
+    uint8 magicLevel;
+    uint16 cost;
+    uint16 mana;
+};
+
+struct SpellSet {
+    uint8 type;
+    uint8 currentLevel;
+    std::list<Spell> spells;
+};
+
 class ThingType : public LuaObject
 {
 public:

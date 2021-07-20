@@ -14,14 +14,6 @@ function init()
   scrollBar = spellsWindow:getChildById('moduleListScrollBar')
   availablePointsLabel = spellsWindow:getChildById('availablePoints')
 
-  addDummyData()
-  addDummyData()
-  addDummyData()
-  addDummyData()
-  addDummyData()
-  addDummyData()
-  addDummyData()
-
   connect(g_game, {
     onSendSpells = loadSpells,
     onAddSpell = addSpell,
@@ -38,7 +30,13 @@ function terminate()
   hide()
 end
 
-function loadSpells()
+function loadSpells(spellSets)
+  for index, spellDefinition in pairs(spellsList:getChildren()) do
+    spellsList:removeChild(spellDefinition)
+  end
+  for index, array in pairs(spellSets) do
+    addData(array)
+  end
 end
 
 function addSpell()
@@ -50,7 +48,7 @@ function confirm()
     local data = spellDefinition.data
 
     for k, level in pairs(array) do
-      local req = data.requirements[level]
+      local req = data.spells[level]
       print(req.name .. ' - ' .. level)
     end
   end
@@ -94,7 +92,7 @@ end
 
 function addSpellToPendingConfirm(spellDefinition, index)
   local level = spellDefinition.data.selectedLevel
-  local cost = spellDefinition.data.requirements[level].cost
+  local cost = spellDefinition.data.spells[level].cost
 
   if cost > pendingCurrentPoints then return false end
 
@@ -113,41 +111,8 @@ function addSpellToPendingConfirm(spellDefinition, index)
   spellDefinition:getChildById("upgradeSpell"):disable()
 end
 
-
-function addDummyData()
-  local data = { icon=1, currentLevel=1, selectedLevel=1,
-    requirements={
-      {
-        name= "Light" .. #spellsList:getChildren(),
-        words= "utevo lux",
-        lvl= 8,
-        mlvl= 0,
-        cost= 30,
-        mana= 20
-      },{
-        name= "Intense Light" .. #spellsList:getChildren(),
-        words= "utevo gran lux",
-        lvl= 10,
-        mlvl= 2,
-        cost= 40,
-        mana= 30
-      },{
-        name= "Blinding Light" .. #spellsList:getChildren(),
-        words= "utevo vis lux",
-        lvl= 40,
-        mlvl= 60,
-        cost= 100,
-        mana= 100
-      },{
-        name= "Conjure Explosive Arrow" .. #spellsList:getChildren(),
-        words= "adevo mas grav flam",
-        lvl= 40,
-        mlvl= 60,
-        cost= 100,
-        mana= 100
-      }
-    }
-  }
+function addData(data)
+  data.selectedLevel = data.currentLevel>1 and data.currentLevel or 1
 
   local spellDefinition = g_ui.createWidget('SpellDefinition', spellsList)
   spellDefinition.data = data
@@ -180,73 +145,79 @@ end
 function updateData(spellDefinition, index)
   local data = spellDefinition.data
 
-  local maxlevel = #data.requirements
+  local maxlevel = #data.spells
 
   spellDefinition:getChildById("nextButton"):setEnabled(data.selectedLevel ~= maxlevel)
   spellDefinition:getChildById("prevButton"):setEnabled(data.selectedLevel > 1)
 
   spellDefinition:getChildById("level"):setText("Level: " .. data.selectedLevel .. "/" .. maxlevel)
 
-  local meetRequirements = updateRequirementsPanel(spellDefinition, data.requirements[data.selectedLevel])
+  local meetRequirements = updateRequirementsPanel(spellDefinition, data.spells[data.selectedLevel])
 
   local upgradeSpellBtn = spellDefinition:getChildById("upgradeSpell")
 
   if data.currentLevel == 0 then
     upgradeSpellBtn:setText("Must buy")
     upgradeSpellBtn:disable()
+    upgradeSpellBtn:setBorderColor("red")
+    upgradeSpellBtn:setBorderWidth(1)
 
   elseif data.selectedLevel <= data.currentLevel or isPending(index, data.selectedLevel) then
     upgradeSpellBtn:setText("Learned")
     upgradeSpellBtn:disable()
+    upgradeSpellBtn:setBorderColor("green")
+    upgradeSpellBtn:setBorderWidth(1)
 
   elseif data.selectedLevel-1 == data.currentLevel and meetRequirements then
     upgradeSpellBtn:setText("Upgrade")
     upgradeSpellBtn:enable()
+    upgradeSpellBtn:setBorderWidth(0)
+
 
   else
     upgradeSpellBtn:setText("Can't learn")
     upgradeSpellBtn:disable()
+    upgradeSpellBtn:setBorderColor("red")
+    upgradeSpellBtn:setBorderWidth(1)
   end
 end
 
-function updateRequirementsPanel(spellDefinition, requirements)
-  spellDefinition:recursiveGetChildById("levelRequired"):setText("Level required: " .. requirements.lvl)
-  spellDefinition:recursiveGetChildById("magicLevelRequired"):setText("Magic Level required: " .. requirements.mlvl)
-  spellDefinition:recursiveGetChildById("cost"):setText("Cost: " .. requirements.cost)
+function updateRequirementsPanel(spellDefinition, spell)
+  spellDefinition:recursiveGetChildById("levelRequired"):setText("Level required: " .. spell.lvl)
+  spellDefinition:recursiveGetChildById("magicLevelRequired"):setText("Magic Level required: " .. spell.mlvl)
+  spellDefinition:recursiveGetChildById("cost"):setText("Cost: " .. spell.cost)
 
-  spellDefinition:getChildById("spellName"):setText(requirements.name)
-  spellDefinition:getChildById("spellWords"):setText(requirements.words)
-  spellDefinition:getChildById("mana"):setText("Mana: " .. requirements.mana)
+  spellDefinition:getChildById("spellName"):setText(spell.name)
+  spellDefinition:getChildById("spellWords"):setText(spell.words)
+  spellDefinition:getChildById("mana"):setText("Mana: " .. spell.mana)
 
   local player = g_game.getLocalPlayer()
   if not player then return false end
 
   local canLearn = true
-  if player:getLevel() < requirements.lvl then
+  if player:getLevel() < spell.lvl then
     canLearn = false
     spellDefinition:recursiveGetChildById("levelRequired"):setColor("red")
   else
     spellDefinition:recursiveGetChildById("levelRequired"):setColor("#888888")
   end
 
-  if player:getMagicLevel() < requirements.mlvl then
+  if player:getMagicLevel() < spell.mlvl then
     canLearn = false
     spellDefinition:recursiveGetChildById("magicLevelRequired"):setColor("red")
   else
     spellDefinition:recursiveGetChildById("magicLevelRequired"):setColor("#888888")
   end
 
-  if pendingCurrentPoints < requirements.cost then
-    canLearn = false
-    spellDefinition:recursiveGetChildById("cost"):setColor("red")
-  else
-    spellDefinition:recursiveGetChildById("cost"):setColor("#888888")
-  end
+--  if pendingCurrentPoints < spell.cost then
+--    canLearn = false
+--    spellDefinition:recursiveGetChildById("cost"):setColor("red")
+--  else
+--    spellDefinition:recursiveGetChildById("cost"):setColor("#888888")
+--  end
 
   return canLearn
 end
-
-
 
 function isPending(index, level)
   local array = pendingConfirm[index]

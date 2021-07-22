@@ -564,7 +564,7 @@ void Creature::nextWalkUpdate()
 
 void Creature::updateWalk(const bool isPreWalking)
 {
-    const uint stepDuration = getStepDuration(true);
+    const uint stepDuration = getStepDuration();
 
     const float extraSpeed = isLocalPlayer() && !hasSpeedFormula() ? 800.f / static_cast<float>(stepDuration) : 0.f,
         walkTicksPerPixel = (stepDuration + extraSpeed) / SPRITE_SIZE;
@@ -873,9 +873,10 @@ uint64 Creature::getStepDuration(bool ignoreDiagonal, Otc::Direction dir)
     if (groundSpeed == 0)
         groundSpeed = 150;
 
-    if (m_speed != m_stepCache.speed || groundSpeed != m_stepCache.groundSpeed) {
+    if (groundSpeed != m_stepCache.groundSpeed || (m_speed != m_stepCache.speed && m_stepCache.position != tilePos)) {
         m_stepCache.speed = m_speed;
         m_stepCache.groundSpeed = groundSpeed;
+        m_stepCache.position = tilePos;
 
         double stepDuration = 1000. * groundSpeed;
         if (hasSpeedFormula()) {

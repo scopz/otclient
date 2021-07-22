@@ -610,6 +610,10 @@ bool Game::walk(const Otc::Direction direction, bool isKeyDown /*= false*/)
         return false;
     }
 
+    // check if user has "stopped" condition
+    if ((m_localPlayer->getStates() & Otc::IconStopped) > 0)
+        return false;
+
     // check we can walk and add new walk event if false
     if (!m_localPlayer->canWalk()) {
         if (m_nextScheduledDir != direction) {
@@ -673,7 +677,7 @@ bool Game::walk(const Otc::Direction direction, bool isKeyDown /*= false*/)
             return true;
         };
 
-        if (!(canChangeFloorDown() || canChangeFloorUp() || !toTile || toTile->isEmpty()))
+        if (!(canChangeFloorDown() || canChangeFloorUp()))
             return false;
 
         m_localPlayer->lockWalk();

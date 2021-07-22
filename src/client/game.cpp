@@ -1584,6 +1584,7 @@ void Game::setClientVersion(int version)
     }
 
     if (version == 773) {
+        disableFeature(Otc::GameSoul);
         enableFeature(Otc::GameDoubleFreeCapacity);
         enableFeature(Otc::GamePlayerStateU16);
         enableFeature(Otc::GameClientPing);

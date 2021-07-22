@@ -34,6 +34,10 @@ bool luavalue_cast(int index, Outfit& outfit);
 int push_luavalue(const Position& pos);
 bool luavalue_cast(int index, Position& pos);
 
+// awarerange
+int push_luavalue(const AwareRange& aw);
+//bool luavalue_cast(int index, AwareRange& aw);
+
 // market
 int push_luavalue(const MarketData& data);
 bool luavalue_cast(int index, MarketData& data);

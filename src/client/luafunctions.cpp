@@ -132,6 +132,7 @@ void Client::registerLuaFunctions()
     g_lua.bindSingletonFunction("g_map", "getSpawnFile", &Map::getSpawnFile, &g_map);
     g_lua.bindSingletonFunction("g_map", "setSpawnFile", &Map::setSpawnFile, &g_map);
     g_lua.bindSingletonFunction("g_map", "createTile", &Map::createTile, &g_map);
+    g_lua.bindSingletonFunction("g_map", "getAwareRange", &Map::getAwareRange, &g_map);
     g_lua.bindSingletonFunction("g_map", "setWidth", &Map::setWidth, &g_map);
     g_lua.bindSingletonFunction("g_map", "setHeight", &Map::setHeight, &g_map);
     g_lua.bindSingletonFunction("g_map", "getSize", &Map::getSize, &g_map);

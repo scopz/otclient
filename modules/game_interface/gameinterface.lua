@@ -16,7 +16,7 @@ countWindow = nil
 logoutWindow = nil
 exitWindow = nil
 bottomSplitter = nil
-limitedZoom = false
+limitedZoom = true
 currentViewMode = 0
 smartWalkDirs = {}
 smartWalkDir = nil
@@ -132,7 +132,7 @@ function bindKeys()
     g_keyboard.bindKeyPress('Escape',
                             function() g_game.cancelAttackAndFollow() end,
                             gameRootPanel)
-    g_keyboard.bindKeyPress('Ctrl+=', function() gameMapPanel:zoomIn() end,
+    g_keyboard.bindKeyPress('Ctrl+,', function() gameMapPanel:zoomIn() end,
                             gameRootPanel)
     g_keyboard.bindKeyPress('Ctrl+-', function() gameMapPanel:zoomOut() end,
                             gameRootPanel)
@@ -229,12 +229,16 @@ function show()
     updateStretchShrink()
     logoutButton:setTooltip(tr('Logout'))
 
+    local awareRange = g_map.getAwareRange();
+    gameMapPanel:setZoom(10)
+    gameMapPanel:setKeepAspectRatio(true)
+
     addEvent(function()
         if not limitedZoom or g_game.isGM() then
-            gameMapPanel:setMaxZoomOut(513)
+            gameMapPanel:setMaxZoomOut(20)
             gameMapPanel:setLimitVisibleRange(false)
         else
-            gameMapPanel:setMaxZoomOut(11)
+            gameMapPanel:setMaxZoomOut(10)
             gameMapPanel:setLimitVisibleRange(true)
         end
     end)
@@ -423,14 +427,14 @@ function smartWalk(dir)
 end
 
 function updateStretchShrink()
-    if modules.client_options.getOption('dontStretchShrink') and
-        not alternativeView then
-        gameMapPanel:setVisibleDimension({width = 15, height = 11})
+    if modules.client_options.getOption('dontStretchShrink') and not alternativeView then
+        local awareRange = g_map.getAwareRange();
+        gameMapPanel:setZoom(10)
 
-        -- Set gameMapPanel size to height = 11 * 32 + 2
-        bottomSplitter:setMarginBottom(bottomSplitter:getMarginBottom() +
-                                           (gameMapPanel:getHeight() - 32 * 11) -
-                                           10)
+        -- Set gameMapPanel size to height = 11 * 32 + 2 // if viewport height is set at 6:   (6+1)*2-3 == 11
+        bottomSplitter:setMarginBottom(bottomSplitter:getMarginBottom() + 
+                                            (gameMapPanel:getHeight() - 32 * (awareRange.h-3)) -
+                                            10)
     end
 end
 
@@ -1090,7 +1094,11 @@ function setupViewMode(mode)
         gameMapPanel:addAnchor(AnchorRight, 'gameRightPanel', AnchorLeft)
         gameMapPanel:addAnchor(AnchorRight, 'gameRightExtraPanel', AnchorLeft)
         gameMapPanel:addAnchor(AnchorBottom, 'gameBottomPanel', AnchorTop)
-        gameRootPanel:addAnchor(AnchorTop, 'topMenu', AnchorBottom)
+
+        if modules.client_topmenu.getTopMenu():isVisible() then 
+            gameRootPanel:addAnchor(AnchorTop, 'topMenu', AnchorBottom)
+        end
+
         gameLeftPanel:setOn(modules.client_options.getOption('showLeftPanel'))
         gameRightExtraPanel:setOn(modules.client_options.getOption('showRightExtraPanel'))
         gameLeftPanel:setImageColor('white')
@@ -1101,26 +1109,25 @@ function setupViewMode(mode)
         gameRightExtraPanel:setMarginTop(0)
         gameBottomPanel:setImageColor('white')
         modules.client_topmenu.getTopMenu():setImageColor('white')
-        g_game.changeMapAwareRange(18, 14)
+        --g_game.changeMapAwareRange(22, 18)
     end
+
+    local awareRange = g_map.getAwareRange();
 
     if mode == 0 then
         gameMapPanel:setKeepAspectRatio(true)
         gameMapPanel:setLimitVisibleRange(false)
-        gameMapPanel:setZoom(11)
-        gameMapPanel:setVisibleDimension({width = 15, height = 11})
+        gameMapPanel:setZoom(10)
         modules.client_options.setOption('drawViewportEdge', false)
     elseif mode == 1 then
         gameMapPanel:setKeepAspectRatio(false)
         gameMapPanel:setLimitVisibleRange(true)
-        gameMapPanel:setZoom(11)
-        gameMapPanel:setVisibleDimension({width = 15, height = 11})
+        gameMapPanel:setZoom(10)
         modules.client_options.setOption('drawViewportEdge', false)
     elseif mode == 2 then
         local limit = limitedZoom and not g_game.isGM()
         gameMapPanel:setLimitVisibleRange(limit)
-        gameMapPanel:setZoom(11)
-        gameMapPanel:setVisibleDimension({width = 15, height = 11})
+        gameMapPanel:setZoom(10)
         gameMapPanel:fill('parent')
         gameRootPanel:fill('parent')
         gameLeftPanel:setImageColor('alpha')
@@ -1137,7 +1144,7 @@ function setupViewMode(mode)
         gameMapPanel:setOn(true)
         gameBottomPanel:setImageColor('#ffffff88')
         modules.client_topmenu.getTopMenu():setImageColor('#ffffff66')
-        if not limit then g_game.changeMapAwareRange(24, 20) end
+        --if not limit then g_game.changeMapAwareRange(28, 24) end
 
         modules.client_options.setOption('drawViewportEdge', true)
     end
@@ -1145,4 +1152,4 @@ function setupViewMode(mode)
     currentViewMode = mode
 end
 
-function limitZoom() limitedZoom = true end
+function unlimitZoom() limitedZoom = false end

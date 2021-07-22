@@ -47,6 +47,7 @@ namespace Proto
     {
         GameServerLoginOrPendingState = 10,
         GameServerGMActions = 11,
+        GameServerParameters = 12,
         GameServerEnterGame = 15,
         GameServerUpdateNeeded = 17,
         GameServerLoginError = 20,

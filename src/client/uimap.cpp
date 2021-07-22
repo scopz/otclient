@@ -32,12 +32,11 @@ UIMap::UIMap()
     m_draggable = true;
     m_keepAspectRatio = true;
     m_limitVisibleRange = false;
-    m_maxZoomIn = 3;
-    m_maxZoomOut = 513;
+    m_maxZoomIn = 6;
+    m_maxZoomOut = 14;
     m_mapView = MapViewPtr(new MapView);
     m_zoom = m_mapView->getVisibleDimension().height();
     m_aspectRatio = m_mapView->getVisibleDimension().ratio();
-
     m_mapRect.resize(1, 1);
     g_map.addMapView(m_mapView);
 }
@@ -105,7 +104,7 @@ bool UIMap::zoomOut()
 
     const auto oldZoom = m_zoom;
 
-    m_zoom += 2;
+    m_zoom += delta;
     updateVisibleDimension();
 
     callLuaField("onZoomChange", m_zoom, oldZoom);
@@ -177,16 +176,26 @@ bool UIMap::onMouseMove(const Point& mousePos, const Point& mouseMoved)
 
 void UIMap::updateVisibleDimension()
 {
-    int dimensionHeight = m_zoom;
+    AwareRange ar = g_map.getAwareRange();
 
-    float ratio = m_aspectRatio;
-    if (!m_limitVisibleRange && !m_mapRect.isEmpty() && !m_keepAspectRatio)
-        ratio = m_mapRect.size().ratio();
+    int dimensionHeight = ar.vertical() + m_zoom - 13;
+    int dimensionWidth;
+
+    if (m_zoom == 10) {
+        dimensionWidth = ar.horizontal() - 3;
+    } else {
+        float ratio = (float) (ar.horizontal()) / (ar.vertical());
+
+        if (!m_limitVisibleRange && !m_mapRect.isEmpty() && !m_keepAspectRatio)
+            ratio = m_mapRect.size().ratio();
+
+        dimensionWidth = dimensionHeight * ratio;
+    }
 
     if (dimensionHeight % 2 == 0)
         dimensionHeight += 1;
-    int dimensionWidth = m_zoom * ratio;
-    if (dimensionWidth % 2 == 0)
+
+    if(dimensionWidth % 2 == 0)
         dimensionWidth += 1;
 
     m_mapView->setVisibleDimension(Size(dimensionWidth, dimensionHeight));
@@ -201,7 +210,8 @@ void UIMap::updateMapSize()
     Size mapSize;
     if (m_keepAspectRatio) {
         const Rect mapRect = clippingRect.expanded(-1);
-        mapSize = Size(m_aspectRatio * m_zoom, m_zoom);
+        Size visibleDimension = m_mapView->getVisibleDimension();
+        mapSize = Size(visibleDimension.width(), visibleDimension.height());
         mapSize.scale(mapRect.size(), Fw::KeepAspectRatio);
     } else {
         mapSize = clippingRect.expanded(-1).size();

@@ -6,9 +6,9 @@ MiniWindow < UIMiniWindow
   text-offset: 24 5
   text-align: topLeft
   image-source: /images/ui/miniwindow
-  image-border: 4
-  image-border-top: 23
-  image-border-bottom: 4
+  image-border: 3
+  image-border-top: 26
+  image-border-bottom: 3
   focusable: false
   &minimizedHeight: 24
 

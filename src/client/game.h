@@ -93,6 +93,8 @@ protected:
     static void processPlayerHelpers(int helpers);
     void processPlayerModes(Otc::FightModes fightMode, Otc::ChaseModes chaseMode, Otc::PickUpModes pickUpMode, bool safeMode, Otc::PVPModes pvpMode);
 
+    void processSpellTree(std::list<SpellSet> &spellSets);
+
     // message related
     static void processTextMessage(Otc::MessageMode mode, const std::string& text);
     static void processTalk(const std::string& name, int level, Otc::MessageMode mode, const std::string& text, int channelId, const Position& pos);

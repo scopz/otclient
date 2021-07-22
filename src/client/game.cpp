@@ -1570,6 +1570,12 @@ void Game::setClientVersion(int version)
         enableFeature(Otc::GameLoginPacketEncryption);
     }
 
+    if (version == 773) {
+        enableFeature(Otc::GameDoubleFreeCapacity);
+        enableFeature(Otc::GamePlayerStateU16);
+        enableFeature(Otc::GameClientPing);
+    }
+
     if (version >= 780) {
         enableFeature(Otc::GamePlayerAddons);
         enableFeature(Otc::GamePlayerStamina);

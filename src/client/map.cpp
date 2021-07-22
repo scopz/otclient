@@ -759,6 +759,16 @@ void Map::setAwareRange(const AwareRange& range)
     removeUnawareThings();
 }
 
+void Map::setAwareRange(const uint8_t &sw, const uint8_t &sh)
+{
+    AwareRange range;
+    range.left = sw;
+    range.right = sw+1;
+    range.top = sh;
+    range.bottom = sh+1;
+    setAwareRange(range);
+}
+
 uint8_t Map::getFirstAwareFloor()
 {
     if (m_centralPosition.z <= SEA_FLOOR)
@@ -901,7 +911,7 @@ std::tuple<std::vector<Otc::Direction>, Otc::PathFindResult> Map::findPath(const
 
                 const Otc::Direction walkDir = currentNode->pos.getDirectionFromPosition(neighborPos);
                 if (walkDir >= Otc::NorthEast)
-                    walkFactor += 3.0f;
+                    walkFactor += std::max(g_game.getDiagonalCost(),2.5f);
                 else
                     walkFactor += 1.0f;
 

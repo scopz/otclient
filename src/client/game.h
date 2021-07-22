@@ -361,6 +361,9 @@ public:
         return m_lastSupportedVersion;
     }
 
+    float getDiagonalCost() const { return m_diagonalCost; }
+    void setDiagonalCost(const float &diagonalCost) { m_diagonalCost = diagonalCost; }
+
 protected:
     void enableBotCall() { m_denyBotCall = false; }
     void disableBotCall() { m_denyBotCall = true; }
@@ -402,6 +405,7 @@ private:
     std::vector<uint8_t > m_gmActions;
     std::string m_characterName;
     std::string m_worldName;
+    float m_diagonalCost{ 3.f };
     std::bitset<Otc::LastGameFeature> m_features;
     ScheduledEventPtr m_pingEvent;
     ScheduledEventPtr m_walkEvent;

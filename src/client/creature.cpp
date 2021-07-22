@@ -864,7 +864,10 @@ uint64_t Creature::getStepDuration(bool ignoreDiagonal, Otc::Direction dir)
             stepDuration += 8.f;
 
         m_stepCache.duration = stepDuration;
-        m_stepCache.diagonalDuration = stepDuration * (g_game.getClientVersion() > 810 || FORCE_NEW_WALKING_FORMULA ? 3 : 2);
+        if (g_game.getClientVersion() == 773)
+            m_stepCache.diagonalDuration = stepDuration * g_game.getDiagonalCost();
+        else
+            m_stepCache.diagonalDuration = stepDuration * (g_game.getClientVersion() > 810 || FORCE_NEW_WALKING_FORMULA ? 3 : 2);
     }
 
     return ignoreDiagonal ? m_stepCache.duration : m_stepCache.getDuration(m_lastStepDirection);

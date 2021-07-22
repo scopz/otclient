@@ -157,6 +157,7 @@ private:
     void parseLogin(const InputMessagePtr& msg);
     void parseGMActions(const InputMessagePtr& msg);
     void parseUpdateNeeded(const InputMessagePtr& msg);
+    void parseServerParameters(const InputMessagePtr& msg);
     void parseLoginError(const InputMessagePtr& msg);
     void parseLoginAdvice(const InputMessagePtr& msg);
     void parseLoginWait(const InputMessagePtr& msg);

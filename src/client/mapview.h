@@ -31,8 +31,8 @@
 struct AwareRange
 {
     uint8 left, top, right, bottom;
-    uint8 horizontal() { return left + right + 1; }
-    uint8 vertical() { return top + bottom + 1; }
+    uint8 horizontal() const { return left + right + 1; }
+    uint8 vertical() const { return top + bottom + 1; }
 };
 
 // @bindclass

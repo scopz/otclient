@@ -109,6 +109,24 @@ bool luavalue_cast(int index, Position& pos)
     return true;
 }
 
+int push_luavalue(const AwareRange& aw)
+{
+    g_lua.createTable(0, 5);
+    g_lua.pushInteger(aw.top);
+    g_lua.setField("t");
+    g_lua.pushInteger(aw.bottom);
+    g_lua.setField("b");
+    g_lua.pushInteger(aw.right);
+    g_lua.setField("r");
+    g_lua.pushInteger(aw.left);
+    g_lua.setField("l");
+    g_lua.pushInteger(aw.horizontal());
+    g_lua.setField("w");
+    g_lua.pushInteger(aw.vertical());
+    g_lua.setField("h");
+    return 1;
+}
+
 int push_luavalue(const MarketData& data)
 {
     g_lua.createTable(0, 6);

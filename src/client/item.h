@@ -52,6 +52,7 @@ enum ItemAttr : uint8_t
     ATTR_SLEEPSTART = 21,
     ATTR_CHARGES = 22,
     ATTR_CONTAINER_ITEMS = 23,
+    ATTR_RANK = 24,
     ATTR_NAME = 30,
     ATTR_PLURALNAME = 31,
     ATTR_ATTACK = 33,
@@ -107,6 +108,9 @@ public:
     void setDoorId(uint8_t doorId) { m_attribs.set(ATTR_HOUSEDOORID, doorId); }
     uint8_t getDoorId() { return m_attribs.get<uint8_t >(ATTR_HOUSEDOORID); }
 
+    void setRank(uint8_t rank) { m_attribs.set(ATTR_RANK, rank); }
+    uint8_t getRank() { return m_attribs.get<uint8_t>(ATTR_RANK); }
+
     uint16_t getUniqueId() { return m_attribs.get<uint16_t>(ATTR_ACTION_ID); }
     uint16_t getActionId() { return m_attribs.get<uint16_t>(ATTR_UNIQUE_ID); }
     void setActionId(uint16_t actionId) { m_attribs.set(ATTR_ACTION_ID, actionId); }
@@ -148,7 +152,7 @@ public:
 private:
     uint16_t m_clientId{ 0 };
     uint16_t m_serverId{ 0 };
-    uint8_t m_countOrSubType{ 1 };
+    uint16_t m_countOrSubType{ 1 };
     Color m_color{ Color::alpha };
 
     stdext::dynamic_storage8<ItemAttr, ATTR_LAST> m_attribs;

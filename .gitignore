@@ -1,3 +1,8 @@
+####################
+## Client Resources
+####################
+things/*
+
 #################
 ## Visual Studio
 #################
@@ -144,6 +149,13 @@ UpgradeLog*.htm
 App_Data/*.mdf
 App_Data/*.ldf
 
+###########
+## Eclipse
+###########
+.project
+.cproject
+.settings
+
 #############
 ## Windows detritus
 #############
@@ -210,6 +222,11 @@ tags
 *.dat
 *.pic
 config.otml
+
+###############
+## Item Editors
+###############
+*.otfi
 
 ## Cmake cache
 CMakeLists.txt.user

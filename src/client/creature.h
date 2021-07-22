@@ -228,6 +228,7 @@ private:
         uint16 groundSpeed = 0;
         uint64 duration = 0;
         uint64 diagonalDuration = 0;
+        Position position{};
 
         uint64 getDuration(Otc::Direction dir) { return Position::isDiagonal(dir) ? diagonalDuration : duration; }
     };

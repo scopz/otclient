@@ -136,6 +136,21 @@ struct Light
     uint8_t color = 215;
 };
 
+struct Spell {
+    std::string name;
+    std::string words;
+    uint8_t level;
+    uint8_t magicLevel;
+    uint16_t cost;
+    uint16_t mana;
+};
+
+struct SpellSet {
+    uint8_t type;
+    uint8_t currentLevel;
+    std::list<Spell> spells;
+};
+
 class ThingType : public LuaObject
 {
 public:

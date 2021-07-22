@@ -7,11 +7,14 @@ GameSidePanel < UIMiniWindowContainer
     type: verticalBox
     //spacing: 1
 
-SelectColumnButton < CheckBox
+SelectColumnButton < UICheckBox
   visible: false
-  opacity: 0.3
-  $hover:
-    opacity: 1
+  image-source: /images/ui/select_column
+  size: 28 28
+  image-clip: 0 0 28 28
+  margin: 0 0
+  $checked:
+    image-clip: 0 28 28 28
 
 GameBottomPanel < Panel
   image-source: /images/ui/panel_bottom

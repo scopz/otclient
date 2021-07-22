@@ -309,6 +309,10 @@ void ProtocolGame::parseMessage(const InputMessagePtr& msg)
                 case Proto::GameServerQuestLine:
                     parseQuestLine(msg);
                     break;
+                    // PROTOCOL==773
+                case Proto::GameServerParameters:
+                    parseServerParameters(msg);
+                    break;
                     // PROTOCOL>=870
                 case Proto::GameServerSpellDelay:
                     parseSpellCooldown(msg);
@@ -792,6 +796,16 @@ void ProtocolGame::parseUpdateNeeded(const InputMessagePtr& msg)
 {
     const std::string signature = msg->getString();
     Game::processUpdateNeeded(signature);
+}
+
+void ProtocolGame::parseServerParameters(const InputMessagePtr& msg)
+{
+    const int diagonalCost = msg->getU16();
+    g_game.setDiagonalCost(diagonalCost/100.f);
+
+    const uint8 viewportW = msg->getU8();
+    const uint8 viewportH = msg->getU8();
+    g_map.setAwareRange(viewportW, viewportH);
 }
 
 void ProtocolGame::parseLoginError(const InputMessagePtr& msg)

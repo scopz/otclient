@@ -244,6 +244,7 @@ public:
     void resetLastCamera();
 
     void setAwareRange(const AwareRange& range);
+    void setAwareRange(const uint8 &sw, const uint8 &sh);
     void resetAwareRange();
     AwareRange getAwareRange() { return m_awareRange; }
 

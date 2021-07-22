@@ -196,6 +196,12 @@ namespace Otc
         ChaseOpponent = 1
     };
 
+    enum PickUpModes : uint8_t
+    {
+        DontPickUp = 0,
+        PickUpAmmo = 1
+    };
+
     enum PVPModes : uint8_t
     {
         WhiteDove = 0,

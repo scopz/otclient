@@ -580,12 +580,13 @@ void ProtocolGame::sendCloseNpcChannel()
     send(msg);
 }
 
-void ProtocolGame::sendChangeFightModes(Otc::FightModes fightMode, Otc::ChaseModes chaseMode, bool safeFight, Otc::PVPModes pvpMode)
+void ProtocolGame::sendChangeFightModes(Otc::FightModes fightMode, Otc::ChaseModes chaseMode, Otc::PickUpModes pickUpMode, bool safeFight, Otc::PVPModes pvpMode)
 {
     const OutputMessagePtr msg(new OutputMessage);
     msg->addU8(Proto::ClientChangeFightModes);
     msg->addU8(fightMode);
     msg->addU8(chaseMode);
+    if (g_game.getClientVersion() == 773) msg->addU8(pickUpMode);
     msg->addU8(safeFight ? 0x01 : 0x00);
     if (g_game.getFeature(Otc::GamePVPMode))
         msg->addU8(pvpMode);

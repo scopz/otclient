@@ -1,7 +1,7 @@
 ####################
 ## Client Resources
 ####################
-things/*
+data/things/*
 
 #################
 ## Visual Studio

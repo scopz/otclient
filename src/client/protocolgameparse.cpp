@@ -1133,10 +1133,17 @@ void ProtocolGame::parseOpenNpcTrade(const InputMessagePtr& msg)
 
     for (int i = 0; i < listCount; ++i) {
         const uint16 itemId = msg->getU16();
-        const uint8 count = msg->getU8();
-
         ItemPtr item = Item::create(itemId);
-        item->setCountOrSubType(count);
+
+        if (g_game.getClientVersion() == 773) {
+            if (!item->isStackable()) {
+                item->setRank(msg->getU8());
+            }
+            item->setCountOrSubType(msg->getU16());
+
+        } else {
+            item->setCountOrSubType(msg->getU8());
+        }
 
         const auto name = msg->getString();
         int weight = msg->getU32();
@@ -1166,14 +1173,23 @@ void ProtocolGame::parsePlayerGoods(const InputMessagePtr& msg)
     const int size = msg->getU8();
     for (int i = 0; i < size; ++i) {
         const int itemId = msg->getU16();
+        ItemPtr item = Item::create(itemId);
+
         int amount;
-
-        if (g_game.getFeature(Otc::GameDoubleShopSellAmount))
+        if (g_game.getClientVersion() == 773) {
+            if (!item->isStackable()) {
+                item->setRank(msg->getU8());
+            }
             amount = msg->getU16();
-        else
-            amount = msg->getU8();
 
-        goods.emplace_back(Item::create(itemId), amount);
+        } else if (g_game.getFeature(Otc::GameDoubleShopSellAmount)) {
+            amount = msg->getU16();
+
+        } else {
+            amount = msg->getU8();
+        }
+
+        goods.emplace_back(item, amount);
     }
 
     Game::processPlayerGoods(money, goods);
@@ -2239,7 +2255,16 @@ void ProtocolGame::parseItemInfo(const InputMessagePtr& msg)
     for (int i = 0; i < size; ++i) {
         ItemPtr item(new Item);
         item->setId(msg->getU16());
-        item->setCountOrSubType(msg->getU8());
+
+        if (g_game.getClientVersion() == 773) {
+            if (!item->isStackable()) {
+                item->setRank(msg->getU8());
+            }
+            item->setCountOrSubType(msg->getU16());
+
+        } else {
+            item->setCountOrSubType(msg->getU8());
+        }
 
         const auto desc = msg->getString();
         list.emplace_back(item, desc);
@@ -2728,12 +2753,16 @@ ItemPtr ProtocolGame::getItem(const InputMessagePtr& msg, int id)
     if (item->getId() == 0)
         stdext::throw_exception(stdext::format("unable to create item with invalid id %d", id));
 
+    if (g_game.getClientVersion() == 773 && !item->isStackable()) {
+        item->setRank(msg->getU8());
+    }
+
     if (g_game.getClientVersion() < 1281 && g_game.getFeature(Otc::GameThingMarks)) {
         msg->getU8(); // mark
     }
 
     if (item->isStackable() || item->isFluidContainer() || item->isSplash() || item->isChargeable()) {
-        item->setCountOrSubType(msg->getU8());
+        item->setCountOrSubType(g_game.getClientVersion() == 773? msg->getU16() : msg->getU8());
     } else if (g_game.getClientVersion() >= 1281) {
         if (item->isContainer()) {
             const uint8 hasQuickLootFlags = msg->getU8();

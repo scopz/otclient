@@ -37,7 +37,7 @@ public:
     void setItemCount(int count) { if (m_item) m_item->setCount(count); }
     void setItemSubType(int subType) { if (m_item) m_item->setSubType(subType); }
     void setItemVisible(bool visible) { m_itemVisible = visible; }
-    void setItem(const ItemPtr& item) { m_item = item; }
+    void setItem(const ItemPtr& item);
     void setVirtual(bool virt) { m_virtual = virt; }
     void clearItem() { setItemId(0); }
 

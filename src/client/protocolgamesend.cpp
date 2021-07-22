@@ -295,7 +295,10 @@ void ProtocolGame::sendEquipItem(int itemId, int countOrSubType)
     const OutputMessagePtr msg(new OutputMessage);
     msg->addU8(Proto::ClientEquipItem);
     msg->addU16(itemId);
-    msg->addU8(countOrSubType);
+    if (g_game.getClientVersion() == 773)
+        msg->addU16(countOrSubType);
+    else
+        msg->addU8(countOrSubType);
     send(msg);
 }
 
@@ -307,7 +310,10 @@ void ProtocolGame::sendMove(const Position& fromPos, int thingId, int stackpos, 
     msg->addU16(thingId);
     msg->addU8(stackpos);
     addPosition(msg, toPos);
-    msg->addU8(count);
+    if (g_game.getClientVersion() == 773)
+        msg->addU16(count);
+    else
+        msg->addU8(count);
     send(msg);
 }
 
@@ -316,7 +322,10 @@ void ProtocolGame::sendInspectNpcTrade(int itemId, int count)
     const OutputMessagePtr msg(new OutputMessage);
     msg->addU8(Proto::ClientInspectNpcTrade);
     msg->addU16(itemId);
-    msg->addU8(count);
+    if (g_game.getClientVersion() == 773)
+        msg->addU16(count);
+    else
+        msg->addU8(count);
     send(msg);
 }
 

@@ -31,7 +31,6 @@ GameMapPanel < UIGameMap
 UIWidget
   id: gameRootPanel
   anchors.fill: parent
-  anchors.top: topMenu.bottom
 
   GameMapPanel
     id: gameMapPanel
@@ -40,14 +39,6 @@ UIWidget
     anchors.top: parent.top
     anchors.bottom: gameBottomPanel.top
     focusable: false
-
-    Button
-      id: showTopMenuButton
-      anchors.top: parent.top
-      anchors.left: parent.left
-      !text: tr('Show Top Menu')
-      height: 32
-      visible: false
 
   GameBottomPanel
     id: gameBottomPanel

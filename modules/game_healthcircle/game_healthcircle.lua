@@ -269,29 +269,29 @@ function whenSkillsChange()
 
             if skillType == 'fist' then
                 skillPercent = player:getSkillLevelPercent(0)
-                skillColor = '#9900cc'
+                skillColor = '#797979'
             elseif skillType == 'club' then
                 skillPercent = player:getSkillLevelPercent(1)
-                skillColor = '#cc3399'
+                skillColor = '#FF6000'
             elseif skillType == 'sword' then
                 skillPercent = player:getSkillLevelPercent(2)
                 skillColor = '#FF7F00'
             elseif skillType == 'axe' then
                 skillPercent = player:getSkillLevelPercent(3)
-                skillColor = '#696969'
+                skillColor = '#FF3100'
             elseif skillType == 'distance' then
                 skillPercent = player:getSkillLevelPercent(4)
-                skillColor = '#A62A2A'
+                skillColor = '#94CA26'
             elseif skillType == 'shielding' then
                 skillPercent = player:getSkillLevelPercent(5)
-                skillColor = '#663300'
+                skillColor = '#B1671E'
             elseif skillType == 'fishing' then
                 skillPercent = player:getSkillLevelPercent(6)
-                skillColor = '#ffff33'
+                skillColor = '#34E5BD'
             else
                 -- default skill: MAGIC
                 skillPercent = player:getMagicLevelPercent()
-                skillColor = '#00ffcc'
+                skillColor = '#00E9FF'
             end
 
             local Xskpc = math.floor(imageSizeBroad * (1 - skillPercent / 100))
@@ -318,6 +318,7 @@ function whenSkillsChange()
 end
 
 function whenMapResizeChange()
+
     if g_game.isOnline() then
 
         local barDistance = 90

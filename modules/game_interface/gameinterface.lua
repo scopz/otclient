@@ -9,7 +9,6 @@ gameSelectedPanel = nil
 panelsList = {}
 panelsRadioGroup = nil
 gameBottomPanel = nil
-showTopMenuButton = nil
 logoutButton = nil
 mouseGrabberWidget = nil
 countWindow = nil
@@ -87,9 +86,6 @@ function init()
 
     logoutButton = modules.client_topmenu.addLeftButton('logoutButton', tr('Exit'), '/images/topbuttons/logout',
                                                         tryLogout, true)
-
-    showTopMenuButton = gameMapPanel:getChildById('showTopMenuButton')
-    showTopMenuButton.onClick = function() modules.client_topmenu.toggle() end
 
     setupViewMode(0)
 
@@ -965,8 +961,6 @@ function getRightExtraPanel() return gameRightExtraPanel end
 function getSelectedPanel() return gameSelectedPanel end
 
 function getBottomPanel() return gameBottomPanel end
-
-function getShowTopMenuButton() return showTopMenuButton end
 
 function findContentPanelAvailable(child, minContentHeight)
     if gameSelectedPanel:isVisible() and gameSelectedPanel:fits(child, minContentHeight, 0) >= 0 then

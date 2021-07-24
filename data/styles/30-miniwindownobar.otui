@@ -1,0 +1,52 @@
+MiniWindowNoBar < UIMiniWindowNoBar
+  font: verdana-11px-antialised
+  icon-rect: 4 4 16 16
+  width: 192
+  height: 200
+  text-offset: 24 5
+  text-align: topLeft
+  image-source: /images/ui/panel_map
+  image-border: 4
+  image-border-top: 23
+  image-border-bottom: 4
+  focusable: false
+  &minimizedHeight: 24
+
+  $on:
+    image-border-bottom: 2
+
+
+  VerticalScrollBar
+    id: miniwindowScrollBar
+    anchors.top: parent.top
+    anchors.bottom: parent.bottom
+    anchors.right: parent.right
+    step: 14
+    margin-top: 22
+    margin-right: 3
+    margin-bottom: 3
+    pixels-scroll: true
+
+    $!on:
+      width: 0
+
+  ResizeBorder
+    id: bottomResizeBorder
+    anchors.bottom: parent.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    height: 3
+    minimum: 48
+    margin-left: 3
+    margin-right: 3
+    background: #ffffff88
+
+MiniWindowNoBarContents < ScrollablePanel
+  id: contentsPanel
+  anchors.fill: parent
+  anchors.right: miniwindowScrollBar.left
+  margin-bottom: 3
+  margin-top: 3
+  margin-left: 1
+  margin-right: 1
+  vertical-scrollbar: miniwindowScrollBar

@@ -76,6 +76,9 @@ FightDefensive = 3
 DontChase = 0
 ChaseOpponent = 1
 
+DontPickUp = 0
+PickUpAmmo = 1
+
 PVPWhiteDove = 0
 PVPWhiteHand = 1
 PVPYellowHand = 2

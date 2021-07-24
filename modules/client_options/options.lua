@@ -23,10 +23,9 @@ local defaultOptions = {
     enableAudio = true,
     enableMusicSound = true,
     musicSoundVolume = 100,
-    enableLights = true,
     drawViewportEdge = false,
     floatingEffect = false,
-    ambientLight = 0,
+    ambientLight = 10,
     displayNames = true,
     displayHealth = true,
     displayMana = true,
@@ -37,7 +36,7 @@ local defaultOptions = {
     crosshair = 'default',
     enableHighlightMouseTarget = true,
     antialiasingMode = 1,
-    shadowFloorIntensity = 30,
+    shadowFloorIntensity = 70,
     optimizeFps = true,
     forceEffectOptimization = false,
     drawEffectOnTop = false,
@@ -293,16 +292,11 @@ function setOption(key, value, force)
                                                                            'Game framerate limit: %s',
                                                                            text))
         g_app.setMaxFps(v)
-    elseif key == 'enableLights' then
-        gameMapPanel:setDrawLights(value and options['ambientLight'] < 100)
-        graphicsPanel:getChildById('ambientLight'):setEnabled(value)
-        graphicsPanel:getChildById('ambientLightLabel'):setEnabled(value)
     elseif key == 'ambientLight' then
         graphicsPanel:getChildById('ambientLightLabel'):setText(tr(
                                                                     'Ambient light: %s%%',
                                                                     value))
         gameMapPanel:setMinimumAmbientLight(value / 100)
-        gameMapPanel:setDrawLights(options['enableLights'])
     elseif key == 'shadowFloorIntensity' then
         graphicsPanel:getChildById('shadowFloorIntensityLevel'):setText(tr(
                                                                             'Shadow floor Intensity: %s%%',

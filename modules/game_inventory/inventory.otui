@@ -72,27 +72,92 @@ AmmoSlot < InventoryItem
   $on:
     image-source: /images/game/slots/ammo-blessed
 
-PurseButton < Button
-  id: purseButton
-  size: 26 26
-  !tooltip: tr('Open purse')
-  icon-source: /images/game/slots/purse
-  icon-size: 24 24
-  icon-offset: 1 1
 
-MiniWindow
+
+TextButton < Button
+  
+  
+  font: verdana-9px
+
+
+
+CombatBox < UICheckBox
+  size: 20 20
+  image-clip: 0 0 20 20
+  margin: 2 4
+
+  $checked:
+    image-clip: 0 20 20 20
+
+FightOffensiveBox < CombatBox
+  image-source: /images/game/combatmodes/fightoffensive
+FightBalancedBox < CombatBox
+  image-source: /images/game/combatmodes/fightbalanced
+FightDefensiveBox < CombatBox
+  image-source: /images/game/combatmodes/fightdefensive
+ChaseModeBox < CombatBox
+  image-source: /images/game/combatmodes/chasemode
+PickUpBox < CombatBox
+  image-source: /images/game/combatmodes/pickup
+SafeFightBox < CombatBox
+  image-source: /images/game/combatmodes/safefight
+
+MountButton < CombatBox
+  image-source: /images/game/combatmodes/mount
+
+WhiteDoveBox < CombatBox
+  image-source: /images/game/combatmodes/whitedovemode
+WhiteHandBox < CombatBox
+  image-source: /images/game/combatmodes/whitehandmode
+YellowHandBox < CombatBox
+  image-source: /images/game/combatmodes/yellowhandmode
+RedFistBox < CombatBox
+  image-source: /images/game/combatmodes/redfistmode
+
+
+UnusedLabel < GameLabel
+  text: 
+  color: #dddddd
+  font: verdana-11px-monochrome
+
+
+UnusedValueLabel < GameLabel
+  id: unusedLabel
+  color: #dddddd
+  font: verdana-11px-monochrome
+
+
+CapLabel < GameLabel
+  color: #dddddd
+  font: verdana-11px-monochrome
+  text: Cap
+
+
+CapValueLabel < GameLabel
+  id: capLabel
+  color: #dddddd
+  font: verdana-11px-monochrome
+
+
+ConditionWidget < UIWidget
+  size: 18 18
+
+  $!first:
+    margin-left: 2
+
+
+MiniWindowNoBar
   id: inventoryWindow
-  !text: tr('Inventory')
-  icon: /images/topbuttons/inventory
-  height: 175
+  height: 182
   @onClose: modules.game_inventory.onMiniWindowClose()
   &save: true
 
-  MiniWindowContents
+  MiniWindowNoBarContents
     HeadSlot
       anchors.top: parent.top
-      anchors.horizontalCenter: parent.horizontalCenter
+      anchors.left: parent.left
       margin-top: 3
+      margin-left: 48
 
     BodySlot
       anchors.top: prev.bottom
@@ -141,7 +206,125 @@ MiniWindow
       anchors.horizontalCenter: prev.horizontalCenter
       margin-top: 3
 
-    PurseButton
-      margin-top: 3
+    TextButton
+      id: optionsButton
+      !text: tr('Options')
+      anchors.top: prev.bottom
+      anchors.right: parent.right
+      margin: 3 3 0 0
+      size: 45 22
+
+    TextButton
+      id: spellsButton
+      !text: tr('Spells')
+      anchors.bottom: prev.top
+      anchors.right: prev.right
+      margin: 0 0 3 0
+      size: 45 22
+
+
+    ChaseModeBox
+      id: chaseModeBox
+      anchors.top: parent.top
+      anchors.right: parent.right
+
+    FightOffensiveBox
+      id: fightOffensiveBox
+      anchors.top: parent.top
+      anchors.right: chaseModeBox.left
+
+    FightBalancedBox
+      id: fightBalancedBox
       anchors.top: prev.bottom
       anchors.horizontalCenter: prev.horizontalCenter
+
+    FightDefensiveBox
+      id: fightDefensiveBox
+      anchors.top: prev.bottom
+      anchors.horizontalCenter: prev.horizontalCenter
+
+    PickUpBox
+      id: pickUpButton
+      anchors.top: chaseModeBox.bottom
+      anchors.horizontalCenter: chaseModeBox.horizontalCenter
+
+    SafeFightBox
+      id: safeFightBox
+      anchors.top: prev.bottom
+      anchors.horizontalCenter: prev.horizontalCenter
+
+    MountButton
+      id: mountButton
+      anchors.top: prev.bottom
+      anchors.horizontalCenter: prev.horizontalCenter
+
+
+    UnusedLabel
+      margin-top: 2
+      anchors.top: slot9.bottom
+      anchors.horizontalCenter: slot9.horizontalCenter
+
+    UnusedValueLabel
+      anchors.top: prev.bottom
+      anchors.horizontalCenter: prev.horizontalCenter
+      width: 100
+      text-align: center
+
+
+    CapLabel
+      margin-top: 2
+      anchors.top: slot10.bottom
+      anchors.horizontalCenter: slot10.horizontalCenter
+
+    CapValueLabel
+      anchors.top: prev.bottom
+      anchors.horizontalCenter: prev.horizontalCenter
+      width: 100
+      text-align: center
+
+
+
+    Panel
+      id: pvpModesPanel
+      anchors.right: parent.right
+      anchors.top: safeFightBox.bottom
+      width: 50
+      height: 50
+      margin-top: 5
+
+      WhiteHandBox
+        id: whiteHandBox
+        anchors.right: parent.right
+        anchors.top: parent.top
+
+      RedFistBox
+        id: redFistBox
+        anchors.horizontalCenter: prev.horizontalCenter
+        anchors.top: prev.bottom
+
+
+      WhiteDoveBox
+        id: whiteDoveBox
+        anchors.right: whiteHandBox.left
+        anchors.verticalCenter: whiteHandBox.verticalCenter
+
+
+      YellowHandBox
+        id: yellowHandBox
+        anchors.horizontalCenter: prev.horizontalCenter
+        anchors.top: prev.bottom
+
+
+    Panel
+      id: conditionPanel
+      layout:
+        type: horizontalBox
+      height: 22
+      margin: 0 3 3 5
+      padding: 2
+      anchors.bottom: parent.bottom
+      anchors.left: parent.left
+      anchors.right: parent.right
+      border-width: 1
+      border-color: #00000077
+      background-color: #00000011

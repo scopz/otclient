@@ -42,10 +42,6 @@ Panel
     !tooltip: tr('Will avoid drawing effects on certain occasions.')
 
   OptionCheckBox
-    id: enableLights
-    !text: tr('Enable lights')
-
-  OptionCheckBox
     id: drawEffectOnTop
     !text: tr('Draw Effect On Top')
     !tooltip: tr('Draw effect after drawing the entire floor.')
@@ -118,7 +114,7 @@ Panel
     anchors.top: prev.bottom
     margin-top: 3
     minimum: 0
-    maximum: 100
+    maximum: 12
 
   Label
     id: shadowFloorIntensityLevel
@@ -136,8 +132,8 @@ Panel
     anchors.right: parent.right
     anchors.top: prev.bottom
     margin-top: 3
-    minimum: 0
-    maximum: 100
+    minimum: 50
+    maximum: 80
 
   Label
     id: floorFadingLabel

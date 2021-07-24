@@ -41,7 +41,6 @@ MinimapZoomInButton < Button
   margin-bottom: 28
   anchors.right: parent.right
   anchors.bottom: parent.bottom
-  //icon-source: /images/game/minimap/zoom_in
 
 MinimapZoomOutButton < Button
   text: -
@@ -50,7 +49,19 @@ MinimapZoomOutButton < Button
   margin-bottom: 4
   anchors.right: parent.right
   anchors.bottom: parent.bottom
-  //icon-source: /images/game/minimap/zoom_out
+
+MinimapExpandButton < Button
+  size: 20 20
+  margin-right: 4
+  margin-top: 4
+  anchors.right: parent.right
+  anchors.top: parent.top
+  icon-source: /images/game/minimap/expand
+  icon-clip: 0 32 16 16
+  $pressed:
+    icon-clip: 0 0 16 16
+  $hover !pressed:
+    icon-clip: 0 16 16 16
 
 MinimapResetButton < Button
   !text: tr('Center')
@@ -81,6 +92,9 @@ Minimap < UIMinimap
   MinimapZoomOutButton
     id: zoomOutButton
     @onClick: self:getParent():zoomOut()
+
+  MinimapExpandButton
+    id: expand
 
   MinimapResetButton
     @onClick: self:getParent():reset()

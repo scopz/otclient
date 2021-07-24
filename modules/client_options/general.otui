@@ -52,12 +52,3 @@ Panel
     margin-top: -4
     margin-left: 5
     mouse-scroll: false
-
-  Button
-    id: changeLocale
-    !text: tr('Change language')
-    @onClick: modules.client_locales.createWindow()
-    anchors.top: prev.bottom
-    anchors.left: parent.left
-    margin-top: 12
-    width: 120

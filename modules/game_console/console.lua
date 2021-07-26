@@ -12,6 +12,10 @@ SpeakTypesSettings = {
         speakType = MessageModes.Yell,
         color = '#FFFF00'
     },
+    spell = {
+        speakType = MessageModes.Spell,
+        color = '#F97ACD'
+    },
     broadcast = {
         speakType = MessageModes.GamemasterBroadcast,
         color = '#F55E5E'
@@ -82,11 +86,11 @@ SpeakTypesSettings = {
         color = '#FFFF00'
     }
 }
-
 SpeakTypes = {
     [MessageModes.Say] = SpeakTypesSettings.say,
     [MessageModes.Whisper] = SpeakTypesSettings.whisper,
     [MessageModes.Yell] = SpeakTypesSettings.yell,
+    [MessageModes.Spell] = SpeakTypesSettings.spell,
     [MessageModes.GamemasterBroadcast] = SpeakTypesSettings.broadcast,
     [MessageModes.PrivateFrom] = SpeakTypesSettings.private,
     [MessageModes.GamemasterPrivateFrom] = SpeakTypesSettings.privateRed,
@@ -104,7 +108,6 @@ SpeakTypes = {
     [MessageModes.NpcFromStartBlock] = SpeakTypesSettings.privateNpcToPlayer,
 
     -- ignored types
-    [MessageModes.Spell] = SpeakTypesSettings.none,
     [MessageModes.BarkLow] = SpeakTypesSettings.none,
     [MessageModes.BarkLoud] = SpeakTypesSettings.none
 }
@@ -1335,10 +1338,36 @@ function onTalk(name, level, mode, message, channelId, creaturePos)
 
     if mode == MessageModes.RVRChannel then channelId = violationsChannelId end
 
-    if (mode == MessageModes.Say or mode == MessageModes.Whisper or mode == MessageModes.Yell or mode ==
-        MessageModes.Spell or mode == MessageModes.MonsterSay or mode == MessageModes.MonsterYell or mode ==
-        MessageModes.NpcFrom or mode == MessageModes.BarkLow or mode == MessageModes.BarkLoud or mode ==
-        MessageModes.NpcFromStartBlock) and creaturePos then
+    local showScreenMessage = mode == MessageModes.Say or mode == MessageModes.Whisper or mode == MessageModes.Yell or
+            mode == MessageModes.MonsterSay or mode == MessageModes.MonsterYell or
+            mode == MessageModes.NpcFrom or mode == MessageModes.BarkLow or mode == MessageModes.BarkLoud or
+            mode == MessageModes.NpcFromStartBlock
+
+    local showName = true
+
+    if mode == MessageModes.Spell then
+        local localPlayer = g_game.getLocalPlayer()
+        if name == g_game.getCharacterName() then
+            if modules.client_options.getOption('showOwnCastsInScreen') then showScreenMessage = true end
+        else
+            if modules.client_options.getOption('showOthersCastsInScreen') then showScreenMessage = true end
+        end
+
+        speaktype.hideInConsole = false
+        if name == g_game.getCharacterName() then
+            if not modules.client_options.getOption('showOwnCastsInConsole') then
+                showName = false
+                speaktype.hideInConsole = true
+            end
+        else
+            if not modules.client_options.getOption('showOthersCastsInConsole') then
+                showName = false
+                speaktype.hideInConsole = true
+            end
+        end
+    end
+
+    if showScreenMessage and creaturePos then
         local staticText = StaticText.create()
         -- Remove curly braces from screen message
         local staticMessage = message
@@ -1356,7 +1385,7 @@ function onTalk(name, level, mode, message, channelId, creaturePos)
             end
             staticText:setColor(speaktype.color)
         end
-        staticText:addMessage(name, mode, staticMessage)
+        staticText:addMessage(name, mode, staticMessage, showName)
         g_map.addThing(staticText, creaturePos, -1)
     end
 

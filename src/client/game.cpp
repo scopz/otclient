@@ -1276,38 +1276,6 @@ void Game::setOpenPvpSituations(int openPvpSituations)
     g_lua.callGlobalField("g_game", "onOpenPvpSituationsChange", openPvpSituations);
 }
 
-void Game::inspectNpcTrade(const ItemPtr& item)
-{
-    if (!canPerformGameAction() || !item)
-        return;
-
-    m_protocolGame->sendInspectNpcTrade(item->getId(), item->getCount());
-}
-
-void Game::buyItem(const ItemPtr& item, int amount, bool ignoreCapacity, bool buyWithBackpack)
-{
-    if (!canPerformGameAction() || !item)
-        return;
-
-    m_protocolGame->sendBuyItem(item->getId(), item->getCountOrSubType(), amount, ignoreCapacity, buyWithBackpack);
-}
-
-void Game::sellItem(const ItemPtr& item, int amount, bool ignoreEquipped)
-{
-    if (!canPerformGameAction() || !item)
-        return;
-
-    m_protocolGame->sendSellItem(item->getId(), item->getSubType(), amount, ignoreEquipped);
-}
-
-void Game::closeNpcTrade()
-{
-    if (!canPerformGameAction())
-        return;
-
-    m_protocolGame->sendCloseNpcTrade();
-}
-
 void Game::requestTrade(const ItemPtr& item, const CreaturePtr& creature)
 {
     if (!canPerformGameAction() || !item || !creature)
@@ -1399,22 +1367,6 @@ void Game::reportRuleViolation(const std::string& target, int reason, int action
 void Game::debugReport(const std::string& a, const std::string& b, const std::string& c, const std::string& d)
 {
     m_protocolGame->sendDebugReport(a, b, c, d);
-}
-
-void Game::requestQuestLog()
-{
-    if (!canPerformGameAction())
-        return;
-
-    m_protocolGame->sendRequestQuestLog();
-}
-
-void Game::requestQuestLine(int questId)
-{
-    if (!canPerformGameAction())
-        return;
-
-    m_protocolGame->sendRequestQuestLine(questId);
 }
 
 void Game::equipItem(const ItemPtr& item)

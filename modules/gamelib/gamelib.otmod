@@ -21,7 +21,6 @@ Module
     dofile 'market'
     dofile 'textmessages'
     dofile 'thing'
-    dofile 'spells'
 
     dofile 'eventcontroller'
     dofile 'controller'

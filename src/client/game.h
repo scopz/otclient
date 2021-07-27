@@ -248,10 +248,6 @@ public:
     int getOpenPvpSituations() { return m_openPvpSituations; }
 
     // npc trade related
-    void inspectNpcTrade(const ItemPtr& item);
-    void buyItem(const ItemPtr& item, int amount, bool ignoreCapacity, bool buyWithBackpack);
-    void sellItem(const ItemPtr& item, int amount, bool ignoreEquipped);
-    void closeNpcTrade();
     void processNpcFocusLost(int npcId);
     void processNpcFocus(int npcId);
 
@@ -274,10 +270,6 @@ public:
     void reportBug(const std::string_view comment);
     void reportRuleViolation(const std::string_view target, int reason, int action, const std::string_view comment, const std::string_view statement, int statementId, bool ipBanishment);
     void debugReport(const std::string_view a, const std::string_view b, const std::string_view c, const std::string_view d);
-
-    // questlog related
-    void requestQuestLog();
-    void requestQuestLine(int questId);
 
     // 870 only
     void equipItem(const ItemPtr& item);

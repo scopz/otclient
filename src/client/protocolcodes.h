@@ -128,10 +128,10 @@ namespace Proto
         GameServerPlayerSkills = 161,
         GameServerPlayerState = 162,
         GameServerClearTarget = 163,
-        GameServerPlayerModes = 167,
         GameServerSpellDelay = 164, // 870
         GameServerSpellGroupDelay = 165, // 870
         GameServerMultiUseDelay = 166, // 870
+        GameServerPlayerModes = 167,
         GameServerSetStoreDeepLink = 168, // 1097
         GameServerSendRestingAreaState = 169,
         GameServerTalk = 170,
@@ -238,10 +238,10 @@ namespace Proto
         ClientTurnWest = 114,
         ClientEquipItem = 119, // 910
         ClientMove = 120,
-        ClientInspectNpcTrade = 121,
-        ClientBuyItem = 122,
-        ClientSellItem = 123,
-        ClientCloseNpcTrade = 124,
+        //ClientInspectNpcTrade = 121,
+        //ClientBuyItem = 122,
+        //ClientSellItem = 123,
+        //ClientCloseNpcTrade = 124,
         ClientRequestTrade = 125,
         ClientInspectTrade = 126,
         ClientAcceptTrade = 127,
@@ -293,8 +293,8 @@ namespace Proto
         ClientRuleViolation = 231,
         ClientDebugReport = 232,
         ClientTransferCoins = 239, // 1080
-        ClientRequestQuestLog = 240,
-        ClientRequestQuestLine = 241,
+        //ClientRequestQuestLog = 240,
+        //ClientRequestQuestLine = 241,
         ClientNewRuleViolation = 242, // 910
         ClientRequestItemInfo = 243, // 910
         ClientMarketLeave = 244, // 944

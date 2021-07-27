@@ -246,10 +246,6 @@ void Client::registerLuaFunctions()
     g_lua.bindSingletonFunction("g_game", "getUnjustifiedPoints", &Game::getUnjustifiedPoints, &g_game);
     g_lua.bindSingletonFunction("g_game", "getOpenPvpSituations", &Game::getOpenPvpSituations, &g_game);
     g_lua.bindSingletonFunction("g_game", "isSafeFight", &Game::isSafeFight, &g_game);
-    g_lua.bindSingletonFunction("g_game", "inspectNpcTrade", &Game::inspectNpcTrade, &g_game);
-    g_lua.bindSingletonFunction("g_game", "buyItem", &Game::buyItem, &g_game);
-    g_lua.bindSingletonFunction("g_game", "sellItem", &Game::sellItem, &g_game);
-    g_lua.bindSingletonFunction("g_game", "closeNpcTrade", &Game::closeNpcTrade, &g_game);
     g_lua.bindSingletonFunction("g_game", "requestTrade", &Game::requestTrade, &g_game);
     g_lua.bindSingletonFunction("g_game", "inspectTrade", &Game::inspectTrade, &g_game);
     g_lua.bindSingletonFunction("g_game", "acceptTrade", &Game::acceptTrade, &g_game);
@@ -262,8 +258,6 @@ void Client::registerLuaFunctions()
     g_lua.bindSingletonFunction("g_game", "debugReport", &Game::debugReport, &g_game);
     g_lua.bindSingletonFunction("g_game", "editText", &Game::editText, &g_game);
     g_lua.bindSingletonFunction("g_game", "editList", &Game::editList, &g_game);
-    g_lua.bindSingletonFunction("g_game", "requestQuestLog", &Game::requestQuestLog, &g_game);
-    g_lua.bindSingletonFunction("g_game", "requestQuestLine", &Game::requestQuestLine, &g_game);
     g_lua.bindSingletonFunction("g_game", "equipItem", &Game::equipItem, &g_game);
     g_lua.bindSingletonFunction("g_game", "mount", &Game::mount, &g_game);
     g_lua.bindSingletonFunction("g_game", "requestItemInfo", &Game::requestItemInfo, &g_game);

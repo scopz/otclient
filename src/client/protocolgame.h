@@ -56,10 +56,6 @@ public:
     void sendTurnWest();
     void sendEquipItem(int itemId, int countOrSubType);
     void sendMove(const Position& fromPos, int thingId, int stackpos, const Position& toPos, int count);
-    void sendInspectNpcTrade(int itemId, int count);
-    void sendBuyItem(int itemId, int subType, int amount, bool ignoreCapacity, bool buyWithBackpack);
-    void sendSellItem(int itemId, int subType, int amount, bool ignoreEquipped);
-    void sendCloseNpcTrade();
     void sendRequestTrade(const Position& pos, int thingId, int stackpos, uint creatureId);
     void sendInspectTrade(bool counterOffer, int index);
     void sendAcceptTrade();
@@ -106,8 +102,6 @@ public:
     void sendBugReport(const std::string& comment);
     void sendRuleViolation(const std::string& target, int reason, int action, const std::string& comment, const std::string& statement, int statementId, bool ipBanishment);
     void sendDebugReport(const std::string& a, const std::string& b, const std::string& c, const std::string& d);
-    void sendRequestQuestLog();
-    void sendRequestQuestLine(int questId);
     void sendNewNewRuleViolation(int reason, int action, const std::string& characterName, const std::string& comment, const std::string& translation);
     void sendRequestItemInfo(int itemId, int subType, int index);
     void sendAnswerModalDialog(uint32 dialog, int button, int choice);

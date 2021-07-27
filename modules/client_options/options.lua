@@ -49,7 +49,6 @@ local defaultOptions = {
 }
 
 local optionsWindow
-local optionsButton
 local optionsTabBar
 local options = {}
 local generalPanel
@@ -135,10 +134,6 @@ function init()
     soundPanel = g_ui.loadUI('audio')
     optionsTabBar:addTab(tr('Audio'), soundPanel, '/images/optionstab/audio')
 
-    optionsButton = modules.client_topmenu.addLeftButton('optionsButton',
-                                                         tr('Options'),
-                                                         '/images/topbuttons/options',
-                                                         toggle)
     audioButton = modules.client_topmenu.addLeftButton('audioButton',
                                                        tr('Audio'),
                                                        '/images/topbuttons/audio',
@@ -153,7 +148,6 @@ function terminate()
     g_keyboard.unbindKeyDown('Ctrl+Shift+F')
     g_keyboard.unbindKeyDown('Ctrl+N')
     optionsWindow:destroy()
-    optionsButton:destroy()
     audioButton:destroy()
 end
 

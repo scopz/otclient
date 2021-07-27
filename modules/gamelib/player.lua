@@ -12,15 +12,6 @@ PlayerStates = {
     Stopped = 256,
     AttackBuff = 512,
     Healing = 1024,
-    Drowning = 256,
-    Freezing = 512,
-    Dazzled = 1024,
-    Cursed = 2048,
-    PartyBuff = 4096,
-    PzBlock = 8192,
-    Pz = 16384,
-    Bleeding = 32768,
-    Hungry = 65536
 }
 
 InventorySlotOther = 0

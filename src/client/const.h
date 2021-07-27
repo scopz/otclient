@@ -267,15 +267,9 @@ namespace Otc
         IconParalyze = 32,
         IconHaste = 64,
         IconSwords = 128,
-        IconDrowning = 256,
-        IconFreezing = 512,
-        IconDazzled = 1024,
-        IconCursed = 2048,
-        IconPartyBuff = 4096,
-        IconPzBlock = 8192,
-        IconPz = 16384,
-        IconBleeding = 32768,
-        IconHungry = 65536
+        IconStopped = 256,
+        IconAttackBuff = 512,
+        IconHealing = 1024,
     };
 
     enum MessageMode : uint8_t

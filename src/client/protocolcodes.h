@@ -72,6 +72,7 @@ namespace Proto
         // NOTE: add any custom opcodes in this range
         // 51 - 99
         GameServerChangeMapAwareRange = 51,
+        GameServerRequireTarget = 52,
         GameServerPlayerSpellTree = 53,
         GameServerPlayerBankMoney = 54,
 
@@ -220,6 +221,7 @@ namespace Proto
 
         // NOTE: add any custom opcodes in this range
         // 51 - 99
+        ClientTalkTargeted = 52,
 
         // original tibia ONLY
         ClientAutoWalk = 100,

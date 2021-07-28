@@ -331,6 +331,9 @@ void ProtocolGame::parseMessage(const InputMessagePtr& msg)
                 case Proto::GameServerPlayerBankMoney:
                     parseBankMoney(msg);
                     break;
+                case Proto::GameServerRequireTarget:
+                    parseTargetRequirement(msg);
+                    break;
                     // PROTOCOL>=870
                 case Proto::GameServerSpellDelay:
                     parseSpellCooldown(msg);
@@ -2406,6 +2409,21 @@ void ProtocolGame::parseChangeMapAwareRange(const InputMessagePtr& msg)
 
     g_map.setAwareRange(range);
     g_lua.callGlobalField("g_game", "onMapChangeAwareRange", xrange, yrange);
+}
+
+void ProtocolGame::parseTargetRequirement(const InputMessagePtr& msg)
+{
+    uint8_t reason = msg->getU8();
+    std::string text;
+    if (reason == 0x01) {
+        text = msg->getString();
+    }
+
+    g_game.processSelectTarget(reason, [this, reason, text] (const ThingPtr &thing) {
+        if (reason == 0x01) {
+            sendTalkTargeted(text, thing);
+        }
+    });
 }
 
 void ProtocolGame::parseCreaturesMark(const InputMessagePtr& msg)

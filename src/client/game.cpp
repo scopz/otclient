@@ -268,6 +268,12 @@ void Game::processNpcFocus(int npcId)
     g_lua.callGlobalField("g_game", "onNpcFocus", npcId);
 }
 
+void Game::processSelectTarget(int code, const std::function<void(ThingPtr)> &callback)
+{
+    m_callbacks[code] = callback;
+    g_lua.callGlobalField("g_game", "onSelectTarget", code);
+}
+
 void Game::processPing()
 {
     g_lua.callGlobalField("g_game", "onPing");
@@ -880,6 +886,15 @@ void Game::useInventoryItemWith(int itemId, const ThingPtr& toThing)
         m_protocolGame->sendUseOnCreature(pos, itemId, 0, toThing->getId());
     else
         m_protocolGame->sendUseItemWith(pos, itemId, 0, toThing->getPosition(), toThing->getId(), toThing->getStackPos());
+}
+
+void Game::selectTarget(const int& code, const ThingPtr& thing)
+{
+    CallbacksMap::iterator it = m_callbacks.find(code);
+    if (it != m_callbacks.end()) {
+        it->second(thing);
+        m_callbacks.erase(it);
+    }
 }
 
 ItemPtr Game::findItemInContainers(uint itemId, int subType)

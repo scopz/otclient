@@ -71,6 +71,7 @@ public:
     void sendLook(const Position& position, int thingId, int stackpos);
     void sendLookCreature(uint creatureId);
     void sendTalk(Otc::MessageMode mode, int channelId, const std::string& receiver, const std::string& message);
+    void sendTalkTargeted(const std::string& message, const ThingPtr& thing);
     void sendRequestChannels();
     void sendJoinChannel(int channelId);
     void sendLeaveChannel(int channelId);
@@ -243,6 +244,7 @@ private:
     void parseChangeMapAwareRange(const InputMessagePtr& msg);
     void parseNpcFocusLost(const InputMessagePtr& msg);
     void parseNpcFocus(const InputMessagePtr& msg);
+    void parseTargetRequirement(const InputMessagePtr& msg);
     void parseBankMoney(const InputMessagePtr& msg);
     void parseCreaturesMark(const InputMessagePtr& msg);
 

@@ -29,7 +29,8 @@ function init()
     connect(g_game, {
         onGameStart = onGameStart,
         onGameEnd = onGameEnd,
-        onLoginAdvice = onLoginAdvice
+        onLoginAdvice = onLoginAdvice,
+        onSelectTarget = startSelectTarget,
     }, true)
 
     -- Call load AFTER game window has been created and
@@ -185,7 +186,8 @@ function terminate()
     disconnect(g_game, {
         onGameStart = onGameStart,
         onGameEnd = onGameEnd,
-        onLoginAdvice = onLoginAdvice
+        onLoginAdvice = onLoginAdvice,
+        onSelectTarget = startSelectTarget,
     })
 
     disconnect(gameLeftPanel, {onVisibilityChange = onExtraPanelVisibilityChange})
@@ -279,10 +281,11 @@ function onLoginAdvice(message)
     displayInfoBox(tr("For Your Information"), message)
 end
 
-function forceExit()
-    g_game.cancelLogin()
-    scheduleEvent(exit, 10)
-    return true
+function clearMouseGrabberWidget()
+    if g_ui.isMouseGrabbed() then
+        g_mouse.popCursor('target')
+        mouseGrabberWidget:ungrabMouse()
+    end
 end
 
 function tryExit()
@@ -290,9 +293,11 @@ function tryExit()
 
     local exitFunc = function()
         g_game.safeLogout()
-        forceExit()
+        g_game.cancelLogin()
+        scheduleEvent(exit, 10)
     end
     local logoutFunc = function()
+        clearMouseGrabberWidget()
         g_game.safeLogout()
         exitWindow:destroy()
         exitWindow = nil
@@ -329,6 +334,7 @@ function tryLogout(prompt)
             'Your connection is failing, if you logout now your character will be still online, do you want to force logout?'
 
         yesCallback = function()
+            clearMouseGrabberWidget()
             g_game.forceLogout()
             if logoutWindow then
                 logoutWindow:destroy()
@@ -339,6 +345,7 @@ function tryLogout(prompt)
         msg = 'Are you sure you want to logout?'
 
         yesCallback = function()
+            clearMouseGrabberWidget()
             g_game.safeLogout()
             if logoutWindow then
                 logoutWindow:destroy()
@@ -444,6 +451,8 @@ function onMouseGrabberRelease(self, mousePosition, mouseButton)
                 onUseWith(clickedWidget, mousePosition)
             elseif selectedType == 'trade' then
                 onTradeWith(clickedWidget, mousePosition)
+            elseif selectedType == 'target' then
+                onSelectTarget(clickedWidget, mousePosition)
             end
         end
     end
@@ -485,6 +494,15 @@ function onTradeWith(clickedWidget, mousePosition)
     end
 end
 
+function onSelectTarget(clickedWidget, mousePosition)
+    if clickedWidget:getClassName() == 'UIGameMap' then
+        local tile = clickedWidget:getTile(mousePosition)
+        if tile then
+            g_game.selectTarget(selectedThing, tile:getTopUseThing())
+        end
+    end
+end
+
 function startUseWith(thing)
     if not thing then return end
     if g_ui.isMouseGrabbed() then
@@ -511,6 +529,18 @@ function startTradeWith(thing)
     end
     selectedType = 'trade'
     selectedThing = thing
+    mouseGrabberWidget:grabMouse()
+    g_mouse.pushCursor('target')
+end
+
+function startSelectTarget(code)
+    if g_ui.isMouseGrabbed() then
+        g_mouse.popCursor('target')
+        mouseGrabberWidget:ungrabMouse()
+    end
+    
+    selectedType = 'target'
+    selectedThing = code
     mouseGrabberWidget:grabMouse()
     g_mouse.pushCursor('target')
 end

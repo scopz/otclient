@@ -413,6 +413,7 @@ protected:
     TexturePtr m_imageTexture;
     Rect m_imageClipRect;
     Rect m_imageRect;
+    std::string m_imageSource;
     Color m_imageColor;
     Point m_iconOffset;
     bool m_imageFixedRatio{ false },
@@ -442,6 +443,7 @@ public:
     void setImageBorderLeft(int border) { m_imageBorder.left = border; configureBorderImage(); }
     void setImageBorder(int border) { m_imageBorder.set(border); configureBorderImage(); }
 
+    std::string getImageSource() { return m_imageSource; }
     Rect getImageClip() { return m_imageClipRect; }
     int getImageOffsetX() { return m_imageRect.x(); }
     int getImageOffsetY() { return m_imageRect.y(); }

@@ -94,6 +94,7 @@ protected:
     void processPlayerModes(Otc::FightModes fightMode, Otc::ChaseModes chaseMode, Otc::PickUpModes pickUpMode, bool safeMode, Otc::PVPModes pvpMode);
 
     void processSpellTree(std::list<SpellSet> &spellSets);
+    void processSelectTarget(int code, const std::function<void(ThingPtr)>& callback);
 
     // message related
     static void processTextMessage(Otc::MessageMode mode, const std::string& text);
@@ -180,6 +181,7 @@ public:
     void rotate(const ThingPtr& thing);
     void use(const ThingPtr& thing);
     void useWith(const ItemPtr& item, const ThingPtr& toThing);
+    void selectTarget(const int& code, const ThingPtr& toThing);
     void useInventoryItem(int itemId);
     void useInventoryItemWith(int itemId, const ThingPtr& toThing);
     ItemPtr findItemInContainers(uint itemId, int subType);
@@ -366,9 +368,13 @@ private:
     std::map<int, ContainerPtr> m_containers;
     std::map<int, Vip> m_vips;
 
+    typedef std::map<int, std::function<void(ThingPtr)>> CallbacksMap;
+    CallbacksMap m_callbacks;
+
     bool m_online{ false };
     bool m_denyBotCall{ false };
     bool m_dead{ false };
+
     bool m_expertPvpMode;
     int m_serverBeat{ 50 };
     ticks_t m_ping{ -1 };

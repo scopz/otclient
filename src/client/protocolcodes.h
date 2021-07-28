@@ -134,7 +134,8 @@ namespace Proto
         GameServerMultiUseDelay = 166, // 870
         GameServerPlayerModes = 167,
         GameServerSetStoreDeepLink = 168, // 1097
-        GameServerSendRestingAreaState = 169,
+        GameServerStartSellTransaction = 169, // 773
+//        GameServerSendRestingAreaState = 169, // 12+
         GameServerTalk = 170,
         GameServerChannels = 171,
         GameServerOpenChannel = 172,
@@ -222,6 +223,7 @@ namespace Proto
         // NOTE: add any custom opcodes in this range
         // 51 - 99
         ClientTalkTargeted = 52,
+        ClientSellItemToNpc = 53,
 
         // original tibia ONLY
         ClientAutoWalk = 100,

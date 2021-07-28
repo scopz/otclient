@@ -387,6 +387,17 @@ void ProtocolGame::sendUseOnCreature(const Position& pos, int thingId, int stack
     send(msg);
 }
 
+void ProtocolGame::sendSellItemToNpc(const int& npcId, const Position& position, int itemId, int stackpos)
+{
+    OutputMessagePtr msg(new OutputMessage);
+    msg->addU8(Proto::ClientSellItemToNpc);
+    addPosition(msg, position);
+    msg->addU16(itemId);
+    msg->addU8(stackpos);
+    msg->addU32(npcId);
+    send(msg);
+}
+
 void ProtocolGame::sendRotateItem(const Position& pos, int thingId, int stackpos)
 {
     const OutputMessagePtr msg(new OutputMessage);

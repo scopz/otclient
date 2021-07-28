@@ -2,6 +2,9 @@ Cursors
   target:
     image: targetcursor
     hot-spot: 9 9
+  sell:
+    image: sellcursor
+    hot-spot: 9 9
   horizontal:
     image: horizontalcursor
     hot-spot: 9 4

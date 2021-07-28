@@ -316,16 +316,22 @@ void ProtocolGame::parseMessage(const InputMessagePtr& msg)
                 case Proto::GameServerPlayerSpellTree:
                     parsePlayerSpellTree(msg);
                     break;
+                case Proto::GameServerStartSellTransaction:
+                    if(g_game.getClientVersion() == 773)
+                        parseStartSellTransaction(msg);
+                    else
+                        parseRestingAreaState(msg); // 1200+
+                    break;
                 case Proto::GameServerNpcFocusLost:
                     if(g_game.getClientVersion() == 773)
                         parseNpcFocusLost(msg);
-                    else        
+                    else
                         parseBestiaryTracker(msg); // 1200+
                     break;
                 case Proto::GameServerNpcFocus:
                     if(g_game.getClientVersion() == 773)
                         parseNpcFocus(msg);
-                    else        
+                    else
                         parseTaskHuntingBasicData(msg); // 1200+
                     break;
                 case Proto::GameServerPlayerBankMoney:
@@ -464,9 +470,6 @@ void ProtocolGame::parseMessage(const InputMessagePtr& msg)
                     break;
                 case Proto::GameServerSendBlessDialog:
                     parseBlessDialog(msg);
-                    break;
-                case Proto::GameServerSendRestingAreaState:
-                    parseRestingAreaState(msg);
                     break;
                 case Proto::GameServerSendUpdateImpactTracker:
                     parseUpdateImpactTracker(msg);
@@ -2285,6 +2288,12 @@ void ProtocolGame::parseQuestLine(const InputMessagePtr& msg)
     }
 
     Game::processQuestLine(questId, questMissions);
+}
+
+void ProtocolGame::parseStartSellTransaction(const InputMessagePtr& msg)
+{
+    uint32_t npcId = msg->getU32();
+    g_game.processSellTransaction(npcId);
 }
 
 void ProtocolGame::parseNpcFocusLost(const InputMessagePtr& msg)

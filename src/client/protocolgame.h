@@ -63,6 +63,7 @@ public:
     void sendUseItem(const Position& position, int itemId, int stackpos, int index);
     void sendUseItemWith(const Position& fromPos, int itemId, int fromStackPos, const Position& toPos, int toThingId, int toStackPos);
     void sendUseOnCreature(const Position& pos, int thingId, int stackpos, uint creatureId);
+    void sendSellItemToNpc(const int& npcId, const Position& position, int itemId, int stackpos);
     void sendRotateItem(const Position& pos, int thingId, int stackpos);
     void sendCloseContainer(int containerId);
     void sendUpContainer(int containerId);
@@ -245,6 +246,7 @@ private:
     void parseNpcFocusLost(const InputMessagePtr& msg);
     void parseNpcFocus(const InputMessagePtr& msg);
     void parseTargetRequirement(const InputMessagePtr& msg);
+    void parseStartSellTransaction(const InputMessagePtr& msg);
     void parseBankMoney(const InputMessagePtr& msg);
     void parseCreaturesMark(const InputMessagePtr& msg);
 

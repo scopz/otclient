@@ -31,6 +31,8 @@ function init()
         onGameEnd = onGameEnd,
         onLoginAdvice = onLoginAdvice,
         onSelectTarget = startSelectTarget,
+        onSellTransaction = startSellTransaction,
+        onNpcFocusLost = npcFocusLost,
     }, true)
 
     -- Call load AFTER game window has been created and
@@ -188,6 +190,8 @@ function terminate()
         onGameEnd = onGameEnd,
         onLoginAdvice = onLoginAdvice,
         onSelectTarget = startSelectTarget,
+        onSellTransaction = startSellTransaction,
+        onNpcFocusLost = npcFocusLost,
     })
 
     disconnect(gameLeftPanel, {onVisibilityChange = onExtraPanelVisibilityChange})
@@ -283,7 +287,7 @@ end
 
 function clearMouseGrabberWidget()
     if g_ui.isMouseGrabbed() then
-        g_mouse.popCursor('target')
+        g_mouse.popCursor(mouseGrabbedCursor)
         mouseGrabberWidget:ungrabMouse()
     end
 end
@@ -453,12 +457,15 @@ function onMouseGrabberRelease(self, mousePosition, mouseButton)
                 onTradeWith(clickedWidget, mousePosition)
             elseif selectedType == 'target' then
                 onSelectTarget(clickedWidget, mousePosition)
+            elseif selectedType == 'sell' then
+                onSelectSellItem(clickedWidget, mousePosition)
+                return true
             end
         end
     end
 
     selectedThing = nil
-    g_mouse.popCursor('target')
+    g_mouse.popCursor(mouseGrabbedCursor)
     self:ungrabMouse()
     return true
 end
@@ -503,6 +510,12 @@ function onSelectTarget(clickedWidget, mousePosition)
     end
 end
 
+function onSelectSellItem(clickedWidget, mousePosition)
+    if clickedWidget:getClassName() == 'UIItem' and not clickedWidget:isVirtual() then
+        g_game.sellItemToNpc(selectedThing, clickedWidget:getItem())
+    end
+end
+
 function startUseWith(thing)
     if not thing then return end
     if g_ui.isMouseGrabbed() then
@@ -515,7 +528,8 @@ function startUseWith(thing)
     selectedType = 'use'
     selectedThing = thing
     mouseGrabberWidget:grabMouse()
-    g_mouse.pushCursor('target')
+    mouseGrabbedCursor = 'target'
+    g_mouse.pushCursor(mouseGrabbedCursor)
 end
 
 function startTradeWith(thing)
@@ -530,19 +544,41 @@ function startTradeWith(thing)
     selectedType = 'trade'
     selectedThing = thing
     mouseGrabberWidget:grabMouse()
-    g_mouse.pushCursor('target')
+    mouseGrabbedCursor = 'target'
+    g_mouse.pushCursor(mouseGrabbedCursor)
 end
 
 function startSelectTarget(code)
     if g_ui.isMouseGrabbed() then
-        g_mouse.popCursor('target')
+        g_mouse.popCursor(mouseGrabbedCursor)
         mouseGrabberWidget:ungrabMouse()
     end
     
     selectedType = 'target'
     selectedThing = code
     mouseGrabberWidget:grabMouse()
-    g_mouse.pushCursor('target')
+    mouseGrabbedCursor = 'target'
+    g_mouse.pushCursor(mouseGrabbedCursor)
+end
+
+function startSellTransaction(cid)
+    if g_ui.isMouseGrabbed() then
+        g_mouse.popCursor(mouseGrabbedCursor)
+        mouseGrabberWidget:ungrabMouse()
+    end
+
+    selectedType = 'sell'
+    selectedThing = cid
+    mouseGrabberWidget:grabMouse()
+    mouseGrabbedCursor = 'sell'
+    g_mouse.pushCursor(mouseGrabbedCursor)
+end
+
+function npcFocusLost(cid)
+    if g_ui.isMouseGrabbed() and selectedType == 'sell' and selectedThing == cid then
+        g_mouse.popCursor(mouseGrabbedCursor)
+        mouseGrabberWidget:ungrabMouse()
+    end
 end
 
 function isMenuHookCategoryEmpty(category)

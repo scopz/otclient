@@ -95,6 +95,7 @@ protected:
 
     void processSpellTree(std::list<SpellSet> &spellSets);
     void processSelectTarget(int code, const std::function<void(ThingPtr)>& callback);
+    void processSellTransaction(int npcId);
 
     // message related
     static void processTextMessage(Otc::MessageMode mode, const std::string_view text);
@@ -182,6 +183,7 @@ public:
     void use(const ThingPtr& thing);
     void useWith(const ItemPtr& item, const ThingPtr& toThing);
     void selectTarget(const int& code, const ThingPtr& toThing);
+    void sellItemToNpc(const int& npcId, const ThingPtr& toThing);
     void useInventoryItem(int itemId);
     void useInventoryItemWith(int itemId, const ThingPtr& toThing);
     ItemPtr findItemInContainers(uint itemId, int subType);

@@ -53,7 +53,6 @@ public:
     void setMana(double mana, double maxMana);
     void setMagicLevel(double magicLevel, double magicLevelPercent);
     void setBaseMagicLevel(double baseMagicLevel);
-    void setSoul(double soul);
     void setStamina(double stamina);
     void setKnown(bool known) { m_known = known; }
     void setPendingGame(bool pending) { m_pending = pending; }
@@ -84,7 +83,6 @@ public:
     double getMagicLevel() { return m_magicLevel; }
     double getMagicLevelPercent() { return m_magicLevelPercent; }
     double getBaseMagicLevel() { return m_baseMagicLevel; }
-    double getSoul() { return m_soul; }
     double getStamina() { return m_stamina; }
     double getRegenerationTime() { return m_regenerationTime; }
     double getOfflineTrainingTime() { return m_offlineTrainingTime; }
@@ -166,7 +164,6 @@ private:
     double m_magicLevel{ -1 };
     double m_magicLevelPercent{ -1 };
     double m_baseMagicLevel{ -1 };
-    double m_soul{ -1 };
     double m_stamina{ -1 };
     double m_regenerationTime{ -1 };
     double m_offlineTrainingTime{ -1 };

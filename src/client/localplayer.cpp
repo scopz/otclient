@@ -388,16 +388,6 @@ void LocalPlayer::setBaseMagicLevel(double baseMagicLevel)
     }
 }
 
-void LocalPlayer::setSoul(double soul)
-{
-    if (m_soul != soul) {
-        const double oldSoul = m_soul;
-        m_soul = soul;
-
-        callLuaField("onSoulChange", soul, oldSoul);
-    }
-}
-
 void LocalPlayer::setStamina(double stamina)
 {
     if (m_stamina != stamina) {

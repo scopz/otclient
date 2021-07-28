@@ -1629,7 +1629,7 @@ void ProtocolGame::parsePlayerStats(const InputMessagePtr& msg)
         m_localPlayer->setBaseMagicLevel(baseMagicLevel);
     }
 
-    const double soul = g_game.getClientVersion() == 773? 0 : msg->getU8();
+    if (g_game.getClientVersion() != 773) msg->getU8(); // soul
     double stamina = 0;
     if (g_game.getFeature(Otc::GamePlayerStamina))
         stamina = msg->getU16();
@@ -1664,7 +1664,6 @@ void ProtocolGame::parsePlayerStats(const InputMessagePtr& msg)
     m_localPlayer->setLevel(level, levelPercent);
     m_localPlayer->setMana(mana, maxMana);
     m_localPlayer->setStamina(stamina);
-    m_localPlayer->setSoul(soul);
     m_localPlayer->setBaseSpeed(baseSpeed);
     m_localPlayer->setRegenerationTime(regeneration);
     m_localPlayer->setOfflineTrainingTime(training);

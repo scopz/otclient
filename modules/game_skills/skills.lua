@@ -8,7 +8,6 @@ function init()
         onLevelChange = onLevelChange,
         onHealthChange = onHealthChange,
         onManaChange = onManaChange,
-        onSoulChange = onSoulChange,
         onFreeCapacityChange = onFreeCapacityChange,
         onTotalCapacityChange = onTotalCapacityChange,
         onStaminaChange = onStaminaChange,
@@ -52,7 +51,6 @@ function terminate()
         onLevelChange = onLevelChange,
         onHealthChange = onHealthChange,
         onManaChange = onManaChange,
-        onSoulChange = onSoulChange,
         onFreeCapacityChange = onFreeCapacityChange,
         onTotalCapacityChange = onTotalCapacityChange,
         onStaminaChange = onStaminaChange,
@@ -219,7 +217,6 @@ function refresh()
     onLevelChange(player, player:getLevel(), player:getLevelPercent())
     onHealthChange(player, player:getHealth(), player:getMaxHealth())
     onManaChange(player, player:getMana(), player:getMaxMana())
-    onSoulChange(player, player:getSoul())
     onFreeCapacityChange(player, player:getFreeCapacity())
     onStaminaChange(player, player:getStamina())
     onMagicLevelChange(player, player:getMagicLevel(),
@@ -380,8 +377,6 @@ function onManaChange(localPlayer, mana, maxMana)
     setSkillValue('mana', comma_value(mana))
     checkAlert('mana', mana, maxMana, 30)
 end
-
-function onSoulChange(localPlayer, soul) setSkillValue('soul', comma_value(soul)) end
 
 function onFreeCapacityChange(localPlayer, freeCapacity)
     setSkillValue('capacity', comma_value(freeCapacity))

@@ -1,0 +1,214 @@
+SpellDefinition < Panel
+  anchors.top: prev.bottom
+  anchors.left: parent.left
+  anchors.right: parent.right
+  height: 100
+  margin-top: 10
+
+  $first:
+    anchors.top: parent.top
+
+  Panel
+    id: icon
+    anchors.top: parent.top
+    anchors.left: parent.left
+    image-rect: 0 0 16 16
+    image-clip: 0 0 16 16
+    size: 16 16
+    margin-top: 10
+    image-source: /images/game/spells/types
+    background-color: #0000004C
+
+  Label
+    id: spellName
+    anchors.top: parent.top
+    anchors.left: prev.right
+    width: 175
+    margin: 10 0 0 10
+
+  Label
+    id: spellWords
+    anchors.top: prev.bottom
+    anchors.left: prev.left
+    width: 175
+    margin: 0 0 0 0
+
+  Label
+    id: mana
+    anchors.top: prev.bottom
+    anchors.left: prev.left
+    margin: 5 0 0 0
+    color: #888888
+    width: 85
+
+  Label
+    id: level
+    anchors.top: prev.top
+    anchors.left: prev.right
+    color: #888888
+    width: 75
+
+  Button
+    id: upgradeSpell
+    anchors.top: mana.bottom
+    anchors.left: mana.left
+    margin: 5 0 0 0
+    !text: tr('Upgrade')
+    size: 80 26
+
+  Button
+    id: prevButton
+    anchors.top: prev.top
+    anchors.left: prev.right
+    margin: 0 0 0 5
+    !text: '<'
+    size: 26 26
+
+  Button
+    id: nextButton
+    anchors.top: prev.top
+    anchors.left: prev.right
+    margin: 0 0 0 5
+    !text: '>'
+    size: 26 26
+
+  Panel
+    width: 180
+    height: 69
+    anchors.right: parent.right
+    anchors.top: parent.top
+    margin-right: 5
+    background-color: #00000040
+    border-color: black
+    border-width: 1
+    padding: 10
+
+    Label
+      id: levelRequired
+      anchors.top: parent.top
+      anchors.left: prev.left
+      color: #888888
+      width: 160
+
+    Label
+      id: magicLevelRequired
+      anchors.top: prev.bottom
+      anchors.left: prev.left
+      margin: 5 0 0 0
+      color: #888888
+      width: 160
+
+    Label
+      id: cost
+      anchors.top: prev.bottom
+      anchors.left: prev.left
+      margin: 5 0 0 0
+      color: #888888
+      width: 160
+
+
+MainWindow
+  id: spellsWindow
+  !text: tr('Spells')
+  size: 425 612
+
+  @onEnter: modules.game_spells.hide()
+  @onEscape: modules.game_spells.hide()
+
+  Label
+    id: filterTextLabel
+    !text: tr('Filter') .. ':'
+    enable: false
+    anchors.left: parent.left
+    anchors.top: parent.top
+    margin-top: 10
+    width: 40
+
+  TextEdit
+    id: filterText
+    anchors.left: prev.right
+    anchors.right: parent.right
+    anchors.top: parent.top
+    margin-top: 6
+    @onTextChange: modules.game_spells.filterText(self:getText())
+
+
+  ButtonBox
+    id: filterLearnedButton
+    !text: tr('Learned')
+    anchors.top: prev.bottom
+    anchors.left: parent.left
+    margin-top: 10
+    @onCheckChange: modules.game_spells.filter(1, self:isChecked())
+    width: 132
+
+  ButtonBox
+    id: filterAchievableButton
+    !text: tr('Achievable')
+    anchors.top: prev.top
+    anchors.left: prev.right
+    @onCheckChange: modules.game_spells.filter(2, self:isChecked())
+    width: 132
+
+  ButtonBox
+    id: filterUnavailableButton
+    !text: tr('Unavailable')
+    anchors.top: prev.top
+    anchors.left: prev.right
+    @onCheckChange: modules.game_spells.filter(3, self:isChecked())
+    width: 132
+
+  HorizontalSeparator
+    id: separator
+    anchors.top: prev.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    margin-top: 10
+
+  ScrollablePanel
+    id: spellsList
+    anchors.top: prev.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: separator2.top
+    margin: 10 12 10 0
+    vertical-scrollbar: moduleListScrollBar
+
+  VerticalScrollBar
+    id: moduleListScrollBar
+    anchors.top: prev.top
+    anchors.bottom: prev.bottom
+    anchors.left: prev.right
+    step: 14
+    pixels-scroll: true
+
+  HorizontalSeparator
+    id: separator2
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: okButton.top
+    margin-bottom: 10
+
+  Label
+    id: availableMoney
+    width: 250
+    anchors.left: parent.left
+    anchors.verticalCenter: okButton.verticalCenter
+    margin-right: 10
+
+  Button
+    id: okButton
+    !text: tr('Confirm')
+    width: 64
+    anchors.right: next.left
+    anchors.bottom: parent.bottom
+    @onClick: modules.game_spells.confirm()
+    margin-right: 10
+
+  Button
+    id: cancelButton
+    !text: tr('Cancel')
+    width: 64
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    @onClick: modules.game_spells.hide()

@@ -79,7 +79,7 @@ function init()
 
     spellsButton = inventoryWindow:recursiveGetChildById('spellsButton')
     spellsButton.onClick = function()
-        --modules.game_spells:toggle()
+        modules.game_spells:toggle()
     end
 
     unusedLabel = inventoryWindow:recursiveGetChildById('unusedLabel')

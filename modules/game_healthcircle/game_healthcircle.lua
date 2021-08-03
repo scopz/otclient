@@ -224,13 +224,13 @@ function whenSkillsChange()
             if skillType == 'fist' then
                 skillPercent = player:getSkillLevelPercent(0)
                 skillColor = '#9900cc'
-            elseif skillType == 'club' then
+            elseif skillType == 'bash' then
                 skillPercent = player:getSkillLevelPercent(1)
                 skillColor = '#cc3399'
-            elseif skillType == 'sword' then
+            elseif skillType == 'thrust' then
                 skillPercent = player:getSkillLevelPercent(2)
                 skillColor = '#FF7F00'
-            elseif skillType == 'axe' then
+            elseif skillType == 'slash' then
                 skillPercent = player:getSkillLevelPercent(3)
                 skillColor = '#696969'
             elseif skillType == 'distance' then
@@ -500,9 +500,9 @@ function addToOptionsModule()
     -- ComboBox start values
     chooseSkillComboBox:addOption(tr('Magic Level'), 'magic')
     chooseSkillComboBox:addOption(tr('Fist Fighting'), 'fist')
-    chooseSkillComboBox:addOption(tr('Club Fighting'), 'club')
-    chooseSkillComboBox:addOption(tr('Sword Fighting'), 'sword')
-    chooseSkillComboBox:addOption(tr('Axe Fighting'), 'axe')
+    chooseSkillComboBox:addOption(tr('Bash Fighting'), 'bash')
+    chooseSkillComboBox:addOption(tr('Slash Fighting'), 'slash')
+    chooseSkillComboBox:addOption(tr('Thrust Fighting'), 'thrust')
     chooseSkillComboBox:addOption(tr('Distance Fighting'), 'distance')
     chooseSkillComboBox:addOption(tr('Shielding'), 'shielding')
     chooseSkillComboBox:addOption(tr('Fishing'), 'fishing')

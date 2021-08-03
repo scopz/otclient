@@ -117,9 +117,9 @@ namespace Otc
     enum Skill : uint8_t
     {
         Fist = 0,
-        Club,
-        Sword,
-        Axe,
+        Bash,
+        Thrust,
+        Slash,
         Distance,
         Shielding,
         Fishing,

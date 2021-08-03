@@ -352,15 +352,6 @@ public:
     std::string formatCreatureName(const std::string_view name);
     int findEmptyContainerId();
 
-    void setLastSupportedVersion(int version)
-    {
-        m_lastSupportedVersion = version;
-    }
-    int getLastSupportedVersion()
-    {
-        return m_lastSupportedVersion;
-    }
-
     float getDiagonalCost() const { return m_diagonalCost; }
     void setDiagonalCost(const float &diagonalCost) { m_diagonalCost = diagonalCost; }
 

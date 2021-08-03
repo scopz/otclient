@@ -796,7 +796,15 @@ void X11Window::poll()
                         } else
                             m_inputEvent.type = Fw::NoInputEvent;
                         break;
+
                     default:
+                    	if (event.xbutton.button < 14) {
+                            if(m_inputEvent.type == Fw::MousePressInputEvent)
+                                processKeyDown((Fw::Key) (Fw::XMouseButtons + (event.xbutton.button-Button5)));
+                            else
+                                processKeyUp((Fw::Key) (Fw::XMouseButtons + (event.xbutton.button-Button5)));
+                    	}
+
                         m_inputEvent.type = Fw::NoInputEvent;
                         break;
                 }

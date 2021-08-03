@@ -173,6 +173,15 @@ KeyNumpad6 = 147
 KeyNumpad7 = 148
 KeyNumpad8 = 149
 KeyNumpad9 = 150
+XMouseButton1 = 151
+XMouseButton2 = 152
+XMouseButton3 = 153
+XMouseButton4 = 154
+XMouseButton5 = 155
+XMouseButton6 = 156
+XMouseButton7 = 157
+XMouseButton8 = 158
+XMouseButton9 = 159
 
 FirstKey = KeyUnknown
 LastKey = KeyNumpad9
@@ -299,7 +308,16 @@ KeyCodeDescs = {
     [KeyNumpad6] = 'Numpad6',
     [KeyNumpad7] = 'Numpad7',
     [KeyNumpad8] = 'Numpad8',
-    [KeyNumpad9] = 'Numpad9'
+    [KeyNumpad9] = 'Numpad9',
+    [XMouseButton1] = 'XButton1',
+    [XMouseButton2] = 'XButton2',
+    [XMouseButton3] = 'XButton3',
+    [XMouseButton4] = 'XButton4',
+    [XMouseButton5] = 'XButton5',
+    [XMouseButton6] = 'XButton6',
+    [XMouseButton7] = 'XButton7',
+    [XMouseButton8] = 'XButton8',
+    [XMouseButton9] = 'XButton9',
 }
 
 NetworkMessageTypes = {

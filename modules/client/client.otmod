@@ -17,4 +17,3 @@ Module
     - client_entergame
     - client_terminal
     - client_modulemanager
-    - client_serverlist

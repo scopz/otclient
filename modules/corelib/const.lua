@@ -336,3 +336,9 @@ SoundChannels = {
     Ambient = 2,
     Effect = 3
 }
+
+Server = {
+    version = 773,
+    host = 'localhost',
+    port = 7171
+}

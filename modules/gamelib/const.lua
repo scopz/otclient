@@ -46,9 +46,9 @@ Directions = {
 
 Skill = {
     Fist = 0,
-    Club = 1,
-    Sword = 2,
-    Axe = 3,
+    Bash = 1,
+    Thrust = 2,
+    Slash = 3,
     Distance = 4,
     Shielding = 5,
     Fishing = 6,

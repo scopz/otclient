@@ -192,7 +192,7 @@ function load(forceDefaults)
     local hotkeys = {}
 
     if not table.empty(hotkeySettings) then hotkeys = hotkeySettings end
-    if perServer and not table.empty(hotkeys) then hotkeys = hotkeys[G.host] end
+    if perServer and not table.empty(hotkeys) then hotkeys = hotkeys[Server.host] end
     if perCharacter and not table.empty(hotkeys) then
         hotkeys = hotkeys[g_game.getCharacterName()]
     end
@@ -239,8 +239,8 @@ function save()
     local hotkeys = hotkeySettings
 
     if perServer then
-        if not hotkeys[G.host] then hotkeys[G.host] = {} end
-        hotkeys = hotkeys[G.host]
+        if not hotkeys[Server.host] then hotkeys[Server.host] = {} end
+        hotkeys = hotkeys[Server.host]
     end
 
     if perCharacter then

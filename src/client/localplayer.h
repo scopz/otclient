@@ -36,8 +36,6 @@ class LocalPlayer : public Player
 public:
     LocalPlayer();
 
-    void unlockWalk() { m_walkLockExpiration = 0; }
-    void lockWalk(int millis = 250);
     void stopAutoWalk();
     bool autoWalk(const Position& destination, bool retry = false);
     bool canWalk(bool ignoreLock = false);
@@ -129,7 +127,6 @@ private:
         m_autoWalkDestination;
 
     ScheduledEventPtr m_autoWalkContinueEvent;
-    ticks_t m_walkLockExpiration{ 0 };
 
     bool m_preWalking{ false },
         m_knownCompletePath{ false },

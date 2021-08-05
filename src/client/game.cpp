@@ -679,8 +679,6 @@ bool Game::walk(const Otc::Direction direction, bool isKeyDown /*= false*/)
 
         if (!(canChangeFloorDown() || canChangeFloorUp()))
             return false;
-
-        m_localPlayer->lockWalk();
     }
 
     m_localPlayer->stopAutoWalk();

@@ -33,19 +33,10 @@ LocalPlayer::LocalPlayer()
     m_skillsLevelPercent.fill(-1);
 }
 
-void LocalPlayer::lockWalk(int millis)
-{
-    m_walkLockExpiration = std::max<ticks_t>(m_walkLockExpiration, g_clock.millis() + millis);
-}
-
 bool LocalPlayer::canWalk(bool ignoreLock)
 {
     // paralyzed
     if (isParalyzed())
-        return false;
-
-    // cannot walk while locked
-    if ((m_walkLockExpiration != 0 && g_clock.millis() < m_walkLockExpiration) && !ignoreLock)
         return false;
 
     if (isAutoWalking())
@@ -122,7 +113,6 @@ void LocalPlayer::cancelWalk(Otc::Direction direction)
 
     g_map.notificateCameraMove(m_walkOffset);
 
-    lockWalk();
     if (retryAutoWalk()) return;
 
     // turn to the cancel direction
@@ -186,9 +176,6 @@ bool LocalPlayer::autoWalk(const Position& destination, const bool retry)
 
         g_game.autoWalk(result->path, result->start);
     });
-
-    if (!retry)
-        lockWalk();
 
     return true;
 }
@@ -307,7 +294,6 @@ void LocalPlayer::setHealth(double health, double maxHealth)
         if (health == 0) {
             if (isPreWalking())
                 stopWalk();
-            lockWalk();
         }
     }
 }

@@ -2064,7 +2064,7 @@ void ProtocolGame::parseCancelWalk(const InputMessagePtr& msg)
 void ProtocolGame::parseWalkWait(const InputMessagePtr& msg)
 {
     const int millis = msg->getU16();
-    m_localPlayer->lockWalk(millis);
+    //m_localPlayer->lockWalk(millis);
 }
 
 void ProtocolGame::parseFloorChangeUp(const InputMessagePtr& msg)

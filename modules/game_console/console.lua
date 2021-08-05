@@ -1289,10 +1289,6 @@ function navigateMessageHistory(step)
             consoleTextEdit:clearText()
         end
     end
-    local player = g_game.getLocalPlayer()
-    if player then
-        player:lockWalk(200) -- lock walk for 200 ms to avoid walk during release of shift
-    end
 end
 
 function applyMessagePrefixies(name, level, message)

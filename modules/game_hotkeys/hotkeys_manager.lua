@@ -4,12 +4,14 @@ HOTKEY_MANAGER_USEONTARGET = 2
 HOTKEY_MANAGER_USEWITH = 3
 
 HOTKEY_ACTION_TOGGLE_WASD = 1
-HOTKEY_ACTION_ATTACK_NEXT = 2
-HOTKEY_ACTION_ATTACK_PREV = 3
-HOTKEY_ACTION_TOGGLE_CHASE = 4
+HOTKEY_ACTION_ATTACK_FIRST = 2
+HOTKEY_ACTION_ATTACK_NEXT = 3
+HOTKEY_ACTION_ATTACK_PREV = 4
+HOTKEY_ACTION_TOGGLE_CHASE = 5
 
 HotkeyActions = {
     { id = HOTKEY_ACTION_TOGGLE_WASD,  text = tr("Toggle WASD chat mode") },
+    { id = HOTKEY_ACTION_ATTACK_FIRST, text = tr("Attack first creature in battle list") },
     { id = HOTKEY_ACTION_ATTACK_NEXT,  text = tr("Attack next creature in battle list") },
     { id = HOTKEY_ACTION_ATTACK_PREV,  text = tr("Attack previous creature in battle list") },
     { id = HOTKEY_ACTION_TOGGLE_CHASE, text = tr("Toggle chase mode") },
@@ -441,6 +443,8 @@ function doKeyCombo(keyCombo)
     if hotKey.action then
         if hotKey.action == HOTKEY_ACTION_TOGGLE_WASD then
             modules.game_console.toggleChat()
+        elseif hotKey.action == HOTKEY_ACTION_ATTACK_FIRST then
+            modules.game_battle.attackFirst()
         elseif hotKey.action == HOTKEY_ACTION_ATTACK_NEXT then
             modules.game_battle.attackNext()
         elseif hotKey.action == HOTKEY_ACTION_ATTACK_PREV then

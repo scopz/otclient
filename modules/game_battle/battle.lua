@@ -586,6 +586,36 @@ function toggleFilterPanel() -- Switching modes of filter panel (hide/show)
     end
 end
 
+function attackFirst(previous)
+	local firstElement = nil
+	local secondElement = nil
+
+	local children = battlePanel:getChildren()
+
+	for _, battleButton in pairs(battlePanel:getChildren()) do
+		if battleButton:isVisible() then
+			-- select visible first child
+			if not firstElement then
+				firstElement = battleButton
+			elseif not secondElement then
+				secondElement = battleButton
+				break
+			end
+		end
+	end
+
+	if firstElement then
+		if firstElement.isTarget and secondElement then
+			g_game.attack(secondElement.creature)
+		else
+			g_game.attack(firstElement.creature)
+		end
+	else
+		return false
+	end
+	return true
+end
+
 function attackNext(previous)
     local foundTarget = false
     local firstElement = nil

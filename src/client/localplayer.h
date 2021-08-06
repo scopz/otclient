@@ -64,6 +64,7 @@ public:
     void setSpells(const std::vector<int>& spells);
     void setBlessings(int blessings);
     void setResourceBalance(Otc::ResourceTypes_t type, uint64_t value);
+    void setBankMoney(uint32_t bankMoney);
 
     int getStates() { return m_states; }
     int getSkillLevel(Otc::Skill skill) { return m_skillsLevel[skill]; }

@@ -491,6 +491,11 @@ void LocalPlayer::setResourceBalance(Otc::ResourceTypes_t type, uint64_t value)
     }
 }
 
+void LocalPlayer::setBankMoney(uint32_t bankMoney)
+{
+    callLuaField("onBankMoneyUpdate", bankMoney);
+}
+
 bool LocalPlayer::hasSight(const Position& pos)
 {
     return m_position.isInRange(pos, g_map.getAwareRange().left - 1, g_map.getAwareRange().top - 1);

@@ -115,6 +115,8 @@ public:
     void sendTransferCoins(const std::string_view recipient, int amount);
     void sendOpenTransactionHistory(int entriesPerPage);
 
+    void sendSpellsToBuy(const std::vector<std::string> &spells);
+
     // otclient only
     void sendChangeMapAwareRange(int xrange, int yrange);
 

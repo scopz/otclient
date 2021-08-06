@@ -1178,6 +1178,13 @@ void Game::changeOutfit(const Outfit& outfit)
     m_protocolGame->sendChangeOutfit(outfit);
 }
 
+void Game::buySpells(std::vector<std::string> spells)
+{
+    if(!canPerformGameAction())
+        return;
+    m_protocolGame->sendSpellsToBuy(spells);
+}
+
 void Game::addVip(const std::string_view name)
 {
     if (!canPerformGameAction() || name.empty())

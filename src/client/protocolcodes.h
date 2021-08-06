@@ -225,6 +225,7 @@ namespace Proto
         // 51 - 99
         ClientTalkTargeted = 52,
         ClientSellItemToNpc = 53,
+        ClientBuySpells = 54,
 
         // original tibia ONLY
         ClientAutoWalk = 100,

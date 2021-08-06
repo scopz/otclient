@@ -70,19 +70,20 @@ function addSpell()
 end
 
 function confirm()
+    local spellsToBuy = {}
     for index, array in pairs(pendingConfirm) do
         local spellDefinition = spellsList:getChildByIndex(index)
         local data = spellDefinition.data
 
         for k, level in pairs(array) do
             local req = data.spells[level]
-            print(req.name .. ' - ' .. level)
+            table.insert(spellsToBuy, req.name)
         end
     end
 
+    g_game.buySpells(spellsToBuy)
     hide()
 end
-
 
 function show()
     if not g_game.isOnline() then
@@ -194,15 +195,19 @@ function updateData(spellDefinition, index)
 
     local upgradeSpellBtn = spellDefinition:getChildById("upgradeSpell")
 
-    if data.currentLevel == 0 and data.selectedLevel == 1 then
-        upgradeSpellBtn:setText("Must buy")
+    if isPending(index, data.selectedLevel) then
+        upgradeSpellBtn:setText("Just bought")
         upgradeSpellBtn:disable()
 
-    elseif data.selectedLevel <= data.currentLevel or isPending(index, data.selectedLevel) then
+    elseif data.selectedLevel <= data.currentLevel then
         upgradeSpellBtn:setText("Learned")
         upgradeSpellBtn:disable()
 
-    elseif data.selectedLevel-1 == data.currentLevel and meetRequirements then
+    elseif meetRequirements and data.currentLevel == 0 and data.selectedLevel == 1 then
+        upgradeSpellBtn:setText("Buy")
+        upgradeSpellBtn:enable()
+
+    elseif meetRequirements and (data.selectedLevel-1 == data.currentLevel or isPending(index, data.selectedLevel-1)) then
         upgradeSpellBtn:setText("Upgrade")
         upgradeSpellBtn:enable()
 

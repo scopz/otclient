@@ -750,6 +750,18 @@ void ProtocolGame::sendChangeOutfit(const Outfit& outfit)
     send(msg);
 }
 
+void ProtocolGame::sendSpellsToBuy(const std::vector<std::string> &spells)
+{
+    OutputMessagePtr msg(new OutputMessage);
+    msg->addU8(Proto::ClientBuySpells);
+    msg->addU16(spells.size());
+
+    for(const std::string &spell : spells) {
+        msg->addString(spell);
+    }
+    send(msg);
+}
+
 void ProtocolGame::sendMountStatus(bool mount)
 {
     if (g_game.getFeature(Otc::GamePlayerMounts)) {

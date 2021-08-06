@@ -175,6 +175,9 @@ public:
     void stop();
     void setScheduleLastWalk(bool scheduleLastWalk) { m_scheduleLastWalk = scheduleLastWalk; }
 
+    // spells
+    void buySpells(std::vector<std::string> spells);
+
     // item related
     void look(const ThingPtr& thing, bool isBattleList = false);
     void move(const ThingPtr& thing, const Position& toPos, int count);

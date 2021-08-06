@@ -111,6 +111,13 @@ MiniWindow
       SkillPercentPanel
 
     SkillButton
+      id: bankMoney
+      height: 15
+      SkillNameLabel
+        !text: tr('Money')
+      SkillValueLabel
+
+    SkillButton
       id: magiclevel
       SkillNameLabel
         !text: tr('Magic Level')

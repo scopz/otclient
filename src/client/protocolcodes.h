@@ -73,6 +73,7 @@ namespace Proto
         // 51 - 99
         GameServerChangeMapAwareRange = 51,
         GameServerPlayerSpellTree = 53,
+        GameServerPlayerBankMoney = 54,
 
         // original tibia ONLY
         GameServerSendClientCheck = 99,

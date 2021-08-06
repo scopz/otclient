@@ -328,6 +328,9 @@ void ProtocolGame::parseMessage(const InputMessagePtr& msg)
                     else        
                         parseTaskHuntingBasicData(msg); // 1200+
                     break;
+                case Proto::GameServerPlayerBankMoney:
+                    parseBankMoney(msg);
+                    break;
                     // PROTOCOL>=870
                 case Proto::GameServerSpellDelay:
                     parseSpellCooldown(msg);
@@ -2291,6 +2294,12 @@ void ProtocolGame::parseNpcFocus(const InputMessagePtr& msg)
 {
     uint32_t npcId = msg->getU32();
     g_game.processNpcFocus(npcId);
+}
+
+void ProtocolGame::parseBankMoney(const InputMessagePtr& msg)
+{
+    uint32_t bankMoney = msg->getU32();
+    m_localPlayer->setBankMoney(bankMoney);
 }
 
 void ProtocolGame::parseChannelEvent(const InputMessagePtr& msg)

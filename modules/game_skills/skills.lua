@@ -18,7 +18,8 @@ function init()
         onMagicLevelChange = onMagicLevelChange,
         onBaseMagicLevelChange = onBaseMagicLevelChange,
         onSkillChange = onSkillChange,
-        onBaseSkillChange = onBaseSkillChange
+        onBaseSkillChange = onBaseSkillChange,
+        onBankMoneyUpdate = onBankMoneyUpdate,
     })
     connect(g_game, {
         onGameStart = online,
@@ -56,7 +57,8 @@ function terminate()
         onMagicLevelChange = onMagicLevelChange,
         onBaseMagicLevelChange = onBaseMagicLevelChange,
         onSkillChange = onSkillChange,
-        onBaseSkillChange = onBaseSkillChange
+        onBaseSkillChange = onBaseSkillChange,
+        onBankMoneyUpdate = onBankMoneyUpdate,
     })
     disconnect(g_game, {
         onGameStart = online,
@@ -445,4 +447,8 @@ end
 
 function onBaseSkillChange(localPlayer, id, baseLevel)
     setSkillBase('skillId' .. id, localPlayer:getSkillLevel(id), baseLevel)
+end
+
+function onBankMoneyUpdate(localPlayer, bankMoney)
+    setSkillValue('bankMoney', comma_value(bankMoney))
 end

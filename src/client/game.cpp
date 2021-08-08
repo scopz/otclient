@@ -1547,6 +1547,7 @@ void Game::setClientVersion(int version)
         enableFeature(Otc::GameDoubleFreeCapacity);
         enableFeature(Otc::GamePlayerStateU16);
         enableFeature(Otc::GameClientPing);
+        enableFeature(Otc::GameBlueNpcNameColor);
     }
 
     if (version >= 780) {

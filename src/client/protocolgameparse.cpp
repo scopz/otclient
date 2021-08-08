@@ -1872,6 +1872,9 @@ void ProtocolGame::parseTalk(const InputMessagePtr& msg)
             channelId = msg->getU16();
             break;
         case Otc::MessageNpcFrom:
+            if (g_game.getClientVersion() == 773)
+                pos = getPosition(msg);
+            break;
         case Otc::MessagePrivateFrom:
         case Otc::MessageGamemasterBroadcast:
         case Otc::MessageGamemasterPrivateFrom:

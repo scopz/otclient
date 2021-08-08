@@ -1244,7 +1244,9 @@ function doChannelListSubmit()
   else
     local selectedChannelLabel = channelListPanel:getFocusedChild()
     if not selectedChannelLabel then return end
-    if selectedChannelLabel.channelId == 0xFFFF then
+    if selectedChannelLabel.npcTab then
+      addTab("NPCs", true).npcChat = true
+    elseif selectedChannelLabel.channelId == 0xFFFF then
       g_game.openOwnChannel()
     else
       g_game.leaveChannel(selectedChannelLabel.channelId)
@@ -1277,6 +1279,12 @@ function onChannelList(channelList)
       label.onDoubleClick = doChannelListSubmit
     end
   end
+
+  local label = g_ui.createWidget('ChannelListLabel', channelListPanel)
+  label.npcTab = true
+  label:setText("NPCs")
+  label:setPhantom(false)
+  label.onDoubleClick = doChannelListSubmit
 end
 
 function loadCommunicationSettings()

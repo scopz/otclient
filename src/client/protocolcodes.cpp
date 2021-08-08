@@ -211,7 +211,8 @@ namespace Proto
             messageModesMap[Otc::MessageGamemasterPrivateTo] = 11;
             messageModesMap[Otc::MessageChannelHighlight] = 12;
             messageModesMap[Otc::MessageNpcFrom] = 13;
-            // 14 ??
+            messageModesMap[Otc::MessageNpcTo] = 13; //26;
+            messageModesMap[Otc::MessageGuild] = 14; // not sure
             messageModesMap[Otc::MessageSpell] = 15;
             messageModesMap[Otc::MessageMonsterSay] = 16;
             messageModesMap[Otc::MessageMonsterYell] = 17;

@@ -30,8 +30,8 @@ int main(int argc, const char* argv[])
     std::vector<std::string> args(argv, argv + argc);
 
     // setup application name and version
-    g_app.setName("OTClient");
-    g_app.setCompactName("otclient");
+    g_app.setName("Ndria");
+    g_app.setCompactName("ndria");
 
 #if ENABLE_ENCRYPTION == 1
     if (std::find(args.begin(), args.end(), "--encrypt") != args.end()) {

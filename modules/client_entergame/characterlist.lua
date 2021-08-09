@@ -111,6 +111,17 @@ local function onLoginWait(message, time)
     resendWaitEvent = scheduleEvent(resendWait, time * 1000)
 end
 
+function onGameLogin()
+    local player = g_game.getLocalPlayer()
+    if not player then return false end
+    g_window.setTitle(g_app.getName() .. " - " .. player:getName())
+end
+
+function onGameEnd()
+    g_window.setTitle(g_app.getName())
+    CharacterList.showAgain()
+end
+
 function onGameLoginError(message)
     CharacterList.destroyLoadBox()
     errorBox = displayErrorBox(tr("Login Error"), message)
@@ -149,13 +160,16 @@ end
 
 -- public functions
 function CharacterList.init()
-    connect(g_game, {onLoginError = onGameLoginError})
-    connect(g_game, {onSessionEnd = onGameSessionEnd})
-    connect(g_game, {onUpdateNeeded = onGameUpdateNeeded})
-    connect(g_game, {onConnectionError = onGameConnectionError})
-    connect(g_game, {onGameStart = CharacterList.destroyLoadBox})
-    connect(g_game, {onLoginWait = onLoginWait})
-    connect(g_game, {onGameEnd = CharacterList.showAgain})
+    connect(g_game, {
+        onLogin = onGameLogin,
+        onLoginError = onGameLoginError,
+        onSessionEnd = onGameSessionEnd,
+        onUpdateNeeded = onGameUpdateNeeded,
+        onConnectionError = onGameConnectionError,
+        onGameStart = CharacterList.destroyLoadBox,
+        onLoginWait = onLoginWait,
+        onGameEnd = onGameEnd
+    })
 
     if G.characters then
         CharacterList.create(G.characters, G.characterAccount)
@@ -163,13 +177,16 @@ function CharacterList.init()
 end
 
 function CharacterList.terminate()
-    disconnect(g_game, {onLoginError = onGameLoginError})
-    disconnect(g_game, {onSessionEnd = onGameSessionEnd})
-    disconnect(g_game, {onUpdateNeeded = onGameUpdateNeeded})
-    disconnect(g_game, {onConnectionError = onGameConnectionError})
-    disconnect(g_game, {onGameStart = CharacterList.destroyLoadBox})
-    disconnect(g_game, {onLoginWait = onLoginWait})
-    disconnect(g_game, {onGameEnd = CharacterList.showAgain})
+    disconnect(g_game, {
+        onLogin = onGameLogin,
+        onLoginError = onGameLoginError,
+        onSessionEnd = onGameSessionEnd,
+        onUpdateNeeded = onGameUpdateNeeded,
+        onConnectionError = onGameConnectionError,
+        onGameStart = CharacterList.destroyLoadBox,
+        onLoginWait = onLoginWait,
+        onGameEnd = onGameEnd
+    })
 
     if charactersWindow then
         characterList = nil

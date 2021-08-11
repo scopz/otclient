@@ -138,11 +138,15 @@ MAX_HISTORY = 500
 MAX_LINES = 100
 HELP_CHANNEL = 9
 
+focusCount = 0
+wasNpcModeChecked = false
+
 consolePanel = nil
 consoleContentPanel = nil
 consoleTabBar = nil
 consoleTextEdit = nil
 consoleToggleChat = nil
+consoleNpcMode = nil
 channels = nil
 channelsWindow = nil
 communicationWindow = nil
@@ -182,7 +186,9 @@ function init()
         onRuleViolationLock = onRuleViolationLock,
         onGameStart = online,
         onGameEnd = offline,
-        onChannelEvent = onChannelEvent
+        onChannelEvent = onChannelEvent,
+        onNpcFocusLost = npcFocusLost,
+        onNpcFocus = npcFocus,
     })
 
     consolePanel = g_ui.loadUI('console', modules.game_interface.getBottomPanel())
@@ -230,6 +236,9 @@ function init()
     g_keyboard.bindKeyDown('Ctrl+E', removeCurrentTab)
     g_keyboard.bindKeyDown('Ctrl+H', openHelp)
 
+    -- checbox npc mode
+    consoleNpcMode = consolePanel:getChildById('npcMode')
+
     -- toggle WASD
     consoleToggleChat = consolePanel:getChildById('toggleChat')
     load()
@@ -256,6 +265,12 @@ function selectAll(consoleBuffer)
             first = consoleBuffer:getChildIndex(consoleBuffer:getFirstChild()),
             last = consoleBuffer:getChildIndex(consoleBuffer:getLastChild())
         }
+    end
+end
+
+function toggleNpcMode()
+    if getCurrentTab() == defaultTab or getCurrentTab() == serverTab then
+        consoleNpcMode:setChecked(not consoleNpcMode:isChecked())
     end
 end
 
@@ -348,7 +363,9 @@ function terminate()
         onRuleViolationLock = onRuleViolationLock,
         onGameStart = online,
         onGameEnd = offline,
-        onChannelEvent = onChannelEvent
+        onChannelEvent = onChannelEvent,
+        onNpcFocusLost = npcFocusLost,
+        onNpcFocus = npcFocus,
     })
 
     if g_game.isOnline() then clear() end
@@ -394,10 +411,12 @@ function load()
 end
 
 function onTabChange(tabBar, tab)
-    if tab == defaultTab or tab == serverTab then
+    if not defaultTab or tab == defaultTab or tab == serverTab then
         consolePanel:getChildById('closeChannelButton'):disable()
+        consoleNpcMode:setVisible(true)
     else
         consolePanel:getChildById('closeChannelButton'):enable()
+        consoleNpcMode:setVisible(false)
     end
 end
 
@@ -557,15 +576,9 @@ end
 
 function addPrivateText(text, speaktype, name, isPrivateCommand, creatureName)
     local focus = false
-    if speaktype.npcChat then
-        name = 'NPCs'
-        focus = true
-    end
-
     local privateTab = getTab(name)
     if privateTab == nil then
-        if (modules.client_options.getOption('showPrivateMessagesInConsole') and not focus) or
-            (isPrivateCommand and not privateTab) then
+        if (modules.client_options.getOption('showPrivateMessagesInConsole') and not focus) or (isPrivateCommand and not privateTab) then
             privateTab = defaultTab
         else
             privateTab = addTab(name, focus)
@@ -1143,6 +1156,10 @@ function sendMessage(message, tab)
         name = defaultTab:getText()
     end
 
+    if tab == defaultTab then
+        tab.npcChat = consoleNpcMode:isChecked()
+    end
+
     -- handling chat commands
     local channel = tab.channelId
     local originalMessage = message
@@ -1212,7 +1229,7 @@ function sendMessage(message, tab)
     end
 
     local speaktypedesc
-    if (channel or tab == defaultTab) and not chatCommandPrivateReady then
+    if (channel or tab == defaultTab and not tab.npcChat) and not chatCommandPrivateReady then
         if tab == defaultTab then
             speaktypedesc = chatCommandSayMode or
                                 SayModes[consolePanel:getChildById('sayModeButton').sayMode].speakTypeDesc
@@ -1484,9 +1501,7 @@ function doChannelListSubmit()
     else
         local selectedChannelLabel = channelListPanel:getFocusedChild()
         if not selectedChannelLabel then return end
-        if selectedChannelLabel.npcTab then
-            addTab("NPCs", true).npcChat = true
-        elseif selectedChannelLabel.channelId == 0xFFFF then
+        if selectedChannelLabel.channelId == 0xFFFF then
             g_game.openOwnChannel()
         else
             g_game.leaveChannel(selectedChannelLabel.channelId)
@@ -1520,12 +1535,6 @@ function onChannelList(channelList)
             label.onDoubleClick = doChannelListSubmit
         end
     end
-
-    local label = g_ui.createWidget('ChannelListLabel', channelListPanel)
-    label.npcTab = true
-    label:setText("NPCs")
-    label:setPhantom(false)
-    label.onDoubleClick = doChannelListSubmit
 end
 
 function loadCommunicationSettings()
@@ -1719,6 +1728,9 @@ function online()
     defaultTab = addTab(tr('Default'), true)
     serverTab = addTab(tr('Server Log'), false)
 
+    consoleNpcMode:setChecked(false)
+    focusCount = 0
+
     if g_game.getClientVersion() >= 820 then
         local tab = addTab('NPCs', false)
         tab.npcChat = true
@@ -1760,4 +1772,21 @@ function onChannelEvent(channelId, name, type)
         local tab = getTab(channel)
         if tab then addTabText(fmt:format(name), SpeakTypesSettings.channelOrange, tab) end
     end
+end
+
+function npcFocusLost(cid)
+  if focusCount > 0 then
+    focusCount = focusCount - 1
+  end
+  if focusCount == 0 and not wasNpcModeChecked then
+    consoleNpcMode:setChecked(false)
+  end
+end
+
+function npcFocus(cid)
+  focusCount = focusCount + 1
+  if focusCount == 1 then
+    wasNpcModeChecked = consoleNpcMode:isChecked()
+    consoleNpcMode:setChecked(true)
+  end
 end

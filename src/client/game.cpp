@@ -258,6 +258,16 @@ void Game::processSpellTree(std::list<SpellSet> &spellSets)
     g_lua.callGlobalField("g_game", "onSendSpells", spellSets);
 }
 
+void Game::processNpcFocusLost(int npcId)
+{
+    g_lua.callGlobalField("g_game", "onNpcFocusLost", npcId);
+}
+
+void Game::processNpcFocus(int npcId)
+{
+    g_lua.callGlobalField("g_game", "onNpcFocus", npcId);
+}
+
 void Game::processPing()
 {
     g_lua.callGlobalField("g_game", "onPing");

@@ -316,6 +316,18 @@ void ProtocolGame::parseMessage(const InputMessagePtr& msg)
                 case Proto::GameServerPlayerSpellTree:
                     parsePlayerSpellTree(msg);
                     break;
+                case Proto::GameServerNpcFocusLost:
+                    if(g_game.getClientVersion() == 773)
+                        parseNpcFocusLost(msg);
+                    else        
+                        parseBestiaryTracker(msg); // 1200+
+                    break;
+                case Proto::GameServerNpcFocus:
+                    if(g_game.getClientVersion() == 773)
+                        parseNpcFocus(msg);
+                    else        
+                        parseTaskHuntingBasicData(msg); // 1200+
+                    break;
                     // PROTOCOL>=870
                 case Proto::GameServerSpellDelay:
                     parseSpellCooldown(msg);
@@ -431,12 +443,6 @@ void ProtocolGame::parseMessage(const InputMessagePtr& msg)
                     break;
                 case Proto::GameServerPartyAnalyzer:
                     parsePartyAnalyzer(msg);
-                    break;
-                case Proto::GameServerRefreshBestiaryTracker:
-                    parseBestiaryTracker(msg);
-                    break;
-                case Proto::GameServerTaskHuntingBasicData:
-                    parseTaskHuntingBasicData(msg);
                     break;
                 case Proto::GameServerTaskHuntingData:
                     parseTaskHuntingData(msg);
@@ -2261,6 +2267,18 @@ void ProtocolGame::parseQuestLine(const InputMessagePtr& msg)
     }
 
     Game::processQuestLine(questId, questMissions);
+}
+
+void ProtocolGame::parseNpcFocusLost(const InputMessagePtr& msg)
+{
+    uint32_t npcId = msg->getU32();
+    g_game.processNpcFocusLost(npcId);
+}
+
+void ProtocolGame::parseNpcFocus(const InputMessagePtr& msg)
+{
+    uint32_t npcId = msg->getU32();
+    g_game.processNpcFocus(npcId);
 }
 
 void ProtocolGame::parseChannelEvent(const InputMessagePtr& msg)

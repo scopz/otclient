@@ -253,6 +253,8 @@ public:
     void buyItem(const ItemPtr& item, int amount, bool ignoreCapacity, bool buyWithBackpack);
     void sellItem(const ItemPtr& item, int amount, bool ignoreEquipped);
     void closeNpcTrade();
+    void processNpcFocusLost(int npcId);
+    void processNpcFocus(int npcId);
 
     // player trade related
     void requestTrade(const ItemPtr& item, const CreaturePtr& creature);

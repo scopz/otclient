@@ -246,6 +246,8 @@ private:
     void parseModalDialog(const InputMessagePtr& msg);
     void parseExtendedOpcode(const InputMessagePtr& msg);
     void parseChangeMapAwareRange(const InputMessagePtr& msg);
+    void parseNpcFocusLost(const InputMessagePtr& msg);
+    void parseNpcFocus(const InputMessagePtr& msg);
     void parseCreaturesMark(const InputMessagePtr& msg);
 
     // 12x

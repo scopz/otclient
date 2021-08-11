@@ -148,8 +148,10 @@ namespace Proto
         GameServerWalkWait = 182,
         GameServerUnjustifiedStats = 183,
         GameServerPvpSituations = 184,
-        GameServerRefreshBestiaryTracker = 185,
-        GameServerTaskHuntingBasicData = 186,
+        GameServerNpcFocusLost = 185, // 773
+        GameServerNpcFocus = 186, // 773
+//        GameServerRefreshBestiaryTracker = 185, // 12+
+//        GameServerTaskHuntingBasicData = 186, // 12+
         GameServerTaskHuntingData = 187,
         GameServerFloorChangeUp = 190,
         GameServerFloorChangeDown = 191,

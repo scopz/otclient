@@ -68,10 +68,28 @@ Panel
     margin-top: 8
     @onCheckChange: updateChatMode()
 
+  UICheckBox
+    id: npcMode
+    !tooltip: tr('Enable to chat only to NPCs')
+    size: 18 18
+    image-rect: 0 0 18 18
+    image-source: /images/game/npcicons/npc-toggle
+    anchors.left: prev.right
+    anchors.verticalCenter: prev.verticalCenter
+    margin-left: 7
+    $!checked:
+      image-clip: 0 0 18 18
+    $hover !checked:
+      image-clip: 0 18 18 18
+    $checked:
+      image-clip: 0 36 18 18
+    $hover checked:
+      image-clip: 0 54 18 18
+
   TabButton
     id: prevChannelButton
     icon: /images/game/console/leftarrow
-    anchors.left: toggleChat.right
+    anchors.left: prev.right
     anchors.top: parent.top
     margin-left: 3
     margin-top: 6

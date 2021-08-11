@@ -33,6 +33,7 @@ function init()
         onSelectTarget = startSelectTarget,
         onSellTransaction = startSellTransaction,
         onNpcFocusLost = npcFocusLost,
+        onNpcFocus = npcFocus,
     }, true)
 
     -- Call load AFTER game window has been created and
@@ -186,6 +187,7 @@ function terminate()
         onSelectTarget = startSelectTarget,
         onSellTransaction = startSellTransaction,
         onNpcFocusLost = npcFocusLost,
+        onNpcFocus = npcFocus,
     })
 
     disconnect(gameLeftPanel, {

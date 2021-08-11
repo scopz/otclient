@@ -8,10 +8,14 @@ HOTKEY_ACTION_ATTACK_FIRST = 2
 HOTKEY_ACTION_ATTACK_NEXT = 3
 HOTKEY_ACTION_ATTACK_PREV = 4
 HOTKEY_ACTION_TOGGLE_CHASE = 5
+HOTKEY_ACTION_TOGGLE_NPC = 6
 
 HotkeyActions = {{
     id = HOTKEY_ACTION_TOGGLE_WASD,
     text = tr('Toggle WASD chat mode')
+}, {
+    id = HOTKEY_ACTION_TOGGLE_NPC,
+    text = tr('Toggle NPC chat mode')
 }, {
     id = HOTKEY_ACTION_ATTACK_FIRST,
     text = tr('Attack first creature in battle list')
@@ -429,6 +433,8 @@ function doKeyCombo(keyCombo)
     if hotKey.action then
         if hotKey.action == HOTKEY_ACTION_TOGGLE_WASD then
             modules.game_console.toggleChat()
+        elseif hotKey.action == HOTKEY_ACTION_TOGGLE_NPC then
+            modules.game_console.toggleNpcMode()
         elseif hotKey.action == HOTKEY_ACTION_ATTACK_FIRST then
             modules.game_battle.attackFirst()
         elseif hotKey.action == HOTKEY_ACTION_ATTACK_NEXT then

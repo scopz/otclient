@@ -434,7 +434,7 @@ function doCreatureFitFilters(creature) -- Check if creature fit current applied
 end
 
 local function canBeSeen(creature)
-		return creature and creature:canBeSeen() and creature:getPosition() and modules.game_interface.getMapPanel():isInRange(creature:getPosition())
+		return creature and creature:canBeSeen() and creature:getHealthPercent() > 0 and creature:getPosition() and modules.game_interface.getMapPanel():isInRange(creature:getPosition())
 end
 
 local function getDistanceBetween(p1, p2) -- Calculate distance
@@ -884,6 +884,10 @@ function onCreatureHealthPercentChange(creature, healthPercent, oldHealthPercent
 				assert(index ~= nil, "Not able to update HealthPercent Change. Creature: id ".. creatureId .." not found in binary search using ".. sortType .." to find value ".. oldHealthPercent ..".")
 			end
 
+		end
+
+		if healthPercent == 0 and battleButton:isVisible() then
+			battleButton:setVisible(false)
 		end
 		battleButton:setLifeBarPercent(healthPercent)
 	end

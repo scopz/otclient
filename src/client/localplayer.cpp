@@ -177,6 +177,12 @@ bool LocalPlayer::autoWalk(const Position& destination, const bool retry)
         g_game.autoWalk(result->path, result->start);
     });
 
+    // debug calculated path using minimap
+    //for(auto pos : m_position.translatedToDirections(limitedPath)) {
+        //g_map.getOrCreateTile(pos)->overwriteMinimapColor(215);
+        //g_map.notificateTileUpdate(pos, nullptr, Otc::OPERATION_ADD);
+    //}
+
     return true;
 }
 

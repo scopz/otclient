@@ -972,7 +972,7 @@ void ProtocolGame::parseTileAddThing(const InputMessagePtr& msg)
     const Position pos = getPosition(msg);
     int stackPos = -1;
 
-    if (g_game.getClientVersion() >= 841)
+    if (g_game.getClientVersion() == 773 || g_game.getClientVersion() >= 841)
         stackPos = msg->getU8();
 
     const ThingPtr thing = getThing(msg);

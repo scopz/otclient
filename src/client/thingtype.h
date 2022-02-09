@@ -32,9 +32,6 @@
 #include <framework/net/server.h>
 #include <framework/otml/declarations.h>
 
-using namespace tibia::protobuf;
-using namespace tibia::protobuf::shared;
-
 enum class TextureType
 {
     NONE,
@@ -143,7 +140,6 @@ struct Light
 class ThingType : public LuaObject
 {
 public:
-    void unserializeAppearance(uint16 clientId, ThingCategory category, const appearances::Appearance& appearance);
     void unserialize(uint16 clientId, ThingCategory category, const FileStreamPtr& fin);
     void unserializeOtml(const OTMLNodePtr& node);
 
@@ -238,7 +234,7 @@ public:
     bool isNotPreWalkable() { return m_attribs.has(ThingAttrNotPreWalkable); }
     void setPathable(bool var);
     int getExactHeight();
-    TexturePtr getTexture(int animationPhase, TextureType txtType = TextureType::NONE);
+    const TexturePtr& getTexture(int animationPhase, TextureType txtType = TextureType::NONE);
 
 private:
     bool hasTexture() const { return !m_textures.empty(); }

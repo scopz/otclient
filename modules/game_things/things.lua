@@ -17,29 +17,24 @@ function isLoaded()
   return loaded
 end
 
-function load(version)
-  local errorMessage = ''
+function load()
+  local version = g_game.getClientVersion()
 
-  if version >= 1281 then
-    if not g_things.loadAppearances(resolvepath(string.format("/things/%d/catalog-content", version))) then
-      errorMessage = errorMessage .. "Couldn't load assets"
-    end
+  local datPath, sprPath
+  if filename then
+    datPath = resolvepath('/data/things/' .. filename)
+    sprPath = resolvepath('/data/things/' .. filename)
   else
-    local datPath, sprPath
-    if filename then
-      datPath = resolvepath('/data/things/' .. filename)
-      sprPath = resolvepath('/data/things/' .. filename)
-    else
-      datPath = resolvepath('/data/things/' .. version .. '/Tibia')
-      sprPath = resolvepath('/data/things/' .. version .. '/Tibia')
-    end
+    datPath = resolvepath('/data/things/' .. version .. '/Tibia')
+    sprPath = resolvepath('/data/things/' .. version .. '/Tibia')
+  end
 
-    if not g_things.loadDat(datPath) then
-      errorMessage = errorMessage .. tr("Unable to load dat file, please place a valid dat in '%s.dat'", datPath) .. '\n'
-    end
-    if not g_sprites.loadSpr(sprPath) then
-      errorMessage = errorMessage .. tr("Unable to load spr file, please place a valid spr in '%s.spr'", sprPath)
-    end
+  local errorMessage = ''
+  if not g_things.loadDat(datPath) then
+    errorMessage = errorMessage .. tr("Unable to load dat file, please place a valid dat in '%s.dat'", datPath) .. '\n'
+  end
+  if not g_sprites.loadSpr(sprPath) then
+    errorMessage = errorMessage .. tr("Unable to load spr file, please place a valid spr in '%s.spr'", sprPath)
   end
 
   loaded = (errorMessage:len() == 0)

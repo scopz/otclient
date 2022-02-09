@@ -27,7 +27,6 @@
 - Client Config in [config.h](https://github.com/mehah/otclient/blob/cache-for-all/src/client/config.h)
 
 ##### Community (Features)
-- Support Tibia 12.85/protobuf by [@Nekiro](https://github.com/nekiro)
 - Floor Fading by [@Kondra](https://github.com/OTCv8)
 - Action Bar by [@DipSet](https://github.com/Dip-Set1)
 - Access to widget children via widget.childId by [@Hugo0x1337](https://github.com/Hugo0x1337)

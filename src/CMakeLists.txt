@@ -4,7 +4,6 @@ project(otclient)
 # *****************************************************************************
 # Options
 # *****************************************************************************
-option(TOGGLE_FRAMEWORK_SOUND "Use SOUND " ON)
 option(TOGGLE_FRAMEWORK_XML "Use XML " ON)
 option(TOGGLE_FRAMEWORK_NET "Use NET " ON)
 option(TOGGLE_DIRECTX "Use DX9 support" OFF)
@@ -36,9 +35,6 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Define Framework options for use in compilation
 set(FRAMEWORK_DEFINITIONS "")
-if (TOGGLE_FRAMEWORK_SOUND)
-	set(FRAMEWORK_DEFINITIONS ${FRAMEWORK_DEFINITIONS} -DFRAMEWORK_SOUND)
-endif()
 if (TOGGLE_FRAMEWORK_XML)
 	set(FRAMEWORK_DEFINITIONS ${FRAMEWORK_DEFINITIONS} -DFRAMEWORK_XML)
 endif()
@@ -163,10 +159,6 @@ add_definitions(-D"BUILD_REVISION=\\\"${BUILD_REVISION}\\\"")
 find_package(OpenSSL QUIET)
 find_package(PhysFS REQUIRED)
 find_package(ZLIB REQUIRED)
-find_package(Protobuf REQUIRED)
-find_package(LibLZMA REQUIRED)
-find_package(nlohmann_json REQUIRED)
-find_package(asio REQUIRED)
 find_package(Threads REQUIRED)
 # OpenGL/GLEW = Graphics
 find_package(OpenGL REQUIRED)
@@ -184,12 +176,6 @@ endif()
 if(TOGGLE_DIRECTX)
 	find_package(DirectX REQUIRED)
 endif()
-if(TOGGLE_FRAMEWORK_SOUND)
-	find_package(OpenAL CONFIG REQUIRED)
-	find_package(VorbisFile REQUIRED)
-	find_package(Vorbis CONFIG REQUIRED)
-	find_package(Ogg CONFIG REQUIRED)
-endif()
 
 # *****************************************************************************
 # OTClient source files configuration
@@ -198,7 +184,6 @@ target_sources(${PROJECT_NAME}
 	PRIVATE
 	client/animatedtext.cpp
 	client/animator.cpp
-	client/spriteappearances.cpp
 	client/client.cpp
 	client/container.cpp
 	client/creature.cpp
@@ -308,14 +293,6 @@ target_sources(${PROJECT_NAME}
 	framework/platform/win32platform.cpp
 	framework/platform/win32window.cpp
 	framework/platform/x11window.cpp
-	framework/sound/combinedsoundsource.cpp
-	framework/sound/oggsoundfile.cpp
-	framework/sound/soundbuffer.cpp
-	framework/sound/soundchannel.cpp
-	framework/sound/soundfile.cpp
-	framework/sound/soundmanager.cpp
-	framework/sound/soundsource.cpp
-	framework/sound/streamsoundsource.cpp
 	framework/stdext/demangle.cpp
 	framework/stdext/math.cpp
 	framework/stdext/net.cpp
@@ -341,7 +318,6 @@ target_sources(${PROJECT_NAME}
 	framework/xml/tinyxml.cpp
 	framework/xml/tinyxmlerror.cpp
 	framework/xml/tinyxmlparser.cpp
-	protobuf/appearances.pb.cc
 	main.cpp
 )
 
@@ -368,13 +344,10 @@ if(MSVC)
 		${CMAKE_SOURCE_DIR}/src
 		${MYSQL_INCLUDE_DIR}
 		${LUAJIT_INCLUDE_DIR}
-		${Protobuf_INCLUDE_DIRS}
-		${VORBISFILE_INCLUDE_DIR}
 		${MYSQL_INCLUDE_DIR}
 		${GMP_INCLUDE_DIR}
 		${OPENSSL_INCLUDE_DIR}
 		${PHYSFS_INCLUDE_DIR}
-		${NLOHMANN_JSON_INCLUDE_DIR}
 	)
 	target_link_libraries(${PROJECT_NAME}
 		PRIVATE
@@ -383,13 +356,9 @@ if(MSVC)
 		${CMAKE_THREAD_LIBS_INIT}
 		${PHYSFS_LIBRARY}
 		${ZLIB_LIBRARY}
-		${PROTOBUF_LIBRARY}
-		${NLOHMANN_JSON_LIBRARY}
 		${OPENGL_LIBRARIES}
 		${DirectX_LIBRARY}
 		${DirectX_LIBRARIES}
-		${VORBISFILE_LIBRARY}
-		${VORBIS_LIBRARY}
 		${OGG_LIBRARY}
 		${MYSQL_LIBRARY}
 		${GMP_LIBRARY}
@@ -398,9 +367,6 @@ if(MSVC)
 
 		Threads::Threads
 		GLEW::GLEW
-		asio::asio
-		OpenAL::OpenAL
-		LibLZMA::LibLZMA
 	)
 else()
 	target_include_directories(${PROJECT_NAME}
@@ -408,21 +374,17 @@ else()
 		${CMAKE_SOURCE_DIR}/src
 		${LUAJIT_INCLUDE_DIR}
 		${CMAKE_THREAD_LIBS_INIT}
-		${Protobuf_INCLUDE_DIRS}
 		${MYSQL_INCLUDE_DIR}
 		${GMP_INCLUDE_DIR}
 		${OPENSSL_INCLUDE_DIR}
 		${PHYSFS_INCLUDE_DIR}
 		${GLEW_INCLUDE_DIR}
-		${NLOHMANN_JSON_INCLUDE_DIR}
 	)
 	target_link_libraries(${PROJECT_NAME}
 		PRIVATE
 		${LUAJIT_LIBRARY}
 		${PHYSFS_LIBRARY}
 		${ZLIB_LIBRARY}
-		${PROTOBUF_LIBRARY}
-		${NLOHMANN_JSON_LIBRARY}
 		${GLEW_LIBRARY}
 		${OPENGL_LIBRARIES}
 		${DirectX_LIBRARY}
@@ -434,11 +396,6 @@ else()
 
 		Threads::Threads
 		X11::X11
-		asio::asio
-		OpenAL::OpenAL
-		Vorbis::vorbis
-		Vorbis::vorbisfile
-		LibLZMA::LibLZMA
 	)
 endif()
 
@@ -468,6 +425,6 @@ if (TOGGLE_BIN_FOLDER)
 else()
 	set_target_properties(${PROJECT_NAME}
 	PROPERTIES
-		RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/"
+		RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/build"
 	)
 endif()

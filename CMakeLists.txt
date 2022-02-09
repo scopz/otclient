@@ -92,7 +92,5 @@ endif()
 # Add project
 # *****************************************************************************
 
-# Protobuf
-add_subdirectory(src/protobuf)
 # Src
 add_subdirectory(src)

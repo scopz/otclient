@@ -10,7 +10,6 @@
         OTCLIENT;
         CRASH_HANDLER;
         FRAMEWORK_NET;
-        FRAMEWORK_SOUND;
         FW_XML;
         BUILD_TYPE="RelWithDebInfo";
         BUILD_COMMIT="devel";

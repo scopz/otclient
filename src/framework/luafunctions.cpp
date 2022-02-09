@@ -42,14 +42,6 @@
 #include "framework/platform/platformwindow.h"
 #include "framework/ui/ui.h"
 
-#ifdef FRAMEWORK_SOUND
-#include <framework/sound/combinedsoundsource.h>
-#include <framework/sound/soundchannel.h>
-#include <framework/sound/soundmanager.h>
-#include <framework/sound/soundsource.h>
-#include <framework/sound/streamsoundsource.h>
-#endif
-
 #ifdef FRAMEWORK_NET
 #include <framework/net/protocol.h>
 #include <framework/net/protocolhttp.h>
@@ -818,34 +810,5 @@ void Application::registerLuaFunctions()
     g_lua.bindClassMemberFunction<OutputMessage>("setMessageSize", &OutputMessage::setMessageSize);
     g_lua.bindClassMemberFunction<OutputMessage>("getWritePos", &OutputMessage::getWritePos);
     g_lua.bindClassMemberFunction<OutputMessage>("setWritePos", &OutputMessage::setWritePos);
-#endif
-
-#ifdef FRAMEWORK_SOUND
-    // SoundManager
-    g_lua.registerSingletonClass("g_sounds");
-    g_lua.bindSingletonFunction("g_sounds", "preload", &SoundManager::preload, &g_sounds);
-    g_lua.bindSingletonFunction("g_sounds", "play", &SoundManager::play, &g_sounds);
-    g_lua.bindSingletonFunction("g_sounds", "getChannel", &SoundManager::getChannel, &g_sounds);
-    g_lua.bindSingletonFunction("g_sounds", "stopAll", &SoundManager::stopAll, &g_sounds);
-    g_lua.bindSingletonFunction("g_sounds", "enableAudio", &SoundManager::enableAudio, &g_sounds);
-    g_lua.bindSingletonFunction("g_sounds", "disableAudio", &SoundManager::disableAudio, &g_sounds);
-    g_lua.bindSingletonFunction("g_sounds", "setAudioEnabled", &SoundManager::setAudioEnabled, &g_sounds);
-    g_lua.bindSingletonFunction("g_sounds", "isAudioEnabled", &SoundManager::isAudioEnabled, &g_sounds);
-
-    g_lua.registerClass<SoundSource>();
-    g_lua.registerClass<CombinedSoundSource, SoundSource>();
-    g_lua.registerClass<StreamSoundSource, SoundSource>();
-
-    g_lua.registerClass<SoundChannel>();
-    g_lua.bindClassMemberFunction<SoundChannel>("play", &SoundChannel::play);
-    g_lua.bindClassMemberFunction<SoundChannel>("stop", &SoundChannel::stop);
-    g_lua.bindClassMemberFunction<SoundChannel>("enqueue", &SoundChannel::enqueue);
-    g_lua.bindClassMemberFunction<SoundChannel>("enable", &SoundChannel::enable);
-    g_lua.bindClassMemberFunction<SoundChannel>("disable", &SoundChannel::disable);
-    g_lua.bindClassMemberFunction<SoundChannel>("setGain", &SoundChannel::setGain);
-    g_lua.bindClassMemberFunction<SoundChannel>("getGain", &SoundChannel::getGain);
-    g_lua.bindClassMemberFunction<SoundChannel>("setEnabled", &SoundChannel::setEnabled);
-    g_lua.bindClassMemberFunction<SoundChannel>("isEnabled", &SoundChannel::isEnabled);
-    g_lua.bindClassMemberFunction<SoundChannel>("getId", &SoundChannel::getId);
 #endif
 }

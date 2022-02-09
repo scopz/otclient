@@ -27,10 +27,6 @@
 #include <framework/core/declarations.h>
 #include <framework/core/timer.h>
 
-#include <protobuf/appearances.pb.h>
-
-using namespace otclient::protobuf;
-
 enum AnimationPhase : int16_t
 {
     AnimPhaseAutomatic = -1,
@@ -47,7 +43,6 @@ enum AnimationDirection : uint8_t
 class Animator : public stdext::shared_object
 {
 public:
-    void unserializeAppearance(const appearances::SpriteAnimation& phases);
     void unserialize(int animationPhases, const FileStreamPtr& fin);
     void serialize(const FileStreamPtr& fin);
     void setPhase(int phase);

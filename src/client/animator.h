@@ -27,10 +27,6 @@
 #include <framework/core/declarations.h>
 #include <framework/core/timer.h>
 
-#include <framework/protobuf/appearances.pb.h>
-
-using namespace tibia::protobuf;
-
 enum AnimationPhase : int16
 {
     AnimPhaseAutomatic = -1,
@@ -47,7 +43,6 @@ enum AnimationDirection : uint8
 class Animator : public stdext::shared_object
 {
 public:
-    void unserializeAppearance(const appearances::SpriteAnimation& phases);
     void unserialize(int animationPhases, const FileStreamPtr& fin);
     void serialize(const FileStreamPtr& fin);
     void setPhase(int phase);

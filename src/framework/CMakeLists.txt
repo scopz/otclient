@@ -205,9 +205,6 @@ message(STATUS "LuaJIT: " ${LUAJIT})
 
 find_package(PhysFS REQUIRED)
 find_package(ZLIB REQUIRED)
-find_package(Protobuf REQUIRED)
-find_package(LibLZMA REQUIRED)
-find_package(nlohmann_json REQUIRED)
 
 find_path(ASIO_INCLUDE_PATH asio.hpp HINTS 
     "/usr/include"
@@ -223,47 +220,13 @@ set(framework_LIBRARIES ${framework_LIBRARIES}
     ${LUA_LIBRARY}
     ${PHYSFS_LIBRARY}
     ${ZLIB_LIBRARY}
-    ${PROTOBUF_LIBRARY}
-    ${LIBLZMA_LIBRARIES}
-    ${NLOHMANN_JSON_LIBRARY}
 )
 
 set(framework_INCLUDE_DIRS ${framework_INCLUDE_DIRS}
     ${LUA_INCLUDE_DIR}
     ${PHYSFS_INCLUDE_DIR}
     ${framework_INCLUDE_DIRS}
-    ${PROTOBUF_INCLUDE_DIRS}
-    ${LIBLZMA_INCLUDE_DIRS}
-    ${NLOHMANN_JSON_INCLUDE_DIR}
 )
-
-# protobuf
-set(protobuf_PATH ${CMAKE_CURRENT_LIST_DIR}/protobuf/proto)
-set(protobuf_MODULES
-    appearances
-    shared
-)
-
-foreach(protobuf_FILENAME ${protobuf_MODULES})
-
-    set(protobuf_SOURCES
-        ${CMAKE_CURRENT_LIST_DIR}/protobuf/${protobuf_FILENAME}.pb.cc
-        ${CMAKE_CURRENT_LIST_DIR}/protobuf/${protobuf_FILENAME}.pb.h
-    )
-
-    set(framework_SOURCES ${framework_SOURCES} ${protobuf_SOURCES})
-
-    if(NOT WIN32)
-        add_custom_command(
-            OUTPUT ${protobuf_SOURCES}
-            DEPENDS ${protobuf_PATH}/${protobuf_FILENAME}.proto
-            COMMAND protoc --cpp_out=../ ${protobuf_FILENAME}.proto
-            WORKING_DIRECTORY ${protobuf_PATH}
-            COMMENT "Compiling ${protobuf_FILENAME}.proto"
-        )
-    endif()
-
-endforeach()
 
 find_package(OpenSSL QUIET)
 

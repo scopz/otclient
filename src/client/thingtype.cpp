@@ -504,10 +504,18 @@ const TexturePtr& ThingType::getTexture(int animationPhase, const TextureType tx
                                 if (h == 0 && w == 0 && (!spriteImage || spriteImage->hasTransparentPixel())) {
                                     fullImage->setTransparentPixel(true);
                                 }
-                                Point spritePos = Point(m_size.width() - w - 1,
-                                                        m_size.height() - h - 1) * SPRITE_SIZE;
+                                if (spriteImage) {
+                                    if (allBlank) {
+                                        spriteImage->overwrite(Color::white);
+                                    } else if (spriteMask) {
+                                        static Color maskColors[] = { Color::red, Color::green, Color::blue, Color::yellow };
+                                        spriteImage->overwriteMask(maskColors[l - 1]);
+                                    }
+                                    Point spritePos = Point(m_size.width() - w - 1,
+                                                            m_size.height() - h - 1) * SPRITE_SIZE;
 
-                                fullImage->blit(framePos + spritePos, spriteImage);
+                                    fullImage->blit(framePos + spritePos, spriteImage);
+                                }
                             }
                         }
                     }

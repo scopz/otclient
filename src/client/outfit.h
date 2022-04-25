@@ -30,8 +30,8 @@ class Outfit
 {
     enum
     {
-        HSI_SI_VALUES = 7,
-        HSI_H_STEPS = 19
+        HSI_SI_VALUES = 11,
+        HSI_H_STEPS = 23
     };
 
 public:

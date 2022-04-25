@@ -133,9 +133,9 @@ controller:gameEvent('onOpenOutfitWindow',
 
     -- populate color panel
     local colorBoxPanel = outfitWindow:getChildById('colorBoxPanel')
-    for j = 0, 6 do
-        for i = 0, 18 do
-            local colorId = j * 19 + i
+    for j = 0, 10 do
+        for i = 0, 22 do
+            local colorId = j * 23 + i
 
             local colorBox = g_ui.createWidget('ColorBox', colorBoxPanel)
             colorBox:setImageColor(getOutfitColor(colorId))

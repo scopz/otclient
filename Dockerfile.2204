@@ -1,0 +1,25 @@
+FROM ubuntu:22.04
+
+RUN export DEBIAN_FRONTEND=noninteractive \
+	&& ln -fs /usr/share/zoneinfo/UTC /etc/localtime
+
+RUN apt-get update && apt-get install -y tzdata build-essential cmake git
+RUN dpkg-reconfigure --frontend noninteractive tzdata
+RUN apt-get install -y liblua5.1-dev zlib1g-dev libssl-dev libglew-dev libopenal-dev \
+	libvorbis-dev libasio-dev
+
+WORKDIR /
+RUN git clone https://github.com/icculus/physfs.git
+WORKDIR /physfs
+RUN git checkout stable-3.2 && mkdir build
+WORKDIR /physfs/build
+RUN cmake .. && make && make install && mv /usr/local/lib/libphysfs.a /usr/lib/x86_64-linux-gnu/.
+WORKDIR /
+RUN rm -fr /physfs
+
+RUN apt-get autoremove -y git && apt-get clean && apt-get autoclean
+
+VOLUME /otclient
+WORKDIR /otclient
+
+CMD ["./compile.sh"]

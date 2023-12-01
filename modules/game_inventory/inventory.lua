@@ -328,8 +328,7 @@ function onBlessingsChange(player, blessings, oldBlessings)
 end
 
 function onVocationChange(player, vocation, oldVocation)
-    -- only show pickUp button for pally or none
-    pickUpButton:setVisible(vocation == 3 or vocation == 0)
+    pickUpButton:setVisible(vocation == Vocation.Paladin or vocation == Vocation.None)
 end
 
 function onFreeCapacityChange(player, freeCapacity)

@@ -351,4 +351,11 @@ ChannelEvent = {
     Exclude = 3
 }
 
+Vocation = {
+    None = 0,
+    Knight = 3,
+    Paladin = 2,
+    Mage = 1
+}
+
 -- @}

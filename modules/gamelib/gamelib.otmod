@@ -18,7 +18,6 @@ Module
 
     dofile 'creature'
     dofile 'player'
-    dofile 'market'
     dofile 'textmessages'
     dofile 'thing'
 

@@ -69,6 +69,7 @@ function controller:onInit()
     self:bindKeyPress('Alt+Down', function() minimapWidget:move(0, -1) end, gameRootPanel)
 
     self:bindKeyDown('Ctrl+M', toggleFullMap)
+    self:bindKeyDown('Alt+E', toggleFullMap)
 
     self:registerWidget('minimapWindow', minimapWindow)
     self:registerWidget('minimapWidget', minimapWidget)
@@ -81,6 +82,8 @@ end
 
 
 function controller:onTerminate()
+    g_keyboard.unbindKeyDown('Ctrl+M')
+    g_keyboard.unbindKeyDown('Alt+E')
     localPlayerEvent:disconnect()
 end
 

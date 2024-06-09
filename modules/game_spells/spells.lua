@@ -24,7 +24,7 @@ function init()
     filterAchievableButton = spellsWindow:getChildById('filterAchievableButton')
     filterUnavailableButton = spellsWindow:getChildById('filterUnavailableButton')
 
-    g_keyboard.bindKeyDown('Alt+E', toggle)
+    g_keyboard.bindKeyDown('Ctrl+P', toggle)
 
     connect(g_game, {
         onSendSpells = loadSpells,
@@ -46,7 +46,7 @@ function terminate()
     disconnect(LocalPlayer, {
         onBankMoneyUpdate = updateMoneyAvailable,
     })
-    g_keyboard.unbindKeyDown('Alt+E')
+    g_keyboard.unbindKeyDown('Ctrl+P')
     hide()
 end
 

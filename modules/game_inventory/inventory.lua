@@ -136,8 +136,6 @@ function terminate()
         offline()
     end
 
-    g_keyboard.unbindKeyDown('Ctrl+I')
-
     fightModeRadioGroup:destroy()
     pvpModeRadioGroup:destroy()
     inventoryWindow:destroy()

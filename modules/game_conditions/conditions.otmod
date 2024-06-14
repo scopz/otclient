@@ -1,0 +1,11 @@
+Module
+  name: game_conditions
+  description: See condition duration window
+  author: scopp
+  website: https://github.com/edubart/otclient
+  sandboxed: true
+  scripts: [ conditions ]
+  @onLoad: init()
+  @onUnload: terminate()
+  dependencies:
+    - game_interface

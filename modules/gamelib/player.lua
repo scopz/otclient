@@ -10,8 +10,10 @@ PlayerStates = {
     Haste = 64,
     Swords = 128,
     Stopped = 256,
-    AttackBuff = 512,
+    Food = 512,
     Healing = 1024,
+    AttackBuff = 2048,
+    DefenseBuff = 4096,
 }
 
 InventorySlotOther = 0

@@ -10,6 +10,8 @@ ConditionIcons = {
     [PlayerStates.Stopped] = { tooltip = tr('You can\'t move'), path = '/images/game/states/stopped', id = 'condition_trapped' },
     [PlayerStates.AttackBuff] = { tooltip = tr('Your attack is strengthened'), path = '/images/game/states/attack_buff', id = 'condition_attack_buff' },
     [PlayerStates.Healing] = { tooltip = tr('Your are being healed'), path = '/images/game/states/healing', id = 'condition_healing' },
+    [PlayerStates.DefenseBuff] = { tooltip = tr('Your defense is strengthened'), path = '/images/game/states/attack_buff', id = 'condition_defense_buff' },
+    [PlayerStates.Food] = { tooltip = tr('You have eaten'), path = '/images/game/states/food', id = 'condition_food' },
 }
 
 InventorySlotStyles = {

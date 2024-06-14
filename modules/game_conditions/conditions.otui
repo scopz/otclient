@@ -1,0 +1,43 @@
+ConditionButton < UIButton
+  id: conditionButton
+  height: 21
+  margin-bottom: 2
+  &onClick: onConditionButtonClick
+
+ConditionImageWidget < UIWidget
+  id: image
+  size: 18 18
+  anchors.left: parent.left
+  anchors.top: parent.top
+  phantom: true
+
+ConditionCountDownLabel < GameLabel
+  id: label
+  font: verdana-11px-monochrome
+  anchors.left: prev.right
+  anchors.right: parent.right
+  anchors.verticalCenter: prev.verticalCenter
+
+
+ConditionRow < Panel
+  layout: verticalBox
+  height: 15
+
+  ConditionButton
+    ConditionImageWidget
+      id: image
+    ConditionCountDownLabel
+
+MiniWindow
+  id: conditionWindow
+  !text: tr('Conditions')
+  height: 150
+  icon: /images/topbuttons/skills
+  &save: true
+
+  MiniWindowContents
+    id: conditionPanel
+    padding-left: 5
+    padding-right: 5
+    padding-top: 5
+    layout: verticalBox

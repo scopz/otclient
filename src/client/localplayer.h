@@ -40,6 +40,7 @@ public:
     bool canWalk(bool ignoreLock = false);
 
     void setStates(int states);
+    void setStateTicks(int states, const std::vector<uint8_t>& modes, const std::vector<uint16_t>& ticks);
     void setSkill(Otc::Skill skill, int level, int levelPercent);
     void setBaseSkill(Otc::Skill skill, int baseLevel);
     void setHealth(double health, double maxHealth);

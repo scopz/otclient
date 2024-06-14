@@ -253,6 +253,17 @@ void LocalPlayer::setStates(int states)
     }
 }
 
+void LocalPlayer::setStateTicks(int states, const std::vector<uint8_t>& modes, const std::vector<uint16_t>& ticks)
+{
+    const int oldStates = m_states;
+    m_states = states;
+
+    if (oldStates != states) {
+        callLuaField("onStatesChange", states, oldStates);
+    }
+    callLuaField("onStateTicksChange", states, oldStates, modes, ticks);
+}
+
 void LocalPlayer::setSkill(Otc::Skill skill, int level, int levelPercent)
 {
     if (skill >= Otc::LastSkill) {

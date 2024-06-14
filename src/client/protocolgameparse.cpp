@@ -1787,8 +1787,24 @@ void ProtocolGame::parsePlayerState(const InputMessagePtr& msg)
     if (g_game.getClientVersion() >= 1281) {
         states = msg->getU32();
     } else {
-        if (g_game.getFeature(Otc::GamePlayerStateU16))
+        if (g_game.getFeature(Otc::GamePlayerStateU16)) {
             states = msg->getU16();
+
+            if (g_game.getClientVersion() == 773) {
+                uint8_t size = msg->getU8();
+
+                std::vector<uint8_t> modes;
+                std::vector<uint16_t> ticks;
+
+                for (std::size_t i = 0; i < size; ++i) {
+                    modes.push_back(msg->getU8());
+                    ticks.push_back(msg->getU16());
+                }
+
+                m_localPlayer->setStateTicks(states, modes, ticks);
+                return;
+            }
+        }
         else
             states = msg->getU8();
     }

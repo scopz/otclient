@@ -88,6 +88,7 @@ function init()
     useOnSelf = hotkeysWindow:getChildById('useOnSelf')
     useOnTarget = hotkeysWindow:getChildById('useOnTarget')
     useWith = hotkeysWindow:getChildById('useWith')
+    currentHotkeysScrollBar = hotkeysWindow:getChildById('currentHotkeysScrollBar')
 
     useRadioGroup = UIRadioGroup.create()
     useRadioGroup:addWidget(useOnSelf)
@@ -669,6 +670,7 @@ end
 function onSelectHotkeyLabel(hotkeyLabel)
     currentHotkeyLabel = hotkeyLabel
     updateHotkeyForm(true)
+    updateScroll(hotkeyLabel)
 end
 
 function hotkeyCapture(assignWindow, keyCode, keyboardModifiers)
@@ -701,4 +703,11 @@ function canPerformKeyCombo(keyCombo)
                (not modules.game_console:isChatEnabled() or string.match(keyCombo, 'F%d%d?') or
                    string.match(keyCombo, 'Ctrl%+') or string.match(keyCombo, 'Shift%+..+') or
                    string.match(keyCombo, 'Alt%+'))
+end
+
+function updateScroll(hotkeyLabel)
+    local index = currentHotkeys:getChildIndex(hotkeyLabel) - 1
+    local height = hotkeyLabel:getHeight()
+    local middlePoint = (currentHotkeys:getHeight() - height) / 2
+    currentHotkeysScrollBar:setValue(height * index - middlePoint)
 end

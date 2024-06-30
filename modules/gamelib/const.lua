@@ -46,8 +46,8 @@ Directions = {
 
 Skill = {
     Fist = 0,
-    Bash = 1,
-    Thrust = 2,
+    Strike = 1,
+    Pierce = 2,
     Slash = 3,
     Distance = 4,
     Shielding = 5,

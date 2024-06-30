@@ -135,7 +135,7 @@ MiniWindow
     SkillButton
       id: skillId1
       SkillNameLabel
-        !text: tr('Bash Fighting')
+        !text: tr('Strike Fighting')
       SkillValueLabel
       SkillPercentPanel
 
@@ -149,7 +149,7 @@ MiniWindow
     SkillButton
       id: skillId2
       SkillNameLabel
-        !text: tr('Thrust Fighting')
+        !text: tr('Pierce Fighting')
       SkillValueLabel
       SkillPercentPanel
 
